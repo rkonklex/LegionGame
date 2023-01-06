@@ -170,7 +170,7 @@ namespace Legion.Model
                 if (x > 580)
                 {
                     x = 50;
-                    y = 130 + GlobalUtils.Rand(30);
+                    y += 130 + GlobalUtils.Rand(30);
                 }
 
                 var building = GenerateBuilding(x, y);
