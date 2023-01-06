@@ -1,5 +1,7 @@
+using System;
 using Legion.Model.Repositories;
 using Legion.Model.Types;
+using Legion.Model.Types.Definitions;
 using Legion.Utils;
 
 namespace Legion.Model.Helpers
@@ -18,10 +20,10 @@ namespace Legion.Model.Helpers
             city.PriceModificators.Clear();
             var mod = (city.Owner != null && city.Owner.IsUserControlled) ? 20 : 50;
 
-            // Price modificators for each item in that city
-            foreach (var item in _definitionsRepository.Items)
+            // Price modificators for each item type in that city
+            foreach (var itemType in Enum.GetValues<ItemType>())
             {
-                city.PriceModificators.Add(item.Name, GlobalUtils.Rand(mod));
+                city.PriceModificators.Add(itemType, GlobalUtils.Rand(mod));
             }
         }
     }

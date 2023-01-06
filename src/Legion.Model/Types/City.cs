@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Legion.Model.Types.Definitions;
 
 namespace Legion.Model.Types
 {
@@ -8,7 +9,7 @@ namespace Legion.Model.Types
 
         public City()
         {
-            PriceModificators = new Dictionary<string, int>();
+            PriceModificators = new Dictionary<ItemType, int>();
             Buildings = new List<Building>();
 
             Id = ++_id;
@@ -87,9 +88,9 @@ namespace Legion.Model.Types
 
         /// <summary>
         /// MIASTA(I,J,M_MUR)=Rnd(WAHANIA)
-        /// Price Modificators for city, item name is a key, and value is price modificator for this item
+        /// Price Modificators for city, item type is a key, and value is price modificator for this item
         /// </summary>
-        public Dictionary<string, int> PriceModificators { get; set; }
+        public Dictionary<ItemType, int> PriceModificators { get; set; }
 
 		/// <summary>
 		///    If LUDZIE>700 M$="Miasto : " Else M$="Osada  : " End If
