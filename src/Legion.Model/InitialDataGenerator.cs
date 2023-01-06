@@ -53,8 +53,8 @@ namespace Legion.Model
                 _playersRepository.Players.Add(new Player { Id = i, Money = 5000, Name = NamesGenerator.Generate() });
             }
 
-            _playersRepository.UserPlayer = _playersRepository.Players[1];
-            _playersRepository.ChaosPlayer = _playersRepository.Players[_playersRepository.Players.Count - 1];
+            _playersRepository.UserPlayer = _playersRepository.Players.FirstOrDefault();
+            _playersRepository.ChaosPlayer = _playersRepository.Players.LastOrDefault();
         }
 
         private void GenerateArmies()
