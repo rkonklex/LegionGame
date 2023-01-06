@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Legion.Model.Types;
@@ -42,7 +43,7 @@ namespace Legion.Model.Repositories
                 }
                 else
                 {
-                    var postfix = army.Owner.Name.StartsWith("I") ? "ego" : "a";
+                    var postfix = army.Owner.Name.EndsWith("I", StringComparison.OrdinalIgnoreCase) ? "ego" : "a";
                     army.Name = armyId + " Legion " + army.Owner.Name + postfix;
                     army.DaysToGetInfo = 30;
                     //army.Aggression = 150 + Rand.Next(50) + dataManager.Power;
