@@ -11,9 +11,6 @@ namespace Legion
             // we need to change it to the folder where executable file location is
             Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
 
-            var libsLoader = new MonoGameLibLoader();
-            libsLoader.LoadLibs();
-
             using(var game = new LegionGame())
             {
                 var container = new ContainerConfigurator();
