@@ -10,6 +10,7 @@ namespace Legion.Model.Types
         public Character()
         {
             Id = ++_id;
+            Equipment = new CharacterEquipment();
         }
 
         public int Id { get; set; }
