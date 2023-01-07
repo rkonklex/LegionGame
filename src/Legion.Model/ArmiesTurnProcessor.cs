@@ -128,8 +128,7 @@ namespace Legion.Model
                     Move(army);
                     break;
                 case ArmyActions.Camping:
-                    //TODO: MA_OBOZ[A]
-                    // don't skip camping if not user army
+                    HandleCamping(army);
                     if (!army.Owner.IsUserControlled)
                     {
                         GiveTheOrder(army);
@@ -138,6 +137,28 @@ namespace Legion.Model
                 case ArmyActions.Hunting:
                     //TODO: MA_POLOWANIE[A]
                     break;
+            }
+        }
+
+        private void HandleCamping(Army army)
+        {
+            if (army.Owner.IsUserControlled)
+            {
+                if (_armiesHelper.IsArmyInTheCity(army) == null)
+                {
+                    army.Food -= army.Characters.Count;
+                }
+            }
+
+            foreach (var member in army.Characters)
+            {
+                var magic = member.Magic + GlobalUtils.Rand(5) + 5;
+                if (magic <= member.MagicMax) member.Magic = magic;
+                if (member.Energy > 0 && member.Energy < member.EnergyMax)
+                {
+                    var energy = member.Energy + GlobalUtils.Rand(20) + 10;
+                    if (energy <= member.EnergyMax) member.Energy = energy;
+                }
             }
         }
 
