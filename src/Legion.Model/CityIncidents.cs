@@ -34,15 +34,9 @@ namespace Legion.Model
         {
             if (type == 0)
             {
-                city.Population -= city.Population / 4;
-                if (city.Population < 50) city.Population = 50;
-                for (var i = 2; i <= 20; i++)
-                {
-                    if (GlobalUtils.Rand(1) == 1)
-                    {
-                        city.Population = 0;
-                    }
-                }
+                var newPopulation = city.Population - city.Population / 4;
+                if (newPopulation >= 50) city.Population = newPopulation;
+                city.Buildings.RemoveAll(_ => GlobalUtils.Rand(1) == 1);
 
                 var fireMessage = new Message();
                 fireMessage.Type = MessageType.FireInTheCity;
@@ -51,8 +45,8 @@ namespace Legion.Model
             }
             else if (type == 1)
             {
-                city.Population -= city.Population / 2;
-                if (city.Population < 50) city.Population = 50;
+                var newPopulation = city.Population - city.Population / 2;
+                if (newPopulation >= 50) city.Population = newPopulation;
 
                 var epidemyMessage = new Message();
                 epidemyMessage.Type = MessageType.EpidemyInTheCity;
