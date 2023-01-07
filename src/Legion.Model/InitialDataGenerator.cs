@@ -59,14 +59,14 @@ namespace Legion.Model
 
         private void GenerateArmies()
         {
-            for (var i = 1; i < _playersRepository.Players.Count - 1; i++)
-            {
-                var owner = _playersRepository.Players[i];
+            const int NumArmiesPerRival = 3; // TODO: magic number
 
+            foreach (var owner in _playersRepository.Players.Where(p => p.IsRivalControlled))
+            {
                 var xg = GlobalUtils.Rand(_legionConfig.WorldWidth - 200) + 100;
                 var yg = GlobalUtils.Rand(_legionConfig.WorldHeight - 200) + 100;
 
-                for (var k = 0; k <= 2; k++)
+                for (var k = 0; k < NumArmiesPerRival; k++)
                 {
                     var army = _armiesRepository.CreateArmy(owner, 10);
                     army.X = xg + GlobalUtils.Rand(200) - 100;
@@ -128,17 +128,23 @@ namespace Legion.Model
 
         private void GenerateCities()
         {
-            for (var i = 0; i < _legionConfig.MaxCitiesCount; i++)
+            const int NumCitiesPerRival = 2; // TODO: magic number
+            var rivalPlayers = _playersRepository.Players.Where(p => p.IsRivalControlled);
+            var numNeutralCities = _legionConfig.MaxCitiesCount - NumCitiesPerRival * rivalPlayers.Count();
+
+            for (var i = 0; i < numNeutralCities; i++)
             {
-                Player owner = null;
-
-                // TODO: magic numbers
-                if (i == 43 || i == 44) owner = _playersRepository.Players.FirstOrDefault(p => p.Id == 2);
-                else if (i == 45 || i == 46) owner = _playersRepository.Players.FirstOrDefault(p => p.Id == 3);
-                else if (i == 47 || i == 48) owner = _playersRepository.Players.FirstOrDefault(p => p.Id == 4);
-
-                var city = GenerateCity(owner);
+                var city = GenerateCity(null);
                 _citiesRepository.Cities.Add(city);
+            }
+
+            foreach (var owner in rivalPlayers)
+            {
+                for (var i = 0; i < NumCitiesPerRival; i++)
+                {
+                    var city = GenerateCity(owner);
+                    _citiesRepository.Cities.Add(city);
+                }
             }
         }
 

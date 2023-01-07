@@ -39,6 +39,8 @@ namespace Legion.Model.Types
         // TODO magic number
         public bool IsChaosControlled => Id == 5;
 
+        public bool IsRivalControlled => !IsUserControlled && !IsChaosControlled;
+
         /// <summary>
         /// WOJNA(5,5)
         /// </summary>
