@@ -347,6 +347,15 @@ namespace Legion.Model
         {
             army.IsMoving = false;
 
+            if (army.Owner.IsUserControlled)
+            {
+                var visitedCity = _armiesHelper.IsArmyInTheCity(army);
+                if (visitedCity != null)
+                {
+                    visitedCity.DaysToGetInfo = 0;
+                }
+            }
+
             if (army.IsTracked)
             {
                 //TODO: CENTER[X1,Y1,1]
