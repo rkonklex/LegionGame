@@ -89,9 +89,8 @@ namespace Legion.Model
 
             var rebelArmy = _armiesRepository.CreateTempArmy(count);
             //'wieśniacy wśród buntowników 
-            for (var i = 0; i <= villagersCount; i++)
+            for (var i = 0; i < villagersCount; i++)
             {
-                // TODO: check if 9 is villager
                 var villager = _charactersRepository.CreateCharacter(_definitionsRepository.Races.Find(c => c.Name == "villager"));
                 rebelArmy.Characters.Add(villager);
             }
@@ -105,17 +104,20 @@ namespace Legion.Model
             {
                 city.Population -= city.Population / 4;
 
-                if (rebelArmy.IsKilled)
+                if (userArmy.IsKilled)
                 {
-                    city.Morale = 50;
-                    city.Craziness = GlobalUtils.Rand(3) + 5;
+                    city.Owner = null;
+                    city.Morale = 30;
+
+                    var defeatMessage = new Message();
+                    defeatMessage.Type = MessageType.RiotInTheCityLost;
+                    defeatMessage.MapObjects = new List<MapObject> { city };
+                    _messagesService.ShowMessage(defeatMessage);
                 }
                 else
                 {
-                    var successMessage = new Message();
-                    successMessage.Type = MessageType.RiotInTheCitySuccess;
-                    successMessage.MapObjects = new List<MapObject> { city };
-                    _messagesService.ShowMessage(successMessage);
+                    city.Morale = 50;
+                    city.Craziness += GlobalUtils.Rand(3) + 5;
                 }
             };
 

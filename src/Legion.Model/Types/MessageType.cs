@@ -13,6 +13,7 @@ namespace Legion.Model.Types
         EpidemyInTheCity,
         RatsInTheCity,
         RiotInTheCity,
+        RiotInTheCityLost,
         RiotInTheCitySuccess,
         RiotInTheCityWithDefence
     }
