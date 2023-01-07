@@ -76,8 +76,8 @@ namespace Legion.Model
                     foreach (var member in army.Characters)
                     {
                         var raceType = member.Type as RaceDefinition;
-                        member.Experience += GlobalUtils.Rand(raceType.Intelligence);
-                        if (member.Experience > 95) member.Experience = 95;
+                        var experience = member.Experience + GlobalUtils.Rand(raceType.Intelligence);
+                        if (experience <= 95) member.Experience = experience;
                     }
                 }
             }
@@ -158,7 +158,7 @@ namespace Legion.Model
                 }
                 if (army.Owner.IsChaosControlled)
                 {
-                    craziness = 2;
+                    craziness = 1;
                 }
                 if (GlobalUtils.Rand(craziness) == 1)
                 {
