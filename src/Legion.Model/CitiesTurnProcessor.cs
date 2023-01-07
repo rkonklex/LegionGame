@@ -74,16 +74,13 @@ namespace Legion.Model
         private void ProcessGranaries(City city)
         {
             // obsługa spichlerzy
-            //TODO: check if 9 is the Granary
-            var granaries = city.Buildings.Where(b => b.Type.Name == "granary");
-            if (granaries.Count() > 0)
+            var granariesCount = city.Buildings.Count(b => b.Type.Name == "granary");
+            if (granariesCount > 0)
             {
-                var spi = granaries.Count() * 200;
                 //If SPI>0 : Add MIASTA(M,1,M_LUDZIE),LUDZIE/15,MIASTA(M,1,M_LUDZIE) To SPI*200 : End If 
-                var currentFood = city.Food;
-                currentFood += city.Population / 15;
-                if (currentFood < city.Population) city.Food = spi;
-                if (currentFood > spi) city.Food = currentFood; //?
+                var newFood = city.Food + city.Population / 15;
+                var maxFood = granariesCount * 200;
+                if (newFood <= maxFood) city.Food = newFood;
             }
         }
 
