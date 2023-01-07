@@ -170,7 +170,8 @@ namespace Legion.Model
             var x = 50;
             var y = 50;
 
-            for (var i = 0; i < _legionConfig.MaxCityBuildingsCount; i++)
+            const int NumInitialBuildingsPerCity = 8; // For J=2 To 9
+            for (var i = 0; i < NumInitialBuildingsPerCity; i++)
             {
                 x += GlobalUtils.Rand(50);
                 if (x > 580)
