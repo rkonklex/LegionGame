@@ -42,7 +42,7 @@ namespace Legion.Model
 
             if (GlobalUtils.Rand(50) == 1 && city.Population > 800)
             {
-                _cityIncidents.Plague(city);
+                _cityIncidents.Plague(city, GlobalUtils.Rand(2));
             }
 
             if (GlobalUtils.Rand(5) == 1)

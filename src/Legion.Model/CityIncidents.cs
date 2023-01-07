@@ -30,10 +30,8 @@ namespace Legion.Model
             _viewSwitcher = viewSwitcher;
         }
 
-        public void Plague(City city)
+        public void Plague(City city, int type)
         {
-            var type = GlobalUtils.Rand(2);
-
             if (type == 0)
             {
                 city.Population -= city.Population / 4;
