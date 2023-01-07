@@ -269,8 +269,8 @@ namespace Legion.Model
             var dy = army.Target.Y - army.Y;
 
             var l = Math.Sqrt(dx * dx + dy * dy) + 0.2;
-            var vx = (int) ((dx / l) * speed);
-            var vy = (int) ((dy / l) * speed);
+            var vx = (int) ((dx / l) * (speed + 1));
+            var vy = (int) ((dy / l) * (speed + 1));
 
             if (Math.Abs(vx) > Math.Abs(dx))
             {
