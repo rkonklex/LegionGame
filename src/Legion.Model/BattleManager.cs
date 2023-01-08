@@ -131,20 +131,18 @@ namespace Legion.Model
 
         private void AfterAttackOnCity(Army army, City city, Army cityArmy)
         {
-            city.Population -= city.Population / 4;
-            if (city.Population < 20) city.Population = 20;
+            var oldPopulation = city.Population;
+            var populationAfterAttack = city.Population - oldPopulation / 4;
+            if (populationAfterAttack >= 20) city.Population = populationAfterAttack;
 
             if (cityArmy == null || cityArmy.IsKilled)
             {
                 if (army.IsChaosControlled)
                 {
                     city.Owner = null;
-                    city.Population -= city.Population / 2;
-                    if (city.Population < 20) city.Population = 20;
-                    for (var i = 2; i <= 10; i++)
-                    {
-                        if (GlobalUtils.Rand(3) == 1) city.Population = 0;
-                    }
+                    var populationAfterChaos = city.Population - oldPopulation / 2;
+                    if (populationAfterChaos >= 20) city.Population = populationAfterChaos;
+                    city.Buildings.RemoveAll(_ => GlobalUtils.Rand(2) == 1);
 
                     var burnedCityMessage = new Message();
                     burnedCityMessage.Type = MessageType.ChaosWarriorsBurnedCity;
