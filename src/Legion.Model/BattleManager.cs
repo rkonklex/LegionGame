@@ -32,13 +32,13 @@ namespace Legion.Model
 
         public void AttackOnArmy(Army army, Army targetArmy)
         {
-            if (!army.Owner.IsUserControlled && !targetArmy.Owner.IsUserControlled)
+            if (!army.IsUserControlled && !targetArmy.IsUserControlled)
             {
                 SimulatedBattle(army, targetArmy);
             }
             else
             {
-                if (army.Owner.IsUserControlled)
+                if (army.IsUserControlled)
                 {
                     /*
 					   CENTER[X1,Y1,1]
@@ -72,8 +72,7 @@ namespace Legion.Model
             //}
 
             Army cityArmy = null;
-
-            if (city.Owner == _playersRepository.UserPlayer)
+            if (city.IsUserControlled)
             {
                 cityArmy = _armiesHelper.FindUserArmyInCity(city);
             }
@@ -85,7 +84,7 @@ namespace Legion.Model
                 cityArmy = _armiesRepository.CreateTempArmy(defendersCount);
             }
 
-            if (!army.Owner.IsUserControlled && (city.Owner != null && !city.Owner.IsUserControlled))
+            if (!army.IsUserControlled && !city.IsUserControlled)
             {
                 SimulatedBattle(army, cityArmy);
                 AfterAttackOnCity(army, city, cityArmy);
@@ -100,7 +99,7 @@ namespace Legion.Model
                     battleContext.Type = TerrainActionType.Battle;
                     battleContext.ActionAfter = () => AfterAttackOnCity(army, city, cityArmy);
 
-                    if (cityArmy.Owner == _playersRepository.UserPlayer)
+                    if (city.IsUserControlled)
                     {
                         battleContext.UserArmy = cityArmy;
                         battleContext.EnemyArmy = army;
@@ -110,7 +109,7 @@ namespace Legion.Model
                         message.MapObjects = new List<MapObject> { city, army };
                         _messagesService.ShowMessage(message);
                     }
-                    if (army.Owner == _playersRepository.UserPlayer)
+                    if (army.IsUserControlled)
                     {
                         battleContext.UserArmy = army;
                         battleContext.EnemyArmy = cityArmy;
@@ -137,7 +136,7 @@ namespace Legion.Model
 
             if (cityArmy == null || cityArmy.IsKilled)
             {
-                if (army.Owner.IsChaosControlled)
+                if (army.IsChaosControlled)
                 {
                     city.Owner = null;
                     city.Population -= city.Population / 2;
@@ -154,16 +153,15 @@ namespace Legion.Model
                 }
                 else
                 {
-                    var cityOwner = city.Owner;
+                    var wasCityUserControlled = city.IsUserControlled;
                     city.Owner = army.Owner;
 
-                    if (cityOwner == _playersRepository.UserPlayer ||
-                        army.Owner == _playersRepository.UserPlayer)
+                    if (wasCityUserControlled || army.IsUserControlled)
                     {
                         var capturedCityMessage = new Message();
                         capturedCityMessage.MapObjects = new List<MapObject> { city };
 
-                        if (army.Owner == _playersRepository.UserPlayer)
+                        if (army.IsUserControlled)
                         {
                             _citiesHelper.UpdatePriceModificators(city);
                             capturedCityMessage.Type = MessageType.UserCapturedCity;
@@ -179,7 +177,7 @@ namespace Legion.Model
             }
             else
             {
-                if (army.IsTracked || army.Owner == _playersRepository.UserPlayer)
+                if (army.IsTracked || army.IsUserControlled)
                 {
                     //TODO: CENTER[X1, Y1, 1]
                     var failedMessage = new Message();
