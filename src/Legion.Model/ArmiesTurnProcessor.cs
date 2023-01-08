@@ -364,7 +364,7 @@ namespace Legion.Model
             // target could be destroyed meanwhile
             if (army.Target != null)
             {
-                var isArrived = army.X == army.Target.X && army.Y == army.Target.Y;
+                var isArrived = Math.Abs(army.Target.X - army.X) < 3 && Math.Abs(army.Target.Y - army.Y) < 3;
                 if (isArrived)
                 {
                     army.CurrentAction = ArmyActions.Camping;
