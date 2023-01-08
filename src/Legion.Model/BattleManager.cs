@@ -38,23 +38,57 @@ namespace Legion.Model
             }
             else
             {
+                var battleContext = new TerrainActionContext();
+                battleContext.Type = TerrainActionType.Battle;
+
                 if (army.IsUserControlled)
                 {
-                    /*
-					   CENTER[X1,Y1,1]
-					   MESSAGE[A,"Rozpoczynamy atak na "+A$,0,0]
-					   ILEDNI=Rnd(30)+10
-					   WOJNA(PL,PL2)=ILEDNI
-					   WOJNA(PL2,PL)=ILEDNI
-					   ARMIA(B,0,TMAGMA)=0
-					   BITWA[A,B,LOAX,LOAY,LTRYB,LOAX2,LOAY2,LTRYB,TEREN,MT]
-					*/
+                    battleContext.UserArmy = army;
+                    battleContext.EnemyArmy = targetArmy;
+
+                    var days = GlobalUtils.Rand(30) + 10;
+                    army.Owner.UpdateWar(targetArmy.Owner, days);
+                    targetArmy.Owner.UpdateWar(army.Owner, days);
+
+                    targetArmy.DaysToGetInfo = 0;
+
+                    var message = new Message();
+                    message.Type = MessageType.UserAttacksArmy;
+                    message.MapObjects = new List<MapObject> { targetArmy };
+                    _messagesService.ShowMessage(message);
                 }
-                /*
-					CENTER[X1,Y1,0]
-					If ARMIA(B,0,TE)=0 : MESSAGE2[B,"został rozbity ",33,0,0] : End If 
-					If ARMIA(A,0,TE)=0 : MESSAGE2[A,"został rozbity ",33,0,0] : End If 
-				*/
+                else
+                {
+                    battleContext.UserArmy = targetArmy;
+                    battleContext.EnemyArmy = army;
+
+                    army.DaysToGetInfo = 0;
+
+                    var message = new Message();
+                    message.Type = MessageType.EnemyAttacksUserArmy;
+                    message.MapObjects = new List<MapObject> { army };
+                    _messagesService.ShowMessage(message);
+                }
+
+                battleContext.ActionAfter = () =>
+                {
+                    if (army.IsKilled)
+                    {
+                        var message = new Message();
+                        message.Type = MessageType.ArmyDestroyed;
+                        message.MapObjects = new List<MapObject> { army };
+                        _messagesService.ShowMessage(message);
+                    }
+                    if (targetArmy.IsKilled)
+                    {
+                        var message = new Message();
+                        message.Type = MessageType.ArmyDestroyed;
+                        message.MapObjects = new List<MapObject> { targetArmy };
+                        _messagesService.ShowMessage(message);
+                    }
+                };
+
+                _viewSwitcher.OpenTerrain(battleContext);
             }
         }
 
@@ -227,7 +261,10 @@ namespace Legion.Model
 
             if (loser.IsTracked)
             {
-                //TODO: MESSAGE2[LOSER," został rozbity.",33,0,0]
+                var message = new Message();
+                message.Type = MessageType.ArmyDestroyed;
+                message.MapObjects = new List<MapObject> { loser };
+                _messagesService.ShowMessage(message);
             }
         }
 

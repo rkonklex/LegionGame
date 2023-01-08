@@ -9,12 +9,16 @@ namespace Legion.Model.Types
         EnemyCapturedUserCity,
         ChaosWarriorsBurnedCity,
 
+        UserAttacksArmy,
+        EnemyAttacksUserArmy,
+        ArmyDestroyed,
+
         FireInTheCity,
         EpidemyInTheCity,
         RatsInTheCity,
         RiotInTheCity,
         RiotInTheCityLost,
         RiotInTheCitySuccess,
-        RiotInTheCityWithDefence
+        RiotInTheCityWithDefence,
     }
 }

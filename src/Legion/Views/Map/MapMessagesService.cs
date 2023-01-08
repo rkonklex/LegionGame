@@ -42,6 +42,9 @@ namespace Legion.Views.Map
             _dict.Add(MessageType.RiotInTheCityLost, "event.burnedCity");
             _dict.Add(MessageType.RiotInTheCitySuccess, "event.burnedCity");
             _dict.Add(MessageType.RiotInTheCityWithDefence, "event.burnedCity");
+            _dict.Add(MessageType.UserAttacksArmy, "event.burnedCity");
+            _dict.Add(MessageType.EnemyAttacksUserArmy, "event.burnedCity");
+            _dict.Add(MessageType.ArmyDestroyed, "event.burnedCity");
         }
 
         public void ShowMessage(Message message)
