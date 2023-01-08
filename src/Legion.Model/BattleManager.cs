@@ -222,11 +222,8 @@ namespace Legion.Model
             foreach (var character in winner.Characters)
             {
                 character.Energy -= s3;
-                if (character.Energy < 0)
-                {
-                    character.Energy = 0;
-                }
             }
+            winner.Characters.RemoveAll(m => m.IsKilled);
 
             if (loser.IsTracked)
             {

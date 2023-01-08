@@ -154,7 +154,7 @@ namespace Legion.Model
             {
                 var magic = member.Magic + GlobalUtils.Rand(5) + 5;
                 if (magic <= member.MagicMax) member.Magic = magic;
-                if (member.Energy > 0 && member.Energy < member.EnergyMax)
+                if (member.Energy < member.EnergyMax)
                 {
                     var energy = member.Energy + GlobalUtils.Rand(20) + 10;
                     if (energy <= member.EnergyMax) member.Energy = energy;

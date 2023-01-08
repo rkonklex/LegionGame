@@ -116,6 +116,9 @@ namespace Legion.Model.Types
             }
         }
 
+        /// <summary>True if the Character has been killed and should be removed from the Army.</summary>
+        public bool IsKilled => Energy <= 0;
+
         //public int B1 { get; set; }
         //public int B2 { get; set; }
         //public int Intelligence { get; set; }
