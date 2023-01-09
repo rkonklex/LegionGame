@@ -7,5 +7,6 @@ namespace Legion.Model.Helpers
         Army FindUserArmyInCity(City city);
         City IsArmyInTheCity(Army army);
         Adventure IsArmyInTheAdventure(Army army);
+        TerrainType GetArmyTerrainType(Army army);
     }
 }

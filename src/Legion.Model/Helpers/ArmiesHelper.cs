@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Legion.Model.Repositories;
 using Legion.Model.Types;
+using Legion.Utils;
 
 namespace Legion.Model.Helpers
 {
@@ -63,6 +64,21 @@ namespace Legion.Model.Helpers
                 }
             }
             return null;
+        }
+
+        private static readonly TerrainType[] _terrainTypes = {
+            TerrainType.Forest,
+            TerrainType.Steppe,
+            TerrainType.Desert,
+            TerrainType.Rocks,
+            TerrainType.Snow,
+            TerrainType.Swamp
+        };
+
+        public TerrainType GetArmyTerrainType(Army army)
+        {
+            // TODO: check terrain type on the world map
+            return _terrainTypes[GlobalUtils.Rand(_terrainTypes.Length - 1)];
         }
     }
 }
