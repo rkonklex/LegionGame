@@ -9,6 +9,7 @@ namespace Legion.Model.Repositories
         List<Army> Armies { get; }
         Army CreateArmy(Player owner, int charactersCount, CharacterDefinition charactersType = null);
         Army CreateTempArmy(int charactersCount, CharacterDefinition charactersType = null);
+        Army CreateTempArmyForHunt(TerrainType terrainType);
         void KillArmy(Army army);
     }
 }

@@ -15,6 +15,7 @@ namespace Legion.Model
         private readonly IPlayersRepository _playersRepository;
         private readonly IArmiesHelper _armiesHelper;
         private readonly IBattleManager _battleManager;
+        private readonly IArmyActivities _armyActivities;
 
         private int _currentTurnArmyIdx = -1;
 
@@ -23,7 +24,8 @@ namespace Legion.Model
             ICitiesRepository citiesRepository,
             IPlayersRepository playersRepository,
             IArmiesHelper armiesHelper,
-            IBattleManager battleManager)
+            IBattleManager battleManager,
+            IArmyActivities armyIncidents)
         {
             _legionInfo = legionInfo;
             _armiesRepository = armiesRepository;
@@ -31,6 +33,7 @@ namespace Legion.Model
             _playersRepository = playersRepository;
             _armiesHelper = armiesHelper;
             _battleManager = battleManager;
+            _armyActivities = armyIncidents;
         }
 
         public bool IsProcessingTurn { get; private set; }
@@ -135,7 +138,7 @@ namespace Legion.Model
                     }
                     break;
                 case ArmyActions.Hunting:
-                    //TODO: MA_POLOWANIE[A]
+                    HandleHunting(army);
                     break;
             }
         }
@@ -158,6 +161,34 @@ namespace Legion.Model
                 {
                     var energy = member.Energy + GlobalUtils.Rand(20) + 10;
                     if (energy <= member.EnergyMax) member.Energy = energy;
+                }
+            }
+        }
+
+        private void HandleHunting(Army army)
+        {
+            if (army.Owner.IsUserControlled)
+            {
+                if (_armiesHelper.IsArmyInTheCity(army) == null)
+                {
+                    army.Food -= army.Characters.Count;
+                }
+
+                var terrainType = _armiesHelper.GetArmyTerrainType(army);
+                var huntRoll = terrainType switch
+                {
+                    TerrainType.Forest => 1,
+                    TerrainType.Steppe => 2,
+                    TerrainType.Desert => 6,
+                    TerrainType.Rocks => 5,
+                    TerrainType.Snow => 4,
+                    TerrainType.Swamp => 3,
+                    _ => 0,
+                };
+
+                if (GlobalUtils.Rand(huntRoll) == 1)
+                {
+                    _armyActivities.Hunt(army, terrainType);
                 }
             }
         }

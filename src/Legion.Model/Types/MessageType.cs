@@ -12,6 +12,7 @@ namespace Legion.Model.Types
         UserAttacksArmy,
         EnemyAttacksUserArmy,
         ArmyDestroyed,
+        ArmyTrackedDownBeast,
 
         FireInTheCity,
         EpidemyInTheCity,
