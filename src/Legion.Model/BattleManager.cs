@@ -41,6 +41,8 @@ namespace Legion.Model
                 var battleContext = new TerrainActionContext();
                 battleContext.Type = TerrainActionType.Battle;
 
+                var battleMessage = new Message();
+
                 if (army.IsUserControlled)
                 {
                     battleContext.UserArmy = army;
@@ -52,10 +54,8 @@ namespace Legion.Model
 
                     targetArmy.DaysToGetInfo = 0;
 
-                    var message = new Message();
-                    message.Type = MessageType.UserAttacksArmy;
-                    message.MapObjects = new List<MapObject> { targetArmy };
-                    _messagesService.ShowMessage(message);
+                    battleMessage.Type = MessageType.UserAttacksArmy;
+                    battleMessage.MapObjects = new List<MapObject> { targetArmy };
                 }
                 else
                 {
@@ -64,10 +64,8 @@ namespace Legion.Model
 
                     army.DaysToGetInfo = 0;
 
-                    var message = new Message();
-                    message.Type = MessageType.EnemyAttacksUserArmy;
-                    message.MapObjects = new List<MapObject> { army };
-                    _messagesService.ShowMessage(message);
+                    battleMessage.Type = MessageType.EnemyAttacksUserArmy;
+                    battleMessage.MapObjects = new List<MapObject> { army };
                 }
 
                 battleContext.ActionAfter = () =>
@@ -88,7 +86,8 @@ namespace Legion.Model
                     }
                 };
 
-                _viewSwitcher.OpenTerrain(battleContext);
+                battleMessage.OnClose = () => { _viewSwitcher.OpenTerrain(battleContext); };
+                _messagesService.ShowMessage(battleMessage);
             }
         }
 
@@ -133,15 +132,15 @@ namespace Legion.Model
                     battleContext.Type = TerrainActionType.Battle;
                     battleContext.ActionAfter = () => AfterAttackOnCity(army, city, cityArmy);
 
+                    var battleMessage = new Message();
+
                     if (city.IsUserControlled)
                     {
                         battleContext.UserArmy = cityArmy;
                         battleContext.EnemyArmy = army;
 
-                        var message = new Message();
-                        message.Type = MessageType.EnemyAttacksUserCity;
-                        message.MapObjects = new List<MapObject> { city, army };
-                        _messagesService.ShowMessage(message);
+                        battleMessage.Type = MessageType.EnemyAttacksUserCity;
+                        battleMessage.MapObjects = new List<MapObject> { city, army };
                     }
                     if (army.IsUserControlled)
                     {
@@ -152,13 +151,12 @@ namespace Legion.Model
                         army.Owner.UpdateWar(city.Owner, days);
                         if (city.Owner != null) { city.Owner.UpdateWar(army.Owner, days); }
 
-                        var message = new Message();
-                        message.Type = MessageType.UserAttackCity;
-                        message.MapObjects = new List<MapObject> { city, army };
-                        _messagesService.ShowMessage(message);
+                        battleMessage.Type = MessageType.UserAttackCity;
+                        battleMessage.MapObjects = new List<MapObject> { city, army };
                     }
-                    
-                    _viewSwitcher.OpenTerrain(battleContext);
+
+                    battleMessage.OnClose = () => { _viewSwitcher.OpenTerrain(battleContext); };
+                    _messagesService.ShowMessage(battleMessage);
                 }
             }
         }

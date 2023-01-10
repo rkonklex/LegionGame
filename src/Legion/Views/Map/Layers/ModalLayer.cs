@@ -52,6 +52,7 @@ namespace Legion.Views.Map.Layers
                 Text = text,
                 Image = image
             };
+            messageWindow.Closing += (_) => { onClose(); };
             Window = messageWindow;
         }
 
