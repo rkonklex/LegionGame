@@ -191,6 +191,13 @@
         "message.enemyAttacksUserArmy": "zaatakował nasz {0}",
         "message.armyDestroyed": "został rozbity",
         "message.armyTrackedDownBeast": "Wytropiliśmy bestię !",
+        "message.armyEncounteredRabidWolves": "Osaczyło nas stado wściekłych wilków !",
+        "message.armyEncounteredBandits": "Zaatakowali nas zbóje",
+        "message.armyStuckInSwamp": "Utknęliśmy na bagnach",
+        "message.armyEncounteredForestTrolls": "Okrążyły nas leśne trole",
+        "message.armyEncounteredGargoyl": "Gargoil !!!",
+        "message.armyEncounteredLoneKnight": "Spotkaliśmy samotnego wojownika",
+        "message.armyEncounteredCaveEntrance": "Odnaleźliśmy wejście do jaskini",
 
         "infoWindow.ok": "Ok",
         "infoWindow.commands": "Rozkazy",

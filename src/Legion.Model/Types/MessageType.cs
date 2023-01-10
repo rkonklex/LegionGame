@@ -16,6 +16,14 @@ namespace Legion.Model.Types
         ArmyDestroyed,
         ArmyTrackedDownBeast,
 
+        ArmyEncounteredRabidWolves,
+        ArmyEncounteredBandits,
+        ArmyStuckInSwamp,
+        ArmyEncounteredForestTrolls,
+        ArmyEncounteredGargoyl,
+        ArmyEncounteredLoneKnight,
+        ArmyEncounteredCaveEntrance,
+
         FireInTheCity,
         EpidemyInTheCity,
         RatsInTheCity,

@@ -318,42 +318,77 @@ namespace Legion.Model
             army.IsMoving = true;
         }
 
-        private bool HandleAccident(Army army)
+        private bool HandleEncounters(Army army)
         {
             if (army.Owner.IsUserControlled)
             {
-                //TODO: if (maWypadek) {
-                //    actionsManager.WaitingAction = new Action(() => WYPADEK_HANDLER);
-                //    return false;
-                // }
-                /*
-          If A<20 and SKIP=0
-             If LOK=7
-                If Rnd(3)=1 : MA_WYPADEK[A,3] : End If 
-             End If 
-             If LOK=5
-                If Rnd(6)=1 : MA_WYPADEK[A,1] : End If 
-             End If 
-             If LOK=1
-                P=Rnd(45)
-                If P<4 : MA_WYPADEK[A,4+P] : End If 
-                If P=5 : MA_WYPADEK[A,2] : End If 
-             End If 
-             If LOK=2
-                P=Rnd(45)
-                If P=1 : MA_WYPADEK[A,2] : End If 
-                If P=2 : MA_WYPADEK[A,6] : End If 
-             End If 
-             If LOK=3
-                P=Rnd(45)
-                If P=1 : MA_WYPADEK[A,2] : End If 
-             End If 
-             If LOK=4
-                P=Rnd(45)
-                If P=1 : MA_WYPADEK[A,2] : End If 
-                If P=5 : MA_WYPADEK[A,7] : End If 
-             End If 
-                */
+                var terrainType = _armiesHelper.GetArmyTerrainType(army);
+                switch (terrainType)
+                {
+                    case TerrainType.Swamp:
+                        if (GlobalUtils.Rand(3) == 1)
+                            _armyActivities.Encounter(army, EncounterType.StuckInSwamp);
+                        break;
+
+                    case TerrainType.Snow:
+                        if (GlobalUtils.Rand(5) == 1)
+                            _armyActivities.Encounter(army, EncounterType.RabidWolves);
+                        break;
+
+                    case TerrainType.Forest:
+                        switch (GlobalUtils.Rand(45))
+                        {
+                            case 0:
+                                _armyActivities.Encounter(army, EncounterType.ForestTrolls);
+                                break;
+                            case 1:
+                                _armyActivities.Encounter(army, EncounterType.Gargoyl);
+                                break;
+                            case 2:
+                                _armyActivities.Encounter(army, EncounterType.LoneKnight);
+                                break;
+                            case 3:
+                                _armyActivities.Encounter(army, EncounterType.CaveEntrance);
+                                break;
+                            case 4:
+                                _armyActivities.Encounter(army, EncounterType.Bandits);
+                                break;
+                        }
+                        break;
+
+                    case TerrainType.Steppe:
+                        switch (GlobalUtils.Rand(45))
+                        {
+                            case 1:
+                                _armyActivities.Encounter(army, EncounterType.Bandits);
+                                break;
+                            case 2:
+                                _armyActivities.Encounter(army, EncounterType.LoneKnight);
+                                break;
+                        }
+                        break;
+
+                    case TerrainType.Desert:
+                        switch (GlobalUtils.Rand(45))
+                        {
+                            case 1:
+                                _armyActivities.Encounter(army, EncounterType.Bandits);
+                                break;
+                        }
+                        break;
+
+                    case TerrainType.Rocks:
+                        switch (GlobalUtils.Rand(45))
+                        {
+                            case 1:
+                                _armyActivities.Encounter(army, EncounterType.Bandits);
+                                break;
+                            case 5:
+                                _armyActivities.Encounter(army, EncounterType.CaveEntrance);
+                                break;
+                        }
+                        break;
+                }
             }
 
             return true;
@@ -412,13 +447,13 @@ namespace Legion.Model
                             _battleManager.AttackOnCity(army, (City) army.Target);
                             break;
                     }
-                }
-                else
-                {
-                    // not planned adventure can happen meantime
-                    HandleAccident(army);
+
+                    return;
                 }
             }
+
+            // not planned adventure can happen meantime
+            HandleEncounters(army);
 
             //BUSY_ANIM
         }

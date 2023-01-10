@@ -191,6 +191,13 @@
         "message.enemyAttacksUserArmy": "is attacking our unit {0}",
         "message.armyDestroyed": "has been defeat",
         "message.armyTrackedDownBeast": "We have tracked down a beast !",
+        "message.armyEncounteredRabidWolves": "Rabid wolves has encircled us !",
+        "message.armyEncounteredBandits": "We're attacked by robbers.",
+        "message.armyStuckInSwamp": "We've stalled in the swaps.",
+        "message.armyEncounteredForestTrolls": "We're encircled by forest trolls.",
+        "message.armyEncounteredGargoyl": "Gargoyl !!!",
+        "message.armyEncounteredLoneKnight": "We meet a solitary knight.",
+        "message.armyEncounteredCaveEntrance": "We've found an entrance to cavern.",
 
         "infoWindow.ok": "Ok",
         "infoWindow.commands": "Commands",

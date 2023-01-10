@@ -48,6 +48,13 @@ namespace Legion.Views.Map
             _dict.Add(MessageType.EnemyAttacksUserArmy, "event.burnedCity");
             _dict.Add(MessageType.ArmyDestroyed, "event.burnedCity");
             _dict.Add(MessageType.ArmyTrackedDownBeast, "event.burnedCity");
+            _dict.Add(MessageType.ArmyEncounteredRabidWolves, "event.burnedCity");
+            _dict.Add(MessageType.ArmyEncounteredBandits, "event.burnedCity");
+            _dict.Add(MessageType.ArmyStuckInSwamp, "event.burnedCity");
+            _dict.Add(MessageType.ArmyEncounteredForestTrolls, "event.burnedCity");
+            _dict.Add(MessageType.ArmyEncounteredGargoyl, "event.burnedCity");
+            _dict.Add(MessageType.ArmyEncounteredLoneKnight, "event.burnedCity");
+            _dict.Add(MessageType.ArmyEncounteredCaveEntrance, "event.burnedCity");
         }
 
         public void ShowMessage(Message message)
