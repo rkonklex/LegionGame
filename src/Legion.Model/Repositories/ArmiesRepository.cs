@@ -9,13 +9,13 @@ namespace Legion.Model.Repositories
 {
     public class ArmiesRepository : IArmiesRepository
     {
-        private readonly IDefinitionsRepository _definitionsRepository;
+        private readonly IRaceDefinitionsRepository _raceDefinitionsRepository;
         private readonly ICharactersRepository _charactersRepository;
 
-        public ArmiesRepository(IDefinitionsRepository definitionsRepository,
+        public ArmiesRepository(IRaceDefinitionsRepository raceDefinitionsRepository,
             ICharactersRepository charactersRepository)
         {
-            _definitionsRepository = definitionsRepository;
+            _raceDefinitionsRepository = raceDefinitionsRepository;
             _charactersRepository = charactersRepository;
 
             Armies = new List<Army>();
@@ -54,11 +54,7 @@ namespace Legion.Model.Repositories
 
             for (var i = 0; i < charactersCount; i++)
             {
-                var type = charactersType;
-                if (type == null)
-                {
-                    type = _definitionsRepository.Races[GlobalUtils.Rand(_definitionsRepository.Races.Count - 1)];
-                }
+                var type = charactersType ?? _raceDefinitionsRepository.GetRandomWarrior();
                 var character = _charactersRepository.CreateCharacter(type);
                 army.Characters.Add(character);
             }
@@ -74,11 +70,7 @@ namespace Legion.Model.Repositories
 
             for (var i = 0; i < charactersCount; i++)
             {
-                var type = charactersType;
-                if (type == null)
-                {
-                    type = _definitionsRepository.Races[GlobalUtils.Rand(_definitionsRepository.Races.Count - 1)];
-                }
+                var type = charactersType ?? _raceDefinitionsRepository.GetRandomWarrior();
                 var character = _charactersRepository.CreateCharacter(type);
                 army.Characters.Add(character);
             }
