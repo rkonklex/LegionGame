@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 
@@ -7,9 +8,8 @@ namespace Legion.Localization
     public class Texts : ITexts
     {
         private static readonly string FilePath = Path.Combine("data", "texts", "texts.{0}.json");
-        private const StringComparison IgnoreCase = StringComparison.InvariantCultureIgnoreCase;
 
-        private LocalizedTexts _localizedTexts;
+        private Dictionary<string, string> _localizedTexts;
         private readonly ILanguageProvider _languageProvider;
 
         public Texts(ILanguageProvider languageProvider)
@@ -22,25 +22,27 @@ namespace Legion.Localization
         private void Load(string language)
         {
             var textsJson = File.ReadAllText(string.Format(FilePath, language));
-            _localizedTexts = JsonConvert.DeserializeObject<LocalizedTexts>(textsJson);
-            if (_localizedTexts == null)
+            var loadedTexts = JsonConvert.DeserializeObject<LocalizedTexts>(textsJson);
+            if (loadedTexts == null)
             {
                 throw new Exception("Unable to load texts for language " + language);
             }
+            _localizedTexts = new Dictionary<string, string>(loadedTexts.Texts, StringComparer.InvariantCultureIgnoreCase);
         }
 
         public string Get(string key, params object[] args)
         {
-            var textPair = _localizedTexts.Texts.Find(t => string.Equals(t.Key, key, IgnoreCase));
-            if (textPair == null)
+            string text;
+            if (!_localizedTexts.TryGetValue(key, out text))
             {
-                return string.Empty;
+                return string.Format("x:{0}", key);
             }
-            var text = textPair.Value;
+
             if (args != null && args.Length > 0)
             {
                 text = string.Format(text, args);
             }
+
             //TODO: hack!!! current font doesn't support polish characters, for now we just remove them!
             text = RemovePolishCharacters(text);
             return text;

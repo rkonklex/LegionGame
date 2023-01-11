@@ -6,6 +6,6 @@ namespace Legion.Localization
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public List<TextPair> Texts { get; set; }
+        public Dictionary<string, string> Texts { get; set; }
     }
 }

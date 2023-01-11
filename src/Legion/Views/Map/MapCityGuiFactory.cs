@@ -104,17 +104,16 @@ namespace Legion.Views.Map
 
                 var morale2 = city.Morale / 20;
                 if (morale2 > 4) morale2 = 4;
-                //TODO: handle morale texts better way
-                var moraleTexts = new []
+                var moraleTexts = new[]
                 {
-                    _texts.Get("rebelious"),
-                    _texts.Get("discontented"),
-                    _texts.Get("serf"),
-                    _texts.Get("loyal"),
-                    _texts.Get("fanatics")
+                    "cityMorale.rebelious",
+                    "cityMorale.discontented",
+                    "cityMorale.serf",
+                    "cityMorale.loyal",
+                    "cityMorale.fanatics",
                 };
                 //Text OKX + 50,OKY + 45,"Morale :" + GUL$(MORALE2)
-                window.MoraleText = _texts.Get("morale") + ": " + moraleTexts[morale2];
+                window.MoraleText = _texts.Get("morale") + ": " + _texts.Get(moraleTexts[morale2]);
 
                 var buildings = new List<string>();
                 foreach (var name in city.Buildings.Where(b => b.Type.Type == BuildingType.Shop).Select(b => b.Type.Name))

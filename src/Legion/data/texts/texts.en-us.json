@@ -1,1016 +1,244 @@
 {
-    "id" : "en-us",
-    "name" : "English",
-    "texts": [
-        {
-            "key": "well",
-            "value": "well"
-        },
-        {
-            "key": "gallows",
-            "value": "gallows"
-        },
-        {
-            "key": "barrel",
-            "value": "barrel"
-        },
-        {
-            "key": "shop",
-            "value": "shop"
-        },
-        {
-            "key": "armoury",
-            "value": "armoury"
-        },
-        {
-            "key": "temple",
-            "value": "temple"
-        },
-        {
-            "key": "hunter",
-            "value": "hunter"
-        },
-        {
-            "key": "alchemist",
-            "value": "alchemist"
-        },
-        {
-            "key": "granary",
-            "value": "granary"
-        },
+    "id": "en-us",
+    "name": "English",
+    "texts": {
+        "well": "well",
+        "gallows": "gallows",
+        "barrel": "barrel",
+        "shop": "shop",
+        "armoury": "armoury",
+        "temple": "temple",
+        "hunter": "hunter",
+        "alchemist": "alchemist",
+        "granary": "granary",
+        "gargoyl": "gargoyl",
 
-        {
-            "key": "gargoyl",
-            "value": "gargoyl"
-        },
-        {
-            "key": "skeletor",
-            "value": "skeletor"
-        },
-        {
-            "key": "wolf",
-            "value": "wolf"
-        },
-        {
-            "key": "hog",
-            "value": "hog"
-        },
-        {
-            "key": "gloom",
-            "value": "gloom"
-        },
-        {
-            "key": "varpoon",
-            "value": "varpoon"
-        },
-        {
-            "key": "skeerial",
-            "value": "skeerial"
-        },
-        {
-            "key": "humanoid",
-            "value": "humanoid"
-        },
-        {
-            "key": "spider",
-            "value": "spider"
-        },
-        {
-            "key": "boss",
-            "value": "boss"
-        },
+        "skeletor": "skeletor",
+        "wolf": "wolf",
+        "hog": "hog",
+        "gloom": "gloom",
+        "varpoon": "varpoon",
+        "skeerial": "skeerial",
+        "humanoid": "humanoid",
+        "spider": "spider",
+        "boss": "boss",
+        "barbarian": "barbarian",
+        "orc": "orc",
+        "elf": "elf",
+        "dwarf": "dwarf",
+        "amazon": "amazon",
+        "ogre": "ogre",
+        "troll": "troll",
+        "knight": "knight",
+        "sorcerer": "sorcerer",
+        "villager": "villager",
 
-        {
-            "key": "barbarian",
-            "value": "barbarian"
-        },
-        {
-            "key": "orc",
-            "value": "orc"
-        },
-        {
-            "key": "elf",
-            "value": "elf"
-        },
-        {
-            "key": "dwarf",
-            "value": "dwarf"
-        },
-        {
-            "key": "amazon",
-            "value": "amazon"
-        },
-        {
-            "key": "ogre",
-            "value": "ogre"
-        },
-        {
-            "key": "troll",
-            "value": "troll"
-        },
-        {
-            "key": "knight",
-            "value": "knight"
-        },
-        {
-            "key": "sorcerer",
-            "value": "sorcerer"
-        },
-        {
-            "key": "villager",
-            "value": "villager"
-        },
+        "axe": "axe",
+        "sword": "sword",
+        "shield": "shield",
+        "hammer": "hammer",
+        "bow": "bow",
+        "arrows": "arrows",
+        "helmet": "helmet",
+        "boots": "boots",
+        "armour": "armour",
+        "herb": "herb",
+        "scroll": "scroll",
+        "club": "club",
+        "catapult": "catapult",
+        "stone": "stone",
+        "potion": "potion",
+        "food": "food",
+        "treasure": "treasure",
+        "skin": "skin",
+        "spear": "spear",
+        "commonAxe": "common axe",
+        "stormAxe": "storm axe",
+        "chromicAxe": "chromic axe",
+        "goldenAxe": "golden axe",
+        "orksAxe": "orks axe",
+        "silverAxe": "silver axe",
+        "warAxe": "war axe",
+        "lightSword": "light sword",
+        "steelSword": "steel sword",
+        "silverSword": "silver sword",
+        "longSword": "long sword",
+        "fireSword": "fire sword",
+        "dragonFangSword": "Dragon fang sword",
+        "szczerbiecSword": "Szczerbiec sword",
+        "brabarianSword": "barbarian sword",
+        "hornetSword": "hornet sword",
+        "chaosSword": "Chaos sword",
+        "woodenShield": "wooden shield",
+        "steelShield": "steel shield",
+        "stormShield": "storm shield",
+        "gremlinsShield": "gremlin's shield",
+        "stoneHammer": "stone hammer",
+        "heavyHammer": "heavy hammer",
+        "diamondHammer": "diamond hammer",
+        "goblinsHammer": "goblins hammer",
+        "battleHammer": "battle hammer",
+        "steelHammer": "steel hammer",
+        "graniteHammer": "granite hammer",
+        "commonBow": "common bow",
+        "specialBow": "special bow",
+        "elfBow": "elf bow",
+        "falconBow": "Falcon bow",
+        "commonArrows": "common arrows",
+        "poisonedArrows": "poisoned arrows",
+        "magicArrows": "magic arrows",
+        "falconTalonsArrows": "Falcon talons arrorws",
+        "pointedHelmet": "pointed helmet",
+        "hornedHelmet": "horned helmet",
+        "klingonHelmet": "Klingon helmet",
+        "magicHelmet": "Magic helmet",
+        "sorasilsHelmet": "Sorasil's helmet",
+        "leatherBoots": "leather boots",
+        "shoedBoots": "shoed boots",
+        "lightBoots": "light boots",
+        "fightingBoots": "fighting boots",
+        "miraculousBoots": "miraculous boots",
+        "lightArmour": "light armour",
+        "coatOfMailArmour": "coat of mail armour",
+        "steelArmour": "steel armour",
+        "heavyArmour": "heavy armour",
+        "silverArmour": "silver armour",
+        "scaledArmour": "scaled armour",
+        "lightingArmour": "lighting armour",
+        "ogreArmour": "ogre armour",
+        "vingrensArmour": "Vingren's armour",
+        "sterydiusHerb": "sterydius herb",
+        "furialisHerb": "furialis herb",
+        "molesRootHerb": "moles root herb",
+        "castorHerb": "castor herb",
+        "spinachHerb": "spinach herb",
+        "bayLeafHerb": "bay leaf herb",
+        "blackGrassHerb": "black grass herb",
+        "magicMissileScroll": "MagicMissile(5) scroll",
+        "fireballScroll": "Fireball (8) scroll",
+        "chaosBreathScroll": "ChaosBreath(12) scroll",
+        "flamesScroll": "Flames (15) scroll",
+        "lightingScroll": "Lighting (20) scroll",
+        "mindProbeScroll": "Mind Probe (3) scroll",
+        "curingScroll": "Curing (5) scroll",
+        "healingScroll": "Healing (20) scroll",
+        "brightnessScroll": "Brightness(40) scroll",
+        "intuitionScroll": "Intuition (15) scroll",
+        "godsWrathScroll": "God's Wrath(50) scroll",
+        "slowDownScroll": "Slow down (10) scroll",
+        "conversionScroll": "Conversion(60) scroll",
+        "explosionScroll": "Explosion (25) scroll",
+        "unsureScroll": "Unsure (12) scroll",
+        "intimidateScroll": "Intimidate(20) scroll",
+        "ogreBoneClub": "ogre bone club",
+        "woodenClub": "wooden club",
+        "pricklyClub": "prickly club",
+        "ruffianlyClub": "ruffianly club",
+        "siegeCatapult": "siege catapult",
+        "ruiningCatapult": "ruining catapult",
+        "lightCatapult": "light catapult",
+        "ogreCatapult": "ogre catapult",
+        "smallStone": "small stone",
+        "bigStone": "big stone",
+        "mediumStone": "medium stone",
+        "graniteStone": "granite stone",
+        "marbleStone": "marble stone",
+        "plePlePotion": "ple ple potion",
+        "poisonPotion": "poison potion",
+        "sheepTonguePotion": "sheep tongue potion",
+        "honeyPotion": "honey potion",
+        "halucinumPotion": "halucinum potion",
+        "curePotion": "cure potion",
+        "winePotion": "wine potion",
+        "trollMilkPotion": "troll milk potion",
+        "waterPotion": "water potion",
+        "motorolumPotion": "motorolum potion",
+        "bloodPotion": "blood potion",
+        "umkoumPotion": "umkoum potion",
+        "hogMeatFood": "hog meet food",
+        "gargoylMeatFood": "gargoyl meat food",
+        "wolfMeatFood": "wolf meat food",
+        "carrionFood": "carrion food",
+        "haunchFood": "haunch food",
+        "goldTreasure": "gold trasure",
+        "stonesTreasure": "stones treasure",
+        "coinsTreasure": "coins treasure",
+        "diamondsTreasure": "diamonds treasure",
+        "hogSkin": "hog skin",
+        "gargoylSkin": "gargoyl skin",
+        "wolfSkin": "wolf skin",
+        "furSkin": "fur skin",
+        "whaleSpear": "whale spear",
+        "longSpear": "long spear",
+        "wolfFangSpear": "Wolf fang spear",
+        "tuskSpear": "Tusk spear",
 
+        "fireInTheCity": "The flames took a lot of inhabitants and their houses.",
+        "epidemyInTheCity": "Epidemic has killed many people !",
+        "ratsInTheCity": "Rats ate all grain reserves.",
+        "riotInTheCity": "The Revolt has begun in the town.",
+        "riotInTheCitySuccess": "",
+        "riotInTheCityWithDefence": "",
+        "userCapturedCity": "",
+        "userArmyFailedToCaptureCity": "",
+        "enemyAttacksUserCity": "",
+        "enemyCapturedUserCity": "",
+        "chaosWarriorsBurnedCity": "Chaos Warriors have burned the town.",
 
-        {
-            "key": "axe",
-            "value": "axe"
-        },
-        {
-            "key": "sword",
-            "value": "sword"
-        },
-        {
-            "key": "shield",
-            "value": "shield"
-        },
-        {
-            "key": "hammer",
-            "value": "hammer"
-        },
-        {
-            "key": "bow",
-            "value": "bow"
-        },
-        {
-            "key": "arrows",
-            "value": "arrows"
-        },
-        {
-            "key": "helmet",
-            "value": "helmet"
-        },
-        {
-            "key": "boots",
-            "value": "boots"
-        },
-        {
-            "key": "armour",
-            "value": "armour"
-        },
-        {
-            "key": "herb",
-            "value": "herb"
-        },
-        {
-            "key": "scroll",
-            "value": "scroll"
-        },
-        {
-            "key": "club",
-            "value": "club"
-        },
-        {
-            "key": "catapult",
-            "value": "catapult"
-        },
-        {
-            "key": "stone",
-            "value": "stone"
-        },
-        {
-            "key": "potion",
-            "value": "potion"
-        },
-        {
-            "key": "food",
-            "value": "food"
-        },
-        {
-            "key": "treasure",
-            "value": "treasure"
-        },
-        {
-            "key": "skin",
-            "value": "skin"
-        },
-        {
-            "key": "spear",
-            "value": "spear"
-        },
+        "move": "Move",
+        "attack": "Attack",
+        "fastMove": "Fast Move",
+        "hunt": "Hunt",
+        "recruit": "Recruit",
+        "camp": "Camp",
+        "equipment": "Equipment",
+        "action": "Action",
+        "exit": "Exit",
+        "ok": "Ok",
+        "commands": "Commands",
+        "inquiry": "Inquiry",
+        "noInformation": "No informations",
+        "informationsInOneDay": "Informations during 1 day",
+        "city": "City",
+        "village": "Village",
+        "tax": "Tax",
+        "morale": "Morale",
+        "cityMorale.rebelious": "rebelious",
+        "cityMorale.discontented": "discontented",
+        "cityMorale.serf": "serf",
+        "cityMorale.loyal": "loyal",
+        "cityMorale.fanatics": "fanatics",
+        "armyMorale.quiet": "quiet",
+        "armyMorale.panic": "panic",
+        "armyMorale.defence": "defence",
+        "armyMorale.attack": "attack",
+        "armyMorale.psycho": "psycho",
+        "trace": "Trace",
+        "oneWarrior": "1 warrior",
+        "foodForOneDay": "food for one day",
+        "noMoreFood": "No more food !",
+        "strength": "Strength",
+        "speed": "Speed",
+        "camping": "Army is camping",
+        "moving": "Army is moving",
+        "hunting": "Hunting",
 
-        {
-            "key": "commonAxe",
-            "value": "common axe"
-        },
-        {
-            "key": "stormAxe",
-            "value": "storm axe"
-        },
-        {
-            "key": "chromicAxe",
-            "value": "chromic axe"
-        },
-        {
-            "key": "goldenAxe",
-            "value": "golden axe"
-        },
-        {
-            "key": "orksAxe",
-            "value": "orks axe"
-        },
-        {
-            "key": "silverAxe",
-            "value": "silver axe"
-        },
-        {
-            "key": "warAxe",
-            "value": "war axe"
-        },
+        "mapOptions.loadGame": "Load Game",
+        "mapOptions.saveGame": "Save Game",
+        "mapOptions.statistics": "Statistics",
+        "mapOptions.options": "Options",
+        "mapOptions.endGame": "End Game",
+        "mapOptions.exit": "Exit",
+        "gameStatistics.ok": "Ok",
+        "gameStatistics.charts": "Charts",
+        "gameStatistics.yourPossession": "In your possession: ",
 
-        {
-            "key": "lightSword",
-            "value": "light sword"
-        },
-        {
-            "key": "steelSword",
-            "value": "steel sword"
-        },
-        {
-            "key": "silverSword",
-            "value": "silver sword"
-        },
-        {
-            "key": "longSword",
-            "value": "long sword"
-        },
-        {
-            "key": "fireSword",
-            "value": "fire sword"
-        },
-        {
-            "key": "dragonFangSword",
-            "value": "Dragon fang sword"
-        },
-        {
-            "key": "szczerbiecSword",
-            "value": "Szczerbiec sword"
-        },
-        {
-            "key": "brabarianSword",
-            "value": "barbarian sword"
-        },
-        {
-            "key": "hornetSword",
-            "value": "hornet sword"
-        },
-        {
-            "key": "chaosSword",
-            "value": "Chaos sword"
-        },
-
-        {
-            "key": "woodenShield",
-            "value": "wooden shield"
-        },
-        {
-            "key": "steelShield",
-            "value": "steel shield"
-        },
-        {
-            "key": "stormShield",
-            "value": "storm shield"
-        },
-        {
-            "key": "gremlinsShield",
-            "value": "gremlin's shield"
-        },
-
-        {
-            "key": "stoneHammer",
-            "value": "stone hammer"
-        },
-        {
-            "key": "heavyHammer",
-            "value": "heavy hammer"
-        },
-        {
-            "key": "diamondHammer",
-            "value": "diamond hammer"
-        },
-        {
-            "key": "goblinsHammer",
-            "value": "goblins hammer"
-        },
-        {
-            "key": "battleHammer",
-            "value": "battle hammer"
-        },
-        {
-            "key": "steelHammer",
-            "value": "steel hammer"
-        },
-        {
-            "key": "graniteHammer",
-            "value": "granite hammer"
-        },
-
-        {
-            "key": "commonBow",
-            "value": "common bow"
-        },
-        {
-            "key": "specialBow",
-            "value": "special bow"
-        },
-        {
-            "key": "elfBow",
-            "value": "elf bow"
-        },
-        {
-            "key": "falconBow",
-            "value": "Falcon bow"
-        },
-
-        {
-            "key": "commonArrows",
-            "value": "common arrows"
-        },
-        {
-            "key": "poisonedArrows",
-            "value": "poisoned arrows"
-        },
-        {
-            "key": "magicArrows",
-            "value": "magic arrows"
-        },
-        {
-            "key": "falconTalonsArrows",
-            "value": "Falcon talons arrorws"
-        },
-
-        {
-            "key": "pointedHelmet",
-            "value": "pointed helmet"
-        },
-        {
-            "key": "hornedHelmet",
-            "value": "horned helmet"
-        },
-        {
-            "key": "klingonHelmet",
-            "value": "Klingon helmet"
-        },
-        {
-            "key": "magicHelmet",
-            "value": "Magic helmet"
-        },
-        {
-            "key": "sorasilsHelmet",
-            "value": "Sorasil's helmet"
-        },
-
-        {
-            "key": "leatherBoots",
-            "value": "leather boots"
-        },
-        {
-            "key": "shoedBoots",
-            "value": "shoed boots"
-        },
-        {
-            "key": "lightBoots",
-            "value": "light boots"
-        },
-        {
-            "key": "fightingBoots",
-            "value": "fighting boots"
-        },
-        {
-            "key": "miraculousBoots",
-            "value": "miraculous boots"
-        },
-
-        {
-            "key": "lightArmour",
-            "value": "light armour"
-        },
-        {
-            "key": "coatOfMailArmour",
-            "value": "coat of mail armour"
-        },
-        {
-            "key": "steelArmour",
-            "value": "steel armour"
-        },
-        {
-            "key": "heavyArmour",
-            "value": "heavy armour"
-        },
-        {
-            "key": "silverArmour",
-            "value": "silver armour"
-        },
-        {
-            "key": "scaledArmour",
-            "value": "scaled armour"
-        },
-        {
-            "key": "lightingArmour",
-            "value": "lighting armour"
-        },
-        {
-            "key": "ogreArmour",
-            "value": "ogre armour"
-        },
-        {
-            "key": "vingrensArmour",
-            "value": "Vingren's armour"
-        },
-
-        {
-            "key": "sterydiusHerb",
-            "value": "sterydius herb"
-        },
-        {
-            "key": "furialisHerb",
-            "value": "furialis herb"
-        },
-        {
-            "key": "molesRootHerb",
-            "value": "moles root herb"
-        },
-        {
-            "key": "castorHerb",
-            "value": "castor herb"
-        },
-        {
-            "key": "spinachHerb",
-            "value": "spinach herb"
-        },
-        {
-            "key": "bayLeafHerb",
-            "value": "bay leaf herb"
-        },
-        {
-            "key": "blackGrassHerb",
-            "value": "black grass herb"
-        },
-
-        {
-            "key": "magicMissileScroll",
-            "value": "MagicMissile(5) scroll"
-        },
-        {
-            "key": "fireballScroll",
-            "value": "Fireball (8) scroll"
-        },
-        {
-            "key": "chaosBreathScroll",
-            "value": "ChaosBreath(12) scroll"
-        },
-        {
-            "key": "flamesScroll",
-            "value": "Flames (15) scroll"
-        },
-        {
-            "key": "lightingScroll",
-            "value": "Lighting (20) scroll"
-        },
-        {
-            "key": "mindProbeScroll",
-            "value": "Mind Probe (3) scroll"
-        },
-        {
-            "key": "curingScroll",
-            "value": "Curing (5) scroll"
-        },
-        {
-            "key": "healingScroll",
-            "value": "Healing (20) scroll"
-        },
-        {
-            "key": "brightnessScroll",
-            "value": "Brightness(40) scroll"
-        },
-        {
-            "key": "intuitionScroll",
-            "value": "Intuition (15) scroll"
-        },
-        {
-            "key": "godsWrathScroll",
-            "value": "God's Wrath(50) scroll"
-        },
-        {
-            "key": "slowDownScroll",
-            "value": "Slow down (10) scroll"
-        },
-        {
-            "key": "conversionScroll",
-            "value": "Conversion(60) scroll"
-        },
-        {
-            "key": "explosionScroll",
-            "value": "Explosion (25) scroll"
-        },
-        {
-            "key": "unsureScroll",
-            "value": "Unsure (12) scroll"
-        },
-        {
-            "key": "intimidateScroll",
-            "value": "Intimidate(20) scroll"
-        },
-
-        {
-            "key": "ogreBoneClub",
-            "value": "ogre bone club"
-        },
-        {
-            "key": "woodenClub",
-            "value": "wooden club"
-        },
-        {
-            "key": "pricklyClub",
-            "value": "prickly club"
-        },
-        {
-            "key": "ruffianlyClub",
-            "value": "ruffianly club"
-        },
-
-        {
-            "key": "siegeCatapult",
-            "value": "siege catapult"
-        },
-        {
-            "key": "ruiningCatapult",
-            "value": "ruining catapult"
-        },
-        {
-            "key": "lightCatapult",
-            "value": "light catapult"
-        },
-        {
-            "key": "ogreCatapult",
-            "value": "ogre catapult"
-        },
-
-        {
-            "key": "smallStone",
-            "value": "small stone"
-        },
-        {
-            "key": "bigStone",
-            "value": "big stone"
-        },
-        {
-            "key": "mediumStone",
-            "value": "medium stone"
-        },
-        {
-            "key": "graniteStone",
-            "value": "granite stone"
-        },
-        {
-            "key": "marbleStone",
-            "value": "marble stone"
-        },
-
-        {
-            "key": "plePlePotion",
-            "value": "ple ple potion"
-        },
-        {
-            "key": "poisonPotion",
-            "value": "poison potion"
-        },
-        {
-            "key": "sheepTonguePotion",
-            "value": "sheep tongue potion"
-        },
-        {
-            "key": "honeyPotion",
-            "value": "honey potion"
-        },
-        {
-            "key": "halucinumPotion",
-            "value": "halucinum potion"
-        },
-        {
-            "key": "curePotion",
-            "value": "cure potion"
-        },
-        {
-            "key": "winePotion",
-            "value": "wine potion"
-        },
-        {
-            "key": "trollMilkPotion",
-            "value": "troll milk potion"
-        },
-        {
-            "key": "waterPotion",
-            "value": "water potion"
-        },
-        {
-            "key": "motorolumPotion",
-            "value": "motorolum potion"
-        },
-        {
-            "key": "bloodPotion",
-            "value": "blood potion"
-        },
-        {
-            "key": "umkoumPotion",
-            "value": "umkoum potion"
-        },
-
-        {
-            "key": "hogMeatFood",
-            "value": "hog meet food"
-        },
-        {
-            "key": "gargoylMeatFood",
-            "value": "gargoyl meat food"
-        },
-        {
-            "key": "wolfMeatFood",
-            "value": "wolf meat food"
-        },
-        {
-            "key": "carrionFood",
-            "value": "carrion food"
-        },
-        {
-            "key": "haunchFood",
-            "value": "haunch food"
-        },
-
-        {
-            "key": "goldTreasure",
-            "value": "gold trasure"
-        },
-        {
-            "key": "stonesTreasure",
-            "value": "stones treasure"
-        },
-        {
-            "key": "coinsTreasure",
-            "value": "coins treasure"
-        },
-        {
-            "key": "diamondsTreasure",
-            "value": "diamonds treasure"
-        },
-
-        {
-            "key": "hogSkin",
-            "value": "hog skin"
-        },
-        {
-            "key": "gargoylSkin",
-            "value": "gargoyl skin"
-        },
-        {
-            "key": "wolfSkin",
-            "value": "wolf skin"
-        },
-        {
-            "key": "furSkin",
-            "value": "fur skin"
-        },
-
-        {
-            "key": "whaleSpear",
-            "value": "whale spear"
-        },
-        {
-            "key": "longSpear",
-            "value": "long spear"
-        },
-        {
-            "key": "wolfFangSpear",
-            "value": "Wolf fang spear"
-        },
-        {
-            "key": "tuskSpear",
-            "value": "Tusk spear"
-        },
-
-
-        {
-            "key": "fireInTheCity",
-            "value": "The flames took a lot of inhabitants and their houses."
-        },
-        {
-            "key": "epidemyInTheCity",
-            "value": "Epidemic has killed many people !"
-        },
-        {
-            "key": "ratsInTheCity",
-            "value": "Rats ate all grain reserves."
-        },
-        {
-            "key": "riotInTheCity",
-            "value": "The Revolt has begun in the town."
-        },
-        {
-            "key": "riotInTheCitySuccess",
-            "value": ""
-        },
-        {
-            "key": "riotInTheCityWithDefence",
-            "value": ""
-        },
-
-        {
-            "key": "userAttackCity",
-            "value": "We are begining to attack {0}"
-        },
-        {
-            "key": "userCapturedCity",
-            "value": ""
-        },
-        {
-            "key": "userArmyFailedToCaptureCity",
-            "value": ""
-        },
-        {
-            "key": "enemyAttacksUserCity",
-            "value": ""
-        },
-        {
-            "key": "enemyCapturedUserCity",
-            "value": ""
-        },
-        {
-            "key": "chaosWarriorsBurnedCity",
-            "value": "Chaos Warriors have burned the town."
-        },
-
-        {
-            "key": "move",
-            "value": "Move"
-        },
-        {
-            "key": "attack",
-            "value": "Attack"
-        },
-        {
-            "key": "fastMove",
-            "value": "Fast Move"
-        },
-        {
-            "key": "hunt",
-            "value": "Hunt"
-        },
-        {
-            "key": "recruit",
-            "value": "Recruit"
-        },
-        {
-            "key": "camp",
-            "value": "Camp"
-        },
-        {
-            "key": "equipment",
-            "value": "Equipment"
-        },
-        {
-            "key": "action",
-            "value": "Action"
-        },
-        {
-            "key": "exit",
-            "value": "Exit"
-        },
-
-        {
-            "key": "ok",
-            "value": "Ok"
-        },
-        {
-            "key": "commands",
-            "value": "Commands"
-        },
-        {
-            "key": "inquiry",
-            "value": "Inquiry"
-        },
-        {
-            "key": "noInformation",
-            "value": "No informations"
-        },
-        {
-            "key": "informationsInOneDay",
-            "value": "Informations during 1 day"
-        },
-        {
-            "key": "informationsInXDays",
-            "value": "Informations during {0} days"
-        },
-        {
-            "key": "city",
-            "value": "City"
-        },
-        {
-            "key": "village",
-            "value": "Village"
-        },
-
-        {
-            "key": "peopleCount",
-            "value": "{0} people"
-        },
-        {
-            "key": "tax",
-            "value": "Tax"
-        },
-        {
-            "key": "morale",
-            "value": "Morale"
-        },
-
-        {
-            "key": "rebelious",
-            "value": "rebelious"
-        },
-        {
-            "key": "discontented",
-            "value": "discontented"
-        },
-        {
-            "key": "serf",
-            "value": "serf"
-        },
-        {
-            "key": "loyal",
-            "value": "loyal"
-        },
-        {
-            "key": "fanatics",
-            "value": "fanatics"
-        },
-        {
-            "key": "quiet",
-            "value": "quiet"
-        },
-        {
-            "key": "panic",
-            "value": "panic"
-        },
-        {
-            "key": "defence",
-            "value": "defence"
-        },
-        {
-            "key": "attack",
-            "value": "attack"
-        },
-        {
-            "key": "psycho",
-            "value": "psycho"
-        },
-
-        {
-            "key": "trace",
-            "value": "Trace"
-        },
-        {
-            "key": "oneWarrior",
-            "value": "1 warrior"
-        },
-        {
-            "key": "xWarriors",
-            "value": "{0} warriors"
-        },
-        {
-            "key": "foodForOneDay",
-            "value": "food for one day"
-        },
-        {
-            "key": "foodForXDays",
-            "value": "food for {0} days"
-        },
-        {
-            "key": "noMoreFood",
-            "value": "No more food !"
-        },
-        {
-            "key": "strength",
-            "value": "Strength"
-        },
-        {
-            "key": "speed",
-            "value": "Speed"
-        },
-        {
-            "key": "camping",
-            "value": "Army is camping"
-        },
-        {
-            "key": "moving",
-            "value": "Army is moving"
-        },
-        {
-            "key": "attackingX",
-            "value": "We're attacking {0}"
-        },
-        {
-            "key": "hunting",
-            "value": "Hunting"
-        },
-
-        {
-            "key": "mapOptions.title",
-            "value": "Day {0}  Money: {1}"
-        },
-        {
-            "key": "mapOptions.loadGame",
-            "value": "Load Game"
-        },
-        {
-            "key": "mapOptions.saveGame",
-            "value": "Save Game"
-        },
-        {
-            "key": "mapOptions.statistics",
-            "value": "Statistics"
-        },
-        {
-            "key": "mapOptions.options",
-            "value": "Options"
-        },
-        {
-            "key": "mapOptions.endGame",
-            "value": "End Game"
-        },
-        {
-            "key": "mapOptions.exit",
-            "value": "Exit"
-        },
-
-        {
-            "key": "gameStatistics.ok",
-            "value": "Ok"
-        },
-        {
-            "key": "gameStatistics.charts",
-            "value": "Charts"
-        },
-        {
-            "key": "gameStatistics.reportForDay",
-            "value": "Report for day: {0}"
-        },
-        {
-            "key": "gameStatistics.yourPossession",
-            "value": "In your possession: "
-        },
-        {
-            "key": "gameStatistics.legionAndWarriorsCount",
-            "value": "{0} legions, {1} warriors"
-        },
-        {
-            "key": "gameStatistics.citiesAndCitizensCount",
-            "value": "{0} cities, {1} citizens"
-        },
-        {
-            "key": "gameStatistics.dailyIncome",
-            "value": "Daily income: {0} "
-        },
-        {
-            "key": "gameStatistics.treasure",
-            "value": "Treasure: {0}"
-        },
-
-        {
-            "key": "characterInfo.energy",
-            "value": "Energy:"
-        },
-        {
-            "key": "characterInfo.strength",
-            "value": "Strength:"
-        },
-        {
-            "key": "characterInfo.speed",
-            "value": "Speed:"
-        },
-        {
-            "key": "characterInfo.resistance",
-            "value": "Resistance:"
-        },
-        {
-            "key": "characterInfo.magic",
-            "value": "Magic:"
-        },
-        {
-            "key": "characterInfo.weight",
-            "value": "Weight:"
-        },
-        {
-            "key": "characterInfo.experience",
-            "value": "Experience:"
-        }
-    ]
+        "characterInfo.energy": "Energy:",
+        "characterInfo.strength": "Strength:",
+        "characterInfo.speed": "Speed:",
+        "characterInfo.resistance": "Resistance:",
+        "characterInfo.magic": "Magic:",
+        "characterInfo.weight": "Weight:",
+        "characterInfo.experience": "Experience:"
+    }
 }
