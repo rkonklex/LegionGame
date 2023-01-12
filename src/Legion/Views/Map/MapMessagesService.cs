@@ -36,9 +36,11 @@ namespace Legion.Views.Map
             _dict.Add(MessageType.RiotInTheCity, "event.burnedCity");
             _dict.Add(MessageType.UserAttackCity, "event.burnedCity");
             _dict.Add(MessageType.UserCapturedCity, "event.burnedCity");
-            _dict.Add(MessageType.UserArmyFailedToCaptureCity, "event.burnedCity");
+            _dict.Add(MessageType.ArmyDestroyedCapturingCity, "event.burnedCity");
             _dict.Add(MessageType.EnemyAttacksUserCity, "event.burnedCity");
             _dict.Add(MessageType.EnemyCapturedUserCity, "event.burnedCity");
+            _dict.Add(MessageType.EnemyConqueredUserCity, "event.burnedCity");
+            _dict.Add(MessageType.EnemyConqueredCity, "event.burnedCity");
             _dict.Add(MessageType.RiotInTheCityLost, "event.burnedCity");
             _dict.Add(MessageType.RiotInTheCitySuccess, "event.burnedCity");
             _dict.Add(MessageType.RiotInTheCityWithDefence, "event.burnedCity");

@@ -34,7 +34,14 @@ namespace Legion.Model
         {
             if (!army.IsUserControlled && !targetArmy.IsUserControlled)
             {
-                SimulatedBattle(army, targetArmy);
+                var loser = SimulatedBattle(army, targetArmy);
+                if (loser.IsTracked)
+                {
+                    var message = new Message();
+                    message.Type = MessageType.ArmyDestroyed;
+                    message.MapObjects = new List<MapObject> { loser };
+                    _messagesService.ShowMessage(message);
+                }
             }
             else
             {
@@ -158,14 +165,23 @@ namespace Legion.Model
                     battleMessage.OnClose = () => { _viewSwitcher.OpenTerrain(battleContext); };
                     _messagesService.ShowMessage(battleMessage);
                 }
+                else
+                {
+                    // city was taken over without battle
+                    AfterAttackOnCity(army, city, null);
+                }
             }
         }
 
         private void AfterAttackOnCity(Army army, City city, Army cityArmy)
         {
             var oldPopulation = city.Population;
-            var populationAfterAttack = city.Population - oldPopulation / 4;
-            if (populationAfterAttack >= 20) city.Population = populationAfterAttack;
+            // city's population is reduced if there was a battle
+            if (cityArmy != null)
+            {
+                var populationAfterAttack = city.Population - oldPopulation / 4;
+                if (populationAfterAttack >= 20) city.Population = populationAfterAttack;
+            }
 
             if (cityArmy == null || cityArmy.IsKilled)
             {
@@ -186,7 +202,7 @@ namespace Legion.Model
                     var wasCityUserControlled = city.IsUserControlled;
                     city.Owner = army.Owner;
 
-                    if (wasCityUserControlled || army.IsUserControlled)
+                    if (wasCityUserControlled || army.IsUserControlled || army.IsTracked)
                     {
                         var capturedCityMessage = new Message();
                         capturedCityMessage.MapObjects = new List<MapObject> { city };
@@ -196,29 +212,37 @@ namespace Legion.Model
                             _citiesHelper.UpdatePriceModificators(city);
                             capturedCityMessage.Type = MessageType.UserCapturedCity;
                         }
-                        else
+                        else if (wasCityUserControlled)
                         {
-                            capturedCityMessage.Type = MessageType.EnemyCapturedUserCity;
+                            capturedCityMessage.Type = cityArmy switch
+                            {
+                                null => MessageType.EnemyCapturedUserCity,
+                                _ => MessageType.EnemyConqueredUserCity,
+                            };
+                        }
+                        else // army.IsTracked
+                        {
+                            capturedCityMessage.Type = MessageType.EnemyConqueredCity;
                         }
 
                         _messagesService.ShowMessage(capturedCityMessage);
                     }
                 }
             }
-            else
+            else if (army.IsKilled)
             {
                 if (army.IsTracked || army.IsUserControlled)
                 {
                     //TODO: CENTER[X1, Y1, 1]
                     var failedMessage = new Message();
-                    failedMessage.Type = MessageType.UserArmyFailedToCaptureCity;
-                    failedMessage.MapObjects = new List<MapObject> { army };
+                    failedMessage.Type = MessageType.ArmyDestroyedCapturingCity;
+                    failedMessage.MapObjects = new List<MapObject> { army, city };
                     _messagesService.ShowMessage(failedMessage);
                 }
             }
         }
 
-        public void SimulatedBattle(Army a, Army b)
+        public Army SimulatedBattle(Army a, Army b)
         {
             // //TODO: temporary things:
             // actionsManager.NextAction = new ActionInfo
@@ -257,13 +281,7 @@ namespace Legion.Model
             }
             winner.Characters.RemoveAll(m => m.IsKilled);
 
-            if (loser.IsTracked)
-            {
-                var message = new Message();
-                message.Type = MessageType.ArmyDestroyed;
-                message.MapObjects = new List<MapObject> { loser };
-                _messagesService.ShowMessage(message);
-            }
+            return loser;
         }
 
         public void Battle(Army a, Army b)

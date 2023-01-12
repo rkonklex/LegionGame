@@ -4,9 +4,11 @@ namespace Legion.Model.Types
     {
         UserAttackCity,
         UserCapturedCity,
-        UserArmyFailedToCaptureCity,
+        ArmyDestroyedCapturingCity,
         EnemyAttacksUserCity,
         EnemyCapturedUserCity,
+        EnemyConqueredUserCity,
+        EnemyConqueredCity,
         ChaosWarriorsBurnedCity,
 
         UserAttacksArmy,
