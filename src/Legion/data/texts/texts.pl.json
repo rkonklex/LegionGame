@@ -231,15 +231,22 @@
         "moving": "Oddział w ruchu",
         "hunting": "Tropimy zwierzynę",
 
+        "mapOptions.title": "Dzień {0}  Skarbiec:{1}",
         "mapOptions.loadGame": "Odczyt Gry",
         "mapOptions.saveGame": "Zapis Gry",
         "mapOptions.statistics": "Statystyka",
         "mapOptions.options": "Preferencje",
         "mapOptions.endGame": "Koniec Gry",
         "mapOptions.exit": "Exit",
+
         "gameStatistics.ok": "Ok",
         "gameStatistics.charts": "Wykresy",
-        "gameStatistics.yourPossession": "W twoim wladaniu: ",
+        "gameStatistics.reportForDay": "Raport na dzień: {0}",
+        "gameStatistics.yourPossession": "W twoim władaniu:",
+        "gameStatistics.legionAndWarriorsCount": "{0} legionów, {1} wojowników",
+        "gameStatistics.citiesAndCitizensCount": "{0} miast, {1} mieszkańców",
+        "gameStatistics.dailyIncome": "Dzienny dochód: {0}",
+        "gameStatistics.treasure": "W skarbcu: {0}",
 
         "characterInfo.energy": "Energia:",
         "characterInfo.strength": "Sila:",

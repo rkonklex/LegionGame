@@ -230,15 +230,22 @@
         "moving": "Army is moving",
         "hunting": "Hunting",
 
+        "mapOptions.title": "Day {0}  Treasury:{1}",
         "mapOptions.loadGame": "Load Game",
         "mapOptions.saveGame": "Save Game",
         "mapOptions.statistics": "Statistics",
         "mapOptions.options": "Options",
         "mapOptions.endGame": "End Game",
         "mapOptions.exit": "Exit",
+
         "gameStatistics.ok": "Ok",
         "gameStatistics.charts": "Charts",
-        "gameStatistics.yourPossession": "In your possession: ",
+        "gameStatistics.reportForDay": "Report for day: {0}",
+        "gameStatistics.yourPossession": "You rule:",
+        "gameStatistics.legionAndWarriorsCount": "{0} legions, {1} warriors",
+        "gameStatistics.citiesAndCitizensCount": "{0} towns, {1} inhabitants",
+        "gameStatistics.dailyIncome": "Daily income: {0}",
+        "gameStatistics.treasure": "Treasury: {0}",
 
         "characterInfo.energy": "Energy:",
         "characterInfo.strength": "Strength:",
