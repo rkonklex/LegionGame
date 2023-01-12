@@ -12,6 +12,7 @@ namespace Legion.Model.Repositories
             return new Character
             {
                 Type = type,
+                Name = NamesGenerator.Generate(),
                 Strength = GlobalUtils.Rand(10) + (type.Strength / 2),
                 Speed = GlobalUtils.Rand(10) + type.Speed,
                 Energy = (GlobalUtils.Rand(20) + type.Energy) * 3
