@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using Gui.Elements;
 using Gui.Services;
+using Legion.Localization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -11,6 +12,8 @@ namespace Legion.Views.Map.Controls
     {
         private const int DefaultWidth = 156;
         private const int DefaultHeight = 100;
+
+        private readonly ITexts _texts;
 
         protected Panel InnerPanel;
         protected Panel PricePanel;
@@ -23,8 +26,9 @@ namespace Legion.Views.Map.Controls
         protected Label Label2;
         protected Image image;
 
-        public BuyInformationWindow(IGuiServices guiServices) : base(guiServices)
+        public BuyInformationWindow(IGuiServices guiServices, ITexts texts) : base(guiServices)
         {
+            _texts = texts;
             CreateElements();
         }
 
@@ -68,9 +72,9 @@ namespace Legion.Views.Map.Controls
             PricePanel = new Panel(GuiServices);
             UpButton = new BrownButton(GuiServices, "+"); //TODO: up arrow
             DownButton = new BrownButton(GuiServices, "-"); //TODO: down arrow
-            OkButton = new BrownButton(GuiServices, "Ok"); // TODO: use translated texts here
+            OkButton = new BrownButton(GuiServices, _texts.Get("buyInfo.ok"));
             OkButton.Clicked += args => Closing?.Invoke(args);
-            CancelButton = new BrownButton(GuiServices, "Odwolac"); // TODO: use translated texts here
+            CancelButton = new BrownButton(GuiServices, _texts.Get("buyInfo.cancel"));
             CancelButton.Clicked += args => Closing?.Invoke(args);
 
             PriceLabel = new Label(GuiServices)
@@ -146,18 +150,18 @@ namespace Legion.Views.Map.Controls
         {
             if (Price <= 100)
             {
-                Text1 = "ladna mamy dzis ";
-                Text2 = "pogode.";
+                Text1 = _texts.Get("buyInfo.niceWeather1");
+                Text2 = _texts.Get("buyInfo.niceWeather2");
                 if (Price == 0)
                 {
-                    Text1 = "Za informacje trzeba";
-                    Text2 = "zaplacic.";
+                    Text1 = _texts.Get("buyInfo.haveToPayForInfo1");
+                    Text2 = _texts.Get("buyInfo.haveToPayForInfo2");
                 }
             }
             else
             {
-                Text1 = "Za " + Days + " dni";
-                Text2 = "bede cos wiedzial.";
+                Text1 = _texts.Get("buyInfo.somethingInXDays1", Days);
+                Text2 = _texts.Get("buyInfo.somethingInXDays2", Days);
             }
         }
     }
