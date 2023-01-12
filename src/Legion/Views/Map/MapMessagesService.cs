@@ -58,7 +58,8 @@ namespace Legion.Views.Map
                 args[i] = message.MapObjects[i + 1].Name;
             }
 
-            var text = _texts.Get(message.Type.ToString(), args);
+            var messageKey = "message." + message.Type.ToString();
+            var text = _texts.Get(messageKey, args);
             var title = message.MapObjects[0].Name;
             var imageType = _dict[message.Type];
             var image = _guiServices.ImagesStore.GetImage(imageType);

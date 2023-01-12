@@ -62,7 +62,7 @@ namespace Legion.Model
                     targetArmy.DaysToGetInfo = 0;
 
                     battleMessage.Type = MessageType.UserAttacksArmy;
-                    battleMessage.MapObjects = new List<MapObject> { targetArmy };
+                    battleMessage.MapObjects = new List<MapObject> { army, targetArmy };
                 }
                 else
                 {
@@ -72,7 +72,7 @@ namespace Legion.Model
                     army.DaysToGetInfo = 0;
 
                     battleMessage.Type = MessageType.EnemyAttacksUserArmy;
-                    battleMessage.MapObjects = new List<MapObject> { army };
+                    battleMessage.MapObjects = new List<MapObject> { army, targetArmy };
                 }
 
                 battleContext.ActionAfter = () =>
@@ -147,7 +147,7 @@ namespace Legion.Model
                         battleContext.EnemyArmy = army;
 
                         battleMessage.Type = MessageType.EnemyAttacksUserCity;
-                        battleMessage.MapObjects = new List<MapObject> { city, army };
+                        battleMessage.MapObjects = new List<MapObject> { army, city };
                     }
                     if (army.IsUserControlled)
                     {
@@ -159,7 +159,7 @@ namespace Legion.Model
                         if (city.Owner != null) { city.Owner.UpdateWar(army.Owner, days); }
 
                         battleMessage.Type = MessageType.UserAttackCity;
-                        battleMessage.MapObjects = new List<MapObject> { city, army };
+                        battleMessage.MapObjects = new List<MapObject> { army, city };
                     }
 
                     battleMessage.OnClose = () => { _viewSwitcher.OpenTerrain(battleContext); };
@@ -205,7 +205,7 @@ namespace Legion.Model
                     if (wasCityUserControlled || army.IsUserControlled || army.IsTracked)
                     {
                         var capturedCityMessage = new Message();
-                        capturedCityMessage.MapObjects = new List<MapObject> { city };
+                        capturedCityMessage.MapObjects = new List<MapObject> { army, city };
 
                         if (army.IsUserControlled)
                         {
