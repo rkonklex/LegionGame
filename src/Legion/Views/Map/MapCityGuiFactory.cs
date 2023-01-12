@@ -56,25 +56,25 @@ namespace Legion.Views.Map
 
             window.Image = _cityWindowImages[city.WallType];
 
-            window.ButtonOkText = _texts.Get("ok");
+            window.ButtonOkText = _texts.Get("infoWindow.ok");
             if (city.Owner != null && city.Owner.IsUserControlled)
             {
-                window.ButtonMoreText = _texts.Get("commands");
+                window.ButtonMoreText = _texts.Get("infoWindow.commands");
                 hasData = true;
             }
             else
             {
-                window.ButtonMoreText = _texts.Get("interview");
+                window.ButtonMoreText = _texts.Get("infoWindow.inquiry");
                 if (city.DaysToGetInfo > 25)
                 {
                     hasData = false;
-                    infoText = _texts.Get("noInformation");
+                    infoText = _texts.Get("infoWindow.noInformation");
                 }
                 else
                 {
                     infoText = city.DaysToGetInfo > 1 ?
-                        _texts.Get("informationsInXDays", city.DaysToGetInfo) :
-                        _texts.Get("informationsInOneDay");
+                        _texts.Get("infoWindow.informationsInXDays", city.DaysToGetInfo) :
+                        _texts.Get("infoWindow.informationsInOneDay");
                     hasData = false;
                 }
                 if (city.DaysToGetInfo == 0)
@@ -86,11 +86,11 @@ namespace Legion.Views.Map
 
             if (city.Population > 700)
             {
-                window.NameText = _texts.Get("city") + " " + city.Name;
+                window.NameText = _texts.Get("cityInfo.city", city.Name);
             }
             else
             {
-                window.NameText = _texts.Get("village") + " " + city.Name;
+                window.NameText = _texts.Get("cityInfo.village", city.Name);
             }
 
             if (!hasData && !_legionConfig.GoDmOdE)
@@ -99,8 +99,8 @@ namespace Legion.Views.Map
             }
             else
             {
-                window.CountText = _texts.Get("peopleCount", city.Population);
-                window.TaxText = _texts.Get("tax") + ": " + city.Tax;
+                window.CountText = _texts.Get("cityInfo.peopleCount", city.Population);
+                window.TaxText = _texts.Get("cityInfo.tax", city.Tax);
 
                 var morale2 = city.Morale / 20;
                 if (morale2 > 4) morale2 = 4;
@@ -113,7 +113,7 @@ namespace Legion.Views.Map
                     "cityMorale.fanatics",
                 };
                 //Text OKX + 50,OKY + 45,"Morale :" + GUL$(MORALE2)
-                window.MoraleText = _texts.Get("morale") + ": " + _texts.Get(moraleTexts[morale2]);
+                window.MoraleText = _texts.Get("cityInfo.morale", _texts.Get(moraleTexts[morale2]));
 
                 var buildings = new List<string>();
                 foreach (var name in city.Buildings.Where(b => b.Type.Type == BuildingType.Shop).Select(b => b.Type.Name))

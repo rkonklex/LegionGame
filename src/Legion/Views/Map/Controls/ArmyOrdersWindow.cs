@@ -16,21 +16,21 @@ namespace Legion.Views.Map.Controls
             var dict = new Dictionary<string, Action<HandledEventArgs>>
             {
                 {
-                    texts.Get("move"), args =>
+                    texts.Get("armyMenu.move"), args =>
                     {
                         MoveClicked?.Invoke(args);
                         Closing?.Invoke(args);
                     }
                 },
                 {
-                    texts.Get("fastMove"), args =>
+                    texts.Get("armyMenu.fastMove"), args =>
                     {
                         FastMoveClicked?.Invoke(args);
                         Closing?.Invoke(args);
                     }
                 },
                 {
-                    texts.Get("attack"), args =>
+                    texts.Get("armyMenu.attack"), args =>
                     {
                         AttackClicked?.Invoke(args);
                         Closing?.Invoke(args);
@@ -40,7 +40,7 @@ namespace Legion.Views.Map.Controls
 
             if (isRecruitButtonVisible)
             {
-                dict.Add(texts.Get("recruit"), args =>
+                dict.Add(texts.Get("armyMenu.recruit"), args =>
                 {
                     RecruitClicked?.Invoke(args);
                     Closing?.Invoke(args);
@@ -48,20 +48,20 @@ namespace Legion.Views.Map.Controls
             }
             else
             {
-                dict.Add(texts.Get("hunt"), args =>
+                dict.Add(texts.Get("armyMenu.hunt"), args =>
                 {
                     HuntClicked?.Invoke(args);
                     Closing?.Invoke(args);
                 });
             }
 
-            dict.Add(texts.Get("camp"), args =>
+            dict.Add(texts.Get("armyMenu.camp"), args =>
             {
                 CampClicked?.Invoke(args);
                 Closing?.Invoke(args);
             });
 
-            dict.Add(texts.Get("equipment"), args =>
+            dict.Add(texts.Get("armyMenu.equipment"), args =>
             {
                 EquipmentClicked?.Invoke(args);
                 Closing?.Invoke(args);
@@ -69,14 +69,14 @@ namespace Legion.Views.Map.Controls
 
             if (isTerrainActionButtonVisible)
             {
-                dict.Add(texts.Get("action"), args =>
+                dict.Add(texts.Get("armyMenu.action"), args =>
                 {
                     ActionClicked?.Invoke(args);
                     Closing?.Invoke(args);
                 });
             }
 
-            dict.Add(texts.Get("exit"), args =>
+            dict.Add(texts.Get("armyMenu.exit"), args =>
             {
                 ExitClicked?.Invoke(args);
                 Closing?.Invoke(args);

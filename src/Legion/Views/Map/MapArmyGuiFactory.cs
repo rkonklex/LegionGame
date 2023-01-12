@@ -53,31 +53,31 @@ namespace Legion.Views.Map
             window.NameText = army.Name;
             window.Image = _armyWindowImages[army.Owner.Id - 1];
 
-            window.ButtonOkText = _texts.Get("ok");
+            window.ButtonOkText = _texts.Get("infoWindow.ok");
             if (army.Owner.IsUserControlled)
             {
-                window.ButtonMoreText = _texts.Get("commands");
+                window.ButtonMoreText = _texts.Get("infoWindow.commands");
                 hasData = true;
             }
             else
             {
-                window.ButtonMoreText = _texts.Get("interview");
+                window.ButtonMoreText = _texts.Get("infoWindow.inquiry");
                 if (army.DaysToGetInfo > 28 && army.DaysToGetInfo < 100)
                 {
                     hasData = false;
-                    infoText = _texts.Get("noInformation");
+                    infoText = _texts.Get("infoWindow.noInformation");
                 }
                 else
                 {
                     infoText = army.DaysToGetInfo > 1 ?
-                        _texts.Get("informationsInXDays", army.DaysToGetInfo) :
-                        _texts.Get("informationsInOneDay");
+                        _texts.Get("infoWindow.informationsInXDays", army.DaysToGetInfo) :
+                        _texts.Get("infoWindow.informationsInOneDay");
                     hasData = false;
                 }
                 if (army.DaysToGetInfo == 0 || army.DaysToGetInfo == 100)
                 {
                     hasData = true;
-                    window.ButtonMoreText = _texts.Get("trace");
+                    window.ButtonMoreText = _texts.Get("infoWindow.trace");
                 }
             }
 
@@ -89,22 +89,22 @@ namespace Legion.Views.Map
             {
                 var count = army.Characters.Count;
                 window.CountText = count == 1 ?
-                    _texts.Get("oneWarrior") :
-                    _texts.Get("xWarriors", count);
+                    _texts.Get("armyInfo.oneWarrior") :
+                    _texts.Get("armyInfo.xWarriors", count);
 
                 int foodCount = army.Food / army.Characters.Count;
-                if (foodCount > 1) window.FoodText = _texts.Get("foodForXDays", foodCount);
-                else if (foodCount == 1) window.FoodText = _texts.Get("foodForOneDay");
-                else window.FoodText = _texts.Get("noMoreFood");
+                if (foodCount > 1) window.FoodText = _texts.Get("armyInfo.foodForXDays", foodCount);
+                else if (foodCount == 1) window.FoodText = _texts.Get("armyInfo.foodForOneDay");
+                else window.FoodText = _texts.Get("armyInfo.noMoreFood");
 
-                window.StrengthText = _texts.Get("strength") + ": " + army.Strength;
-                window.SpeedText = _texts.Get("speed") + ": " + army.Speed;
+                window.StrengthText = _texts.Get("armyInfo.strength", army.Strength);
+                window.SpeedText = _texts.Get("armyInfo.speed", army.Speed);
 
                 window.ActionText = "";
                 switch (army.CurrentAction)
                 {
                     case ArmyActions.Camping:
-                        window.ActionText = _texts.Get("camping");
+                        window.ActionText = _texts.Get("armyInfo.camping");
                         /* TODO:
                          If TEREN>69
                             RO$=RO$+" w "+MIASTA$(TEREN-70)
@@ -113,10 +113,10 @@ namespace Legion.Views.Map
                         break;
                     case ArmyActions.Move:
                     case ArmyActions.FastMove:
-                        window.ActionText = _texts.Get("moving");
+                        window.ActionText = _texts.Get("armyInfo.moving");
                         break;
                     case ArmyActions.Attack:
-                        window.ActionText = _texts.Get("attackingX", army.Target.Name);
+                        window.ActionText = _texts.Get("armyInfo.attackingX", army.Target.Name);
                         /* TODO:
                          If CELY=0
                             R2$=ARMIA$(CELX,0)
@@ -127,7 +127,7 @@ namespace Legion.Views.Map
                         */
                         break;
                     case ArmyActions.Hunting:
-                        window.ActionText = _texts.Get("hunting");
+                        window.ActionText = _texts.Get("armyInfo.hunting");
                         break;
                 }
             }

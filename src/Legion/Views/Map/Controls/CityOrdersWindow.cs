@@ -14,35 +14,35 @@ namespace Legion.Views.Map.Controls
             ButtonNames = new Dictionary<string, Action<HandledEventArgs>>
             {
                 {
-                    "Podatki", args =>
+                    texts.Get("cityMenu.taxes"), args =>
                     {
                         TaxesClicked?.Invoke(args);
                         Closing?.Invoke(args);
                     }
                 },
                 {
-                    "Nowy Legion", args =>
+                    texts.Get("cityMenu.newLegion"), args =>
                     {
                         NewLegionClicked?.Invoke(args);
                         Closing?.Invoke(args);
                     }
                 },
                 {
-                    "Rozbudowa", args =>
+                    texts.Get("cityMenu.newBuildings"), args =>
                     {
                         BuildClicked?.Invoke(args);
                         Closing?.Invoke(args);
                     }
                 },
                 {
-                    "Budowa Murow", args =>
+                    texts.Get("cityMenu.buildWalls"), args =>
                     {
                         WallsBuildClicked?.Invoke(args);
                         Closing?.Invoke(args);
                     }
                 },
                 {
-                    texts.Get("exit"), args =>
+                    texts.Get("cityMenu.exit"), args =>
                     {
                         ExitClicked?.Invoke(args);
                         Closing?.Invoke(args);
