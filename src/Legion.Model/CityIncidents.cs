@@ -10,21 +10,24 @@ namespace Legion.Model
     {
         private readonly IArmiesRepository _armiesRepository;
         private readonly ICharactersRepository _charactersRepository;
-        private readonly IDefinitionsRepository _definitionsRepository;
+        private readonly IRaceDefinitionsRepository _raceDefinitionsRepository;
+        private readonly ILegionInfo _legionInfo;
         private readonly IArmiesHelper _armiesHelper;
         private readonly IMessagesService _messagesService;
         private readonly IViewSwitcher _viewSwitcher;
 
         public CityIncidents(IArmiesRepository armiesRepository,
             ICharactersRepository charactersRepository,
-            IDefinitionsRepository definitionsRepository,
+            IRaceDefinitionsRepository raceDefinitionsRepository,
+            ILegionInfo legionInfo,
             IArmiesHelper armiesHelper,
             IMessagesService messagesService,
             IViewSwitcher viewSwitcher)
         {
             _armiesRepository = armiesRepository;
             _charactersRepository = charactersRepository;
-            _definitionsRepository = definitionsRepository;
+            _raceDefinitionsRepository = raceDefinitionsRepository;
+            _legionInfo = legionInfo;
             _armiesHelper = armiesHelper;
             _messagesService = messagesService;
             _viewSwitcher = viewSwitcher;
@@ -87,11 +90,11 @@ namespace Legion.Model
             if (count > 10) count = 10;
             count -= villagersCount;
 
-            var rebelArmy = _armiesRepository.CreateTempArmy(count);
+            var rebelArmy = _armiesRepository.CreateTempArmy(count, _legionInfo.Power);
             //'wieśniacy wśród buntowników 
             for (var i = 0; i < villagersCount; i++)
             {
-                var villager = _charactersRepository.CreateCharacter(_definitionsRepository.Races.Find(c => c.Name == "villager"));
+                var villager = _charactersRepository.CreateNpc(_raceDefinitionsRepository.Villager, _legionInfo.Power);
                 rebelArmy.Characters.Add(villager);
             }
 

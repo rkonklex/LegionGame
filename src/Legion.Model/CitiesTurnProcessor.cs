@@ -10,16 +10,19 @@ namespace Legion.Model
         private readonly ICitiesRepository _citiesRepository;
         private readonly IArmiesRepository _armiesRepository;
         private readonly ICityIncidents _cityIncidents;
+        private readonly ILegionInfo _legionInfo;
 
         private int _currentTurnCityIdx = -1;
 
         public CitiesTurnProcessor(ICitiesRepository citiesRepository,
             IArmiesRepository armiesRepository,
-            ICityIncidents cityIncidents)
+            ICityIncidents cityIncidents,
+            ILegionInfo legionInfo)
         {
             _citiesRepository = citiesRepository;
             _armiesRepository = armiesRepository;
             _cityIncidents = cityIncidents;
+            _legionInfo = legionInfo;
         }
 
         public bool IsProcessingTurn => _currentTurnCityIdx >= 0;
@@ -120,7 +123,7 @@ namespace Legion.Model
                     // TODO: set upper limit for player's legion count // For I=20 To 39
                     city.Owner.Money -= 10000;
                     city.DaysToSetNewRecruiters = 20 + GlobalUtils.Rand(10);
-                    var army = _armiesRepository.CreateArmy(city.Owner, 10);
+                    var army = _armiesRepository.CreateNpcArmy(city.Owner, 10, _legionInfo.Power);
                     army.X = city.X;
                     army.Y = city.Y;
                 }

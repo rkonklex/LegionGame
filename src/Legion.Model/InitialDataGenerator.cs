@@ -68,13 +68,13 @@ namespace Legion.Model
 
                 for (var k = 0; k < NumArmiesPerRival; k++)
                 {
-                    var army = _armiesRepository.CreateArmy(owner, 10);
+                    var army = _armiesRepository.CreateNpcArmy(owner, 10, _legionInfo.Power);
                     army.X = xg + GlobalUtils.Rand(200) - 100;
                     army.Y = yg + GlobalUtils.Rand(200) - 100;
                 }
             }
 
-            var ownArmy = _armiesRepository.CreateArmy(_playersRepository.UserPlayer, 5);
+            var ownArmy = _armiesRepository.CreateUserArmy(_playersRepository.UserPlayer, 5);
             ownArmy.X = GlobalUtils.Rand(_legionConfig.WorldWidth) + 20;
             ownArmy.Y = GlobalUtils.Rand(_legionConfig.WorldHeight) + 10;
             ownArmy.Food = 100;

@@ -5,6 +5,7 @@ namespace Legion.Model.Repositories
 {
     public interface ICharactersRepository
     {
-         Character CreateCharacter(CharacterDefinition type);
+        Character CreateWarrior(RaceDefinition type);
+        Character CreateNpc(CharacterDefinition type, int power);
     }
 }

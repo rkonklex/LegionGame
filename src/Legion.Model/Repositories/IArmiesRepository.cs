@@ -7,8 +7,9 @@ namespace Legion.Model.Repositories
     public interface IArmiesRepository
     {
         List<Army> Armies { get; }
-        Army CreateArmy(Player owner, int charactersCount, CharacterDefinition charactersType = null);
-        Army CreateTempArmy(int charactersCount, CharacterDefinition charactersType = null);
+        Army CreateUserArmy(Player owner, int charactersCount);
+        Army CreateNpcArmy(Player owner, int charactersCount, int power, CharacterDefinition charactersType = null);
+        Army CreateTempArmy(int charactersCount, int power, CharacterDefinition charactersType = null);
         Army CreateTempArmyForHunt(TerrainType terrainType);
         void KillArmy(Army army);
     }

@@ -121,7 +121,8 @@ namespace Legion.Model
                 var defendersCount = (city.Population / 70) + 1;
                 if (defendersCount > 10) defendersCount = 10;
 
-                cityArmy = _armiesRepository.CreateTempArmy(defendersCount);
+                var defencePower = (city.Morale / 3) + 10;
+                cityArmy = _armiesRepository.CreateTempArmy(defendersCount, defencePower);
             }
 
             if (!army.IsUserControlled && !city.IsUserControlled)

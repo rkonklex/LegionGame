@@ -26,39 +26,18 @@ namespace Legion.Model.Repositories
 
         public List<Army> Armies { get; private set; }
 
-        public Army CreateArmy(Player owner, int charactersCount, CharacterDefinition charactersType = null)
+        public Army CreateUserArmy(Player owner, int charactersCount)
         {
             var army = new Army();
+            var armyId = FindNewArmyId(army.Owner);
             army.Owner = owner;
-
-            if (army.Owner != null)
-            {
-                var armyId = Armies.Count(a => a.Owner == army.Owner) + 1;
-
-                if (army.Owner.IsUserControlled)
-                {
-                    army.Name = "Legion " + armyId;
-                }
-                else if (army.Owner.IsChaosControlled)
-                {
-                    army.Name = "Wojownicy Chaosu";
-                    army.DaysToGetInfo = 30;
-                }
-                else
-                {
-                    var postfix = army.Owner.Name.EndsWith("I", StringComparison.OrdinalIgnoreCase) ? "ego" : "a";
-                    army.Name = armyId + " Legion " + army.Owner.Name + postfix;
-                    army.DaysToGetInfo = 30;
-                    //army.Aggression = 150 + Rand.Next(50) + dataManager.Power;
-                }
-            }
-
+            army.Name = "Legion " + armyId;
             army.Food = GlobalUtils.Rand(200);
 
             for (var i = 0; i < charactersCount; i++)
             {
-                var type = charactersType ?? _raceDefinitionsRepository.GetRandomWarrior();
-                var character = _charactersRepository.CreateCharacter(type);
+                var type = _raceDefinitionsRepository.GetRandomWarrior();
+                var character = _charactersRepository.CreateWarrior(type);
                 army.Characters.Add(character);
             }
 
@@ -67,14 +46,49 @@ namespace Legion.Model.Repositories
             return army;
         }
 
-        public Army CreateTempArmy(int charactersCount, CharacterDefinition charactersType = null)
+        public Army CreateNpcArmy(Player owner, int charactersCount, int power, CharacterDefinition charactersType = null)
+        {
+            var army = new Army();
+            var armyId = FindNewArmyId(army.Owner);
+            army.Owner = owner;
+            army.DaysToGetInfo = 30;
+
+            if (army.IsChaosControlled)
+            {
+                army.Name = "Wojownicy Chaosu";
+            }
+            else
+            {
+                var postfix = army.Owner.Name.EndsWith("I", StringComparison.OrdinalIgnoreCase) ? "ego" : "a";
+                army.Name = armyId + " Legion " + army.Owner.Name + postfix;
+                //army.Aggression = 150 + Rand.Next(50) + dataManager.Power;
+            }
+
+            for (var i = 0; i < charactersCount; i++)
+            {
+                var type = charactersType ?? _raceDefinitionsRepository.GetRandomWarrior();
+                var character = _charactersRepository.CreateNpc(type, power);
+                army.Characters.Add(character);
+            }
+
+            Armies.Add(army);
+
+            return army;
+        }
+
+        private int FindNewArmyId(Player owner)
+        {
+            return Armies.Count(a => a.Owner == owner) + 1;
+        }
+
+        public Army CreateTempArmy(int charactersCount, int power, CharacterDefinition charactersType = null)
         {
             var army = new Army();
 
             for (var i = 0; i < charactersCount; i++)
             {
                 var type = charactersType ?? _raceDefinitionsRepository.GetRandomWarrior();
-                var character = _charactersRepository.CreateCharacter(type);
+                var character = _charactersRepository.CreateNpc(type, power);
                 army.Characters.Add(character);
             }
 
@@ -115,7 +129,7 @@ namespace Legion.Model.Repositories
             }
 
             var creatureCount = GlobalUtils.Rand(creatureCountRoll) + 1;
-            var creatureArmy = CreateTempArmy(creatureCount, creatureType);
+            var creatureArmy = CreateTempArmy(creatureCount, 0, creatureType);
             return creatureArmy;
         }
 
