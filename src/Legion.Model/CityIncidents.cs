@@ -9,24 +9,21 @@ namespace Legion.Model
     public class CityIncidents : ICityIncidents
     {
         private readonly IArmiesRepository _armiesRepository;
-        private readonly ICharactersRepository _charactersRepository;
-        private readonly IRaceDefinitionsRepository _raceDefinitionsRepository;
+        private readonly ICharacterDefinitionsRepository _characterDefinitionsRepository;
         private readonly ILegionInfo _legionInfo;
         private readonly IArmiesHelper _armiesHelper;
         private readonly IMessagesService _messagesService;
         private readonly IViewSwitcher _viewSwitcher;
 
         public CityIncidents(IArmiesRepository armiesRepository,
-            ICharactersRepository charactersRepository,
-            IRaceDefinitionsRepository raceDefinitionsRepository,
+            ICharacterDefinitionsRepository characterDefinitionsRepository,
             ILegionInfo legionInfo,
             IArmiesHelper armiesHelper,
             IMessagesService messagesService,
             IViewSwitcher viewSwitcher)
         {
             _armiesRepository = armiesRepository;
-            _charactersRepository = charactersRepository;
-            _raceDefinitionsRepository = raceDefinitionsRepository;
+            _characterDefinitionsRepository = characterDefinitionsRepository;
             _legionInfo = legionInfo;
             _armiesHelper = armiesHelper;
             _messagesService = messagesService;
@@ -94,7 +91,7 @@ namespace Legion.Model
             //'wieśniacy wśród buntowników 
             for (var i = 0; i < villagersCount; i++)
             {
-                _armiesRepository.AddNpc(rebelArmy, _legionInfo.Power, _raceDefinitionsRepository.Villager);
+                _armiesRepository.AddNpc(rebelArmy, _legionInfo.Power, _characterDefinitionsRepository.Villager);
             }
 
             //TODO: BITWA[_ATAK,40,1,1,0,1,1,1,TEREN,M]

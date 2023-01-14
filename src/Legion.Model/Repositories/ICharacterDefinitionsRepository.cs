@@ -3,9 +3,11 @@ using Legion.Model.Types.Definitions;
 
 namespace Legion.Model.Repositories
 {
-    public interface ICreatureDefinitionsRepository
+    public interface ICharacterDefinitionsRepository
     {
         List<CreatureDefinition> AllCreatures { get; }
+        List<RaceDefinition> AllRaces { get; }
+        List<RaceDefinition> AllWarriorRaces { get; }
 
         CreatureDefinition Gargoyle { get; }
         CreatureDefinition Skeleton { get; }
@@ -17,5 +19,18 @@ namespace Legion.Model.Repositories
         CreatureDefinition Humanoid { get; }
         CreatureDefinition Spider { get; }
         CreatureDefinition Boss { get; }
+
+        RaceDefinition Amazonian { get; }
+        RaceDefinition Barbarian { get; }
+        RaceDefinition Dwarf { get; }
+        RaceDefinition Elf { get; }
+        RaceDefinition Knight { get; }
+        RaceDefinition Ogre { get; }
+        RaceDefinition Orc { get; }
+        RaceDefinition Sorcerer { get; }
+        RaceDefinition Troll { get; }
+        RaceDefinition Villager { get; }
+
+        RaceDefinition GetRandomWarrior();
     }
 }

@@ -34,8 +34,7 @@ namespace Legion
             builder.RegisterType<Texts>().As<ITexts>().SingleInstance();
 
             builder.RegisterType<DefinitionsRepository>().As<IDefinitionsRepository>().SingleInstance();
-            builder.RegisterType<CreatureDefinitionsRepository>().As<ICreatureDefinitionsRepository>().SingleInstance();
-            builder.RegisterType<RaceDefinitionsRepository>().As<IRaceDefinitionsRepository>().SingleInstance();
+            builder.RegisterType<CharacterDefinitionsRepository>().As<ICharacterDefinitionsRepository>().SingleInstance();
             builder.RegisterType<AdventuresRepository>().As<IAdventuresRepository>().SingleInstance();
             builder.RegisterType<ArmiesRepository>().As<IArmiesRepository>().SingleInstance();
             builder.RegisterType<CharactersRepository>().As<ICharactersRepository>().SingleInstance();

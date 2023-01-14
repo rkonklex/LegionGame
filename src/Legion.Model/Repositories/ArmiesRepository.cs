@@ -9,16 +9,13 @@ namespace Legion.Model.Repositories
 {
     public class ArmiesRepository : IArmiesRepository
     {
-        private readonly IRaceDefinitionsRepository _raceDefinitionsRepository;
-        private readonly ICreatureDefinitionsRepository _creatureDefinitionsRepository;
+        private readonly ICharacterDefinitionsRepository _characterDefinitionsRepository;
         private readonly ICharactersRepository _charactersRepository;
 
-        public ArmiesRepository(IRaceDefinitionsRepository raceDefinitionsRepository,
-            ICreatureDefinitionsRepository creatureDefinitionsRepository,
+        public ArmiesRepository(ICharacterDefinitionsRepository characterDefinitionsRepository,
             ICharactersRepository charactersRepository)
         {
-            _raceDefinitionsRepository = raceDefinitionsRepository;
-            _creatureDefinitionsRepository = creatureDefinitionsRepository;
+            _characterDefinitionsRepository = characterDefinitionsRepository;
             _charactersRepository = charactersRepository;
 
             Armies = new List<Army>();
@@ -96,28 +93,28 @@ namespace Legion.Model.Repositories
 
             if (terrainType == TerrainType.Swamp)
             {
-                creatureType = _creatureDefinitionsRepository.Gloom;
+                creatureType = _characterDefinitionsRepository.Gloom;
             }
             else
             {
                 switch (GlobalUtils.Rand(13))
                 {
                     case < 5:
-                        creatureType = _creatureDefinitionsRepository.Hog;
+                        creatureType = _characterDefinitionsRepository.Hog;
                         break;
                     case > 4 and < 8:
-                        creatureType = _creatureDefinitionsRepository.Wolf;
+                        creatureType = _characterDefinitionsRepository.Wolf;
                         break;
                     case 8 or 9:
-                        creatureType = _creatureDefinitionsRepository.Gargoyle;
+                        creatureType = _characterDefinitionsRepository.Gargoyle;
                         creatureCountRoll = 3;
                         break;
                     case 10:
-                        creatureType = _creatureDefinitionsRepository.Skeerial;
+                        creatureType = _characterDefinitionsRepository.Skeerial;
                         creatureCountRoll = 5;
                         break;
                     case > 10:
-                        creatureType = _creatureDefinitionsRepository.Varpoon;
+                        creatureType = _characterDefinitionsRepository.Varpoon;
                         break;
                 }
             }
@@ -129,7 +126,7 @@ namespace Legion.Model.Repositories
 
         public Character AddWarrior(Army army, RaceDefinition charactersType = null)
         {
-            var type = charactersType ?? _raceDefinitionsRepository.GetRandomWarrior();
+            var type = charactersType ?? _characterDefinitionsRepository.GetRandomWarrior();
             var character = _charactersRepository.CreateWarrior(type);
             army.Characters.Add(character);
             return character;
@@ -137,7 +134,7 @@ namespace Legion.Model.Repositories
 
         public Character AddNpc(Army army, int power, CharacterDefinition charactersType = null)
         {
-            var type = charactersType ?? _raceDefinitionsRepository.GetRandomWarrior();
+            var type = charactersType ?? _characterDefinitionsRepository.GetRandomWarrior();
             var character = _charactersRepository.CreateNpc(type, power);
             army.Characters.Add(character);
             return character;
