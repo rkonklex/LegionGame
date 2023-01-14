@@ -186,20 +186,68 @@
             "images": [ "glowny.29" ]
         },
         {
-            "name": "event.epidemy",
+            "name": "event.epidemyInTheCity",
             "images": [ "mapa.28" ]
         },
         {
-            "name": "event.rats",
+            "name": "event.ratsInTheCity",
             "images": [ "mapa.29" ]
         },
         {
-            "name": "event.fire",
+            "name": "event.fireInTheCity",
             "images": [ "mapa.31" ]
         },
         {
-            "name": "event.burnedCity",
+            "name": "event.chaosWarriorsBurnedCity",
             "images": [ "mapa.31" ]
+        },
+        {
+            "name": "event.enemyConqueredCity",
+            "images": [ "mapa.31" ]
+        },
+        {
+            "name": "event.enemyConqueredUserCity",
+            "images": [ "mapa.29" ]
+        },
+        {
+            "name": "event.userCapturedCity",
+            "images": [ "mapa.29" ]
+        },
+        {
+            "name": "event.armyDestroyed",
+            "images": [ "mapa.32" ]
+        },
+        {
+            "name": "event.armyDestroyedCapturingCity",
+            "images": [ "mapa.32" ]
+        },
+        {
+            "name": "event.armyEncounteredRabidWolves",
+            "images": [ "mapa.33" ]
+        },
+        {
+            "name": "event.armyEncounteredBandits",
+            "images": [ "mapa.30" ]
+        },
+        {
+            "name": "event.armyStuckInSwamp",
+            "images": [ "mapa.33" ]
+        },
+        {
+            "name": "event.armyEncounteredForestTrolls",
+            "images": [ "mapa.30" ]
+        },
+        {
+            "name": "event.armyEncounteredGargoyl",
+            "images": [ "mapa.33" ]
+        },
+        {
+            "name": "event.armyEncounteredLoneKnight",
+            "images": [ "mapa.33" ]
+        },
+        {
+            "name": "event.armyEncounteredCaveEntrance",
+            "images": [ "mapa.33" ]
         },
         {
             "name": "equipment.background",

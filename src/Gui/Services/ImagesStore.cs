@@ -30,7 +30,7 @@ namespace Gui.Services
 
         public ImagesStore()
         {
-            _data = new Dictionary<string, List<Texture2D>>();
+            _data = new Dictionary<string, List<Texture2D>>(StringComparer.OrdinalIgnoreCase);
 
             var jsonData = File.ReadAllText(FilePath);
             _images = JsonConvert.DeserializeObject<Images>(jsonData);
