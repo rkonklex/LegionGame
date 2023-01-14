@@ -86,44 +86,6 @@ namespace Legion.Model.Repositories
             return army;
         }
 
-        public Army CreateTempArmyForHunt(TerrainType terrainType)
-        {
-            int creatureCountRoll = 9;
-            CreatureDefinition creatureType;
-
-            if (terrainType == TerrainType.Swamp)
-            {
-                creatureType = _characterDefinitionsRepository.Gloom;
-            }
-            else
-            {
-                switch (GlobalUtils.Rand(13))
-                {
-                    case < 5:
-                        creatureType = _characterDefinitionsRepository.Hog;
-                        break;
-                    case > 4 and < 8:
-                        creatureType = _characterDefinitionsRepository.Wolf;
-                        break;
-                    case 8 or 9:
-                        creatureType = _characterDefinitionsRepository.Gargoyle;
-                        creatureCountRoll = 3;
-                        break;
-                    case 10:
-                        creatureType = _characterDefinitionsRepository.Skeerial;
-                        creatureCountRoll = 5;
-                        break;
-                    case > 10:
-                        creatureType = _characterDefinitionsRepository.Varpoon;
-                        break;
-                }
-            }
-
-            var creatureCount = GlobalUtils.Rand(creatureCountRoll) + 1;
-            var creatureArmy = CreateTempArmy(creatureCount, 0, creatureType);
-            return creatureArmy;
-        }
-
         public Character AddWarrior(Army army, RaceDefinition charactersType = null)
         {
             var type = charactersType ?? _characterDefinitionsRepository.GetRandomWarrior();
