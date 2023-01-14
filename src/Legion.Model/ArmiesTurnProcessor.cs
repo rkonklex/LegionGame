@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Legion.Model.Helpers;
 using Legion.Model.Repositories;
 using Legion.Model.Types;
@@ -16,6 +17,7 @@ namespace Legion.Model
         private readonly IArmiesHelper _armiesHelper;
         private readonly IBattleManager _battleManager;
         private readonly IArmyActivities _armyActivities;
+        private readonly IMessagesService _messagesService;
 
         private int _currentTurnArmyIdx = -1;
 
@@ -25,7 +27,8 @@ namespace Legion.Model
             IPlayersRepository playersRepository,
             IArmiesHelper armiesHelper,
             IBattleManager battleManager,
-            IArmyActivities armyIncidents)
+            IArmyActivities armyIncidents,
+            IMessagesService messagesService)
         {
             _legionInfo = legionInfo;
             _armiesRepository = armiesRepository;
@@ -34,6 +37,7 @@ namespace Legion.Model
             _armiesHelper = armiesHelper;
             _battleManager = battleManager;
             _armyActivities = armyIncidents;
+            _messagesService = messagesService;
         }
 
         public bool IsProcessingTurn { get; private set; }
@@ -93,11 +97,18 @@ namespace Legion.Model
                 var days = army.Food / army.Characters.Count;
                 if (days < 5 && days > 0)
                 {
-                    //TODO: MESSAGE[A,"Kończy nam się żywność.",0,0]
+                    var message = new Message();
+                    message.Type = MessageType.ArmyLowOnFood;
+                    message.MapObjects = new List<MapObject> { army };
+                    _messagesService.ShowMessage(message);
                 }
                 if (army.Food <= 0)
                 {
-                    //TODO: MESSAGE[A,"Oddział rozwiązany",0,0]
+                    var message = new Message();
+                    message.Type = MessageType.ArmyDisbandedNoFood;
+                    message.MapObjects = new List<MapObject> { army };
+                    _messagesService.ShowMessage(message);
+                    // TODO: wait for message window to close before killing the army
                     _armiesRepository.KillArmy(army);
                     return false;
                 }

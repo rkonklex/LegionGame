@@ -15,6 +15,8 @@ namespace Legion.Model.Types
         EnemyAttacksUserArmy,
         ArmyDestroyed,
         ArmyTrackedDownBeast,
+        ArmyLowOnFood,
+        ArmyDisbandedNoFood,
 
         ArmyEncounteredRabidWolves,
         ArmyEncounteredBandits,

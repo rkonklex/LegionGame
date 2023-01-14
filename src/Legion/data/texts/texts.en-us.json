@@ -198,6 +198,8 @@
         "message.armyEncounteredGargoyl": "Gargoyl !!!",
         "message.armyEncounteredLoneKnight": "We meet a solitary knight.",
         "message.armyEncounteredCaveEntrance": "We've found an entrance to cavern.",
+        "message.armyLowOnFood": "We have not enough food.",
+        "message.armyDisbandedNoFood": "Unit disbanded",
 
         "infoWindow.ok": "Ok",
         "infoWindow.commands": "Commands",

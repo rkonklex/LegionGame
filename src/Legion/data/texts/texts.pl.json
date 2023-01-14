@@ -198,6 +198,8 @@
         "message.armyEncounteredGargoyl": "Gargoil !!!",
         "message.armyEncounteredLoneKnight": "Spotkaliśmy samotnego wojownika",
         "message.armyEncounteredCaveEntrance": "Odnaleźliśmy wejście do jaskini",
+        "message.armyLowOnFood": "Kończy nam się żywność.",
+        "message.armyDisbandedNoFood": "Oddział rozwiązany",
 
         "infoWindow.ok": "Ok",
         "infoWindow.commands": "Rozkazy",
