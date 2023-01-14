@@ -94,8 +94,7 @@ namespace Legion.Model
             //'wieśniacy wśród buntowników 
             for (var i = 0; i < villagersCount; i++)
             {
-                var villager = _charactersRepository.CreateNpc(_raceDefinitionsRepository.Villager, _legionInfo.Power);
-                rebelArmy.Characters.Add(villager);
+                _armiesRepository.AddNpc(rebelArmy, _legionInfo.Power, _raceDefinitionsRepository.Villager);
             }
 
             //TODO: BITWA[_ATAK,40,1,1,0,1,1,1,TEREN,M]

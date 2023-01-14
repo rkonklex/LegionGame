@@ -11,6 +11,8 @@ namespace Legion.Model.Repositories
         Army CreateNpcArmy(Player owner, int charactersCount, int power, CharacterDefinition charactersType = null);
         Army CreateTempArmy(int charactersCount, int power, CharacterDefinition charactersType = null);
         Army CreateTempArmyForHunt(TerrainType terrainType);
+        Character AddWarrior(Army army, RaceDefinition charactersType = null);
+        Character AddNpc(Army army, int power, CharacterDefinition charactersType = null);
         void KillArmy(Army army);
     }
 }

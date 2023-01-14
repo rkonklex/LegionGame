@@ -36,9 +36,7 @@ namespace Legion.Model.Repositories
 
             for (var i = 0; i < charactersCount; i++)
             {
-                var type = _raceDefinitionsRepository.GetRandomWarrior();
-                var character = _charactersRepository.CreateWarrior(type);
-                army.Characters.Add(character);
+                AddWarrior(army);
             }
 
             Armies.Add(army);
@@ -66,9 +64,7 @@ namespace Legion.Model.Repositories
 
             for (var i = 0; i < charactersCount; i++)
             {
-                var type = charactersType ?? _raceDefinitionsRepository.GetRandomWarrior();
-                var character = _charactersRepository.CreateNpc(type, power);
-                army.Characters.Add(character);
+                AddNpc(army, power, charactersType);
             }
 
             Armies.Add(army);
@@ -87,9 +83,7 @@ namespace Legion.Model.Repositories
 
             for (var i = 0; i < charactersCount; i++)
             {
-                var type = charactersType ?? _raceDefinitionsRepository.GetRandomWarrior();
-                var character = _charactersRepository.CreateNpc(type, power);
-                army.Characters.Add(character);
+                AddNpc(army, power, charactersType);
             }
 
             return army;
@@ -131,6 +125,22 @@ namespace Legion.Model.Repositories
             var creatureCount = GlobalUtils.Rand(creatureCountRoll) + 1;
             var creatureArmy = CreateTempArmy(creatureCount, 0, creatureType);
             return creatureArmy;
+        }
+
+        public Character AddWarrior(Army army, RaceDefinition charactersType = null)
+        {
+            var type = charactersType ?? _raceDefinitionsRepository.GetRandomWarrior();
+            var character = _charactersRepository.CreateWarrior(type);
+            army.Characters.Add(character);
+            return character;
+        }
+
+        public Character AddNpc(Army army, int power, CharacterDefinition charactersType = null)
+        {
+            var type = charactersType ?? _raceDefinitionsRepository.GetRandomWarrior();
+            var character = _charactersRepository.CreateNpc(type, power);
+            army.Characters.Add(character);
+            return character;
         }
 
         public void KillArmy(Army army)
