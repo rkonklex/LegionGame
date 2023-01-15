@@ -11,21 +11,32 @@ namespace Legion.Views.Map.Controls
         protected const int DefaultHeight = 120;
 
         protected Panel InnerPanel;
+        protected Image ImageElement;
         protected Label TextLabel;
         protected Label TargetLabel;
 
         public MessageWindow(IGuiServices guiServices) : base(guiServices)
         {
             InnerPanel = new Panel(guiServices);
+            ImageElement = new Image(guiServices);
             TextLabel = new Label(guiServices);
             TargetLabel = new Label(guiServices);
 
             Clicked += args => Closing?.Invoke(args);
 
-            CreateElements();
+            UpdateBounds();
+
+            AddElement(InnerPanel);
+            AddElement(ImageElement);
+            AddElement(TextLabel);
+            AddElement(TargetLabel);
         }
 
-        public Texture2D Image { get; set; }
+        public Texture2D Image
+        {
+            get => ImageElement.Data;
+            set => ImageElement.Data = value;
+        }
 
         public string Text
         {
@@ -39,7 +50,7 @@ namespace Legion.Views.Map.Controls
             set => TargetLabel.Text = value;
         }
 
-        private void CreateElements()
+        private void UpdateBounds()
         {
             var width = DefaultWidth;
             var height = DefaultHeight;
@@ -49,18 +60,9 @@ namespace Legion.Views.Map.Controls
 
             Bounds = new Rectangle(x, y, width, height);
             InnerPanel.Bounds = new Rectangle(x + 4, y + 4, width - 7, height - 6);
-
-            TargetLabel.Bounds = new Rectangle(x + 10, y + 80, 10, 10);
-            TextLabel.Bounds = new Rectangle(x + 12, y + 90, 10, 10);
-        }
-
-        public override void Draw()
-        {
-            //GuiServices.BasicDrawer.DrawBorder(Colors.WindowBorderColor, Bounds);
-            InnerPanel.Draw();
-            GuiServices.BasicDrawer.DrawImage(Image, Bounds.X + 8, Bounds.Y + 8);
-            TextLabel.Draw();
-            TargetLabel.Draw();
+            ImageElement.Bounds = new Rectangle(x + 8, y + 8, 96, 60);
+            TargetLabel.Bounds = new Rectangle(x + 12, y + 80, 88, 10);
+            TextLabel.Bounds = new Rectangle(x + 10, y + 90, 88, 20);
         }
     }
 }
