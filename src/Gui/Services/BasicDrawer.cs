@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -99,6 +101,38 @@ namespace Gui.Services
         public Vector2 MeasureText(string text)
         {
             return _defenderFont.MeasureString(text) / 2; // somehow measure gives too big size
+        }
+
+        public Vector2 MeasureText(StringBuilder text)
+        {
+            return _defenderFont.MeasureString(text) / 2; // somehow measure gives too big size
+        }
+
+        public string[] LayoutTextLines(string text, int maxWidth)
+        {
+            var lines = new List<string>(5);
+
+            var buffer = new StringBuilder(text.Length);
+            foreach (var word in text.Split(' '))
+            {
+                var prevLength = buffer.Length;
+                if (prevLength > 0)
+                    buffer.Append(' ');
+                buffer.Append(word);
+
+                var measure = MeasureText(buffer);
+                if (measure.X > maxWidth)
+                {
+                    lines.Add(buffer.ToString(0, prevLength));
+                    buffer.Remove(0, prevLength + 1);
+                }
+            }
+            if (buffer.Length > 0)
+            {
+                lines.Add(buffer.ToString());
+            }
+
+            return lines.ToArray();
         }
 
         public void DrawImage(Texture2D image, float x, float y)

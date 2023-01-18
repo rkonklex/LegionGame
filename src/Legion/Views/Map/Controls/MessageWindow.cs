@@ -12,14 +12,14 @@ namespace Legion.Views.Map.Controls
 
         protected Panel InnerPanel;
         protected Image ImageElement;
-        protected Label TextLabel;
+        protected TextBlock TextLabel;
         protected Label TargetLabel;
 
         public MessageWindow(IGuiServices guiServices) : base(guiServices)
         {
             InnerPanel = new Panel(guiServices);
             ImageElement = new Image(guiServices);
-            TextLabel = new Label(guiServices);
+            TextLabel = new TextBlock(guiServices);
             TargetLabel = new Label(guiServices);
 
             Clicked += args => Closing?.Invoke(args);

@@ -14,6 +14,7 @@ namespace Gui.Services
             bool centerHorizontally = false,
             bool centerVertically = false);
         Vector2 MeasureText(string text);
+        string[] LayoutTextLines(string text, int maxWidth);
         void DrawImage(Texture2D image, float x, float y);
     }
 }

@@ -21,7 +21,7 @@ namespace Legion.Views.Map.Controls
         protected Label TaxLabel;
         protected Label MoraleLabel;
         protected Label InfoLabel;
-        protected List<Label> BuildingLabels;
+        protected TextBlock BuildingsText;
         protected Image image;
 
         public CityWindow(IGuiServices guiServices) : base(guiServices)
@@ -77,7 +77,14 @@ namespace Legion.Views.Map.Controls
             set
             {
                 _buildings = value;
-                UpdateBuildingNames();
+                if (_buildings != null && _buildings.Count > 0)
+                {
+                    BuildingsText.Text = String.Join(' ', _buildings);
+                }
+                else
+                {
+                    BuildingsText.Text = "";
+                }
             }
         }
 
@@ -121,7 +128,7 @@ namespace Legion.Views.Map.Controls
             MoraleLabel = new Label(GuiServices);
             InfoLabel = new Label(GuiServices);
             image = new Image(GuiServices);
-            BuildingLabels = new List<Label>();
+            BuildingsText = new TextBlock(GuiServices) { TextColor = Color.Black };
 
             Elements.Add(InnerPanel);
             Elements.Add(OkButton);
@@ -132,6 +139,7 @@ namespace Legion.Views.Map.Controls
             Elements.Add(MoraleLabel);
             Elements.Add(InfoLabel);
             Elements.Add(image);
+            Elements.Add(BuildingsText);
 
             UpdateBounds();
             UpdateMoreButtonVisibility();
@@ -153,6 +161,7 @@ namespace Legion.Views.Map.Controls
             MoraleLabel.Bounds = new Rectangle(Bounds.X + 50, Bounds.Y + 40, 10, 10);
             InfoLabel.Bounds = new Rectangle(Bounds.X + 50, Bounds.Y + 55, 10, 10);
             image.Bounds = new Rectangle(Bounds.X + 8, Bounds.Y + 8, 1, 1);
+            BuildingsText.Bounds = new Rectangle(Bounds.X + 8, Bounds.Y + 52, 134, 20);
 
             UpdateOkButtonBounds();
         }
@@ -167,48 +176,5 @@ namespace Legion.Views.Map.Controls
         {
             MoreButton.IsVisible = string.IsNullOrEmpty(InfoText);
         }
-
-        private void UpdateBuildingNames()
-        {
-            if (Buildings == null) return;
-
-            var idx = 0;
-            var buildingsTextLines = new List<string> { "" };
-            foreach (var name in Buildings)
-            {
-                var text = buildingsTextLines[idx] + " " + name;
-                var width = GuiServices.BasicDrawer.MeasureText(text).X + 8;
-                if (width < InnerPanel.Bounds.Width)
-                {
-                    buildingsTextLines[idx] = text;
-                }
-                else
-                {
-                    buildingsTextLines.Add(name);
-                    idx++;
-                }
-            }
-
-            foreach (var label in BuildingLabels)
-            {
-                RemoveElement(label);
-            }
-            BuildingLabels.Clear();
-
-            var pos = 52;
-            foreach (var line in buildingsTextLines)
-            {
-                var lineLabel = new Label(GuiServices)
-                {
-                    TextColor = Color.Black,
-                    Bounds = new Rectangle(Bounds.X + 8, Bounds.Y + pos, 0, 0),
-                    Text = line
-                };
-                BuildingLabels.Add(lineLabel);
-                AddElement(lineLabel);
-                pos += 10;
-            }
-        }
-        
     }
 }
