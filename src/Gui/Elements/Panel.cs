@@ -16,21 +16,13 @@ namespace Gui.Elements
 
         public override void Draw()
         {
-            GuiServices.BasicDrawer.DrawRectangle(FillColor, Bounds);
+            var (x, y, width, height) = Bounds;
+            var topLeftColor = Invert ? DarkColor : LightColor;
+            var bottomRightColor = Invert ? LightColor : DarkColor;
 
-            var x = Bounds.X;
-            var y = Bounds.Y;
-            var width = Bounds.Width;
-            var height = Bounds.Height;
-
-            var firstColor = Invert ? DarkColor : LightColor;
-            var secondColor = Invert ? LightColor : DarkColor;
-
-            GuiServices.BasicDrawer.DrawLine(firstColor, new Vector2(x, y + height), new Vector2(x, y));
-            GuiServices.BasicDrawer.DrawLine(firstColor, new Vector2(x, y), new Vector2(x + width, y));
-
-            GuiServices.BasicDrawer.DrawLine(secondColor, new Vector2(x + width, y), new Vector2(x + width, y + height));
-            GuiServices.BasicDrawer.DrawLine(secondColor, new Vector2(x + width, y + height), new Vector2(x, y + height));
+            GuiServices.BasicDrawer.DrawRectangle(bottomRightColor, x, y, width, height);
+            GuiServices.BasicDrawer.DrawRectangle(topLeftColor, x, y, width - 1, height - 1);
+            GuiServices.BasicDrawer.DrawRectangle(FillColor, x + 1, y + 1, width - 2, height - 2);
         }
     }
 }
