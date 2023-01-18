@@ -23,23 +23,15 @@ namespace Legion.Views.Map.Controls
 
         public override void Update()
         {
-            Bounds = new Rectangle(_army.X, _army.Y, _image.Width, _image.Height);
+            var imageW = 8; // XXX: army flag is 8px wide, but image width is 16px
+            var armyX = _army.X - imageW / 2;
+            var armyY = _army.Y - _image.Height - 1;
+            Bounds = new Rectangle(armyX, armyY, imageW, _image.Height);
         }
 
         public override void Draw()
         {
-            if (_army.Owner != null)
-            {
-                var armyImages = GuiServices.ImagesStore.GetImages("army.users");
-                var armyImage = armyImages[_army.Owner.Id - 1];
-
-                //if (IsMouseOver)
-                //{
-                //    GuiServices.BasicDrawer.DrawRectangle(Color.AntiqueWhite, Bounds);
-                //}
-
-                GuiServices.BasicDrawer.DrawImage(armyImage, _army.X, _army.Y);
-            }
+            GuiServices.BasicDrawer.DrawImage(_image, Bounds.X, Bounds.Y);
         }
     }
 }
