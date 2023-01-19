@@ -23,10 +23,9 @@ namespace Legion.Views.Map.Controls
 
         public override void Update()
         {
-            var imageW = 8; // XXX: army flag is 8px wide, but image width is 16px
-            var armyX = _army.X - imageW / 2;
+            var armyX = _army.X - _image.Width / 2;
             var armyY = _army.Y - _image.Height - 1;
-            Bounds = new Rectangle(armyX, armyY, imageW, _image.Height);
+            Bounds = new Rectangle(armyX, armyY, _image.Width, _image.Height);
         }
 
         public override void Draw()
