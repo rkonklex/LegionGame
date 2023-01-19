@@ -32,7 +32,7 @@ namespace Legion
             InputManager.ScaleMatrix = _scaleMatrix;
             GameBounds = new Rectangle(0, 0, WorldWidth, WorldHeight);
 
-            Content.RootDirectory = "Assets/bin";
+            Content.RootDirectory = "Assets";
         }
 
         public IBasicDrawer BasicDrawer => _basicDrawer;

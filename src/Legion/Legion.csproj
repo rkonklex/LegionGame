@@ -8,8 +8,14 @@
   <ItemGroup>
     <PackageReference Include="autofac" Version="4.6.2" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
+
+  <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
+    <Message Text="Restoring dotnet tools" Importance="High" />
+    <Exec Command="dotnet tool restore" />
+  </Target>
 
   <ItemGroup>
     <ProjectReference Include="../Gui/Gui.csproj" />
@@ -19,13 +25,14 @@
     <ProjectReference Include="../Legion.Archive/Legion.Archive.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Include="Assets/bin/**">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="data/**">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+  <ItemGroup Label="Build Assets">
+    <Compile Remove="Assets\bin\**" />
+    <Compile Remove="Assets\obj\**" />
+    <EmbeddedResource Remove="Assets\bin\**" />
+    <EmbeddedResource Remove="Assets\obj\**" />
+    <None Remove="Assets\bin\**" />
+    <None Remove="Assets\obj\**" />
+    <MonoGameContentReference Include="Assets\ContentProject.mgcb" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +41,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="data/**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Remove="data\old.model.mapping.json" />
   </ItemGroup>
 
