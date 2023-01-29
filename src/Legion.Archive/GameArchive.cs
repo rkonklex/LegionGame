@@ -185,7 +185,7 @@ namespace Legion.Archive
                     var backpackNo = 0;
                     for (var b = 18; b < 26; b++)
                     {
-                        var itemType = _helper.ReadInt16(bytes, pos + b*2) - 1;
+                        var itemType = _helper.ReadInt16(bytes, pos + b*2);
                         if (itemType > 0 && itemType < _definitionsRepository.Items.Count)
                         {
                             var item = GetItem(itemType);
