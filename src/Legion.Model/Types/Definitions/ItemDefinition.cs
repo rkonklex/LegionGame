@@ -4,6 +4,8 @@ namespace Legion.Model.Types.Definitions
 {
     public class ItemDefinition
     {
+        /// <summary>ID in the original game</summary>
+        public int Oid { get; set; }
         public string Name { get; set; }
         public int Strength { get; set; }
         public int Resistance { get; set; }

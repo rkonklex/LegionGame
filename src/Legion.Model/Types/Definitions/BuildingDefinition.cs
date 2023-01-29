@@ -4,6 +4,8 @@ namespace Legion.Model.Types.Definitions
 {
     public class BuildingDefinition
     {
+        /// <summary>ID in the original game</summary>
+        public int Oid { get; set; }
         public string Name { get; set; }
         public BuildingType Type { get; set; }
         public int Width { get; set; }

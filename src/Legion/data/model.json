@@ -1,6 +1,7 @@
 {
     "buildings": [
         {
+            "oid": 1,
             "name": "well",
             "type": 0,
             "width": 64,
@@ -10,6 +11,7 @@
             "img": "scen-domy.2"
         },
         {
+            "oid": 2,
             "name": "gallows",
             "type": 0,
             "width": 32,
@@ -19,6 +21,7 @@
             "img": "scen-domy.6"
         },
         {
+            "oid": 3,
             "name": "barrel",
             "type": 0,
             "width": 20,
@@ -28,6 +31,7 @@
             "img": "scen-domy.8"
         },
         {
+            "oid": 4,
             "name": "shop",
             "type": 1,
             "width": 112,
@@ -37,6 +41,7 @@
             "img": "scen-domy.4"
         },
         {
+            "oid": 5,
             "name": "armoury",
             "type": 1,
             "width": 112,
@@ -46,6 +51,7 @@
             "img": "scen-domy.7"
         },
         {
+            "oid": 6,
             "name": "temple",
             "type": 1,
             "width": 104,
@@ -55,6 +61,7 @@
             "img": "scen-domy.5"
         },
         {
+            "oid": 7,
             "name": "hunter",
             "type": 1,
             "width": 64,
@@ -64,6 +71,7 @@
             "img": "scen-domy.1"
         },
         {
+            "oid": 8,
             "name": "alchemist",
             "type": 1,
             "width": 96,
@@ -73,6 +81,7 @@
             "img": "scen-domy.3"
         },
         {
+            "oid": 9,
             "name": "granary",
             "type": 1,
             "width": 96,
@@ -84,6 +93,7 @@
     ],
     "races": [
         {
+            "oid": 0,
             "name": "barbarian",
             "energy": 30,
             "strength": 25,
@@ -94,6 +104,7 @@
             "img": "glowny.79"
         },
         {
+            "oid": 1,
             "name": "orc",
             "energy": 45,
             "strength": 30,
@@ -104,6 +115,7 @@
             "img": "glowny.63"
         },
         {
+            "oid": 2,
             "name": "elf",
             "energy": 10,
             "strength": 10,
@@ -114,6 +126,7 @@
             "img": "glowny.159"
         },
         {
+            "oid": 3,
             "name": "dwarf",
             "energy": 20,
             "strength": 50,
@@ -124,6 +137,7 @@
             "img": "glowny.47"
         },
         {
+            "oid": 4,
             "name": "amazon",
             "energy": 20,
             "strength": 20,
@@ -134,6 +148,7 @@
             "img": "glowny.127"
         },
         {
+            "oid": 5,
             "name": "ogre",
             "energy": 65,
             "strength": 25,
@@ -144,6 +159,7 @@
             "img": "glowny.95"
         },
         {
+            "oid": 6,
             "name": "troll",
             "energy": 40,
             "strength": 10,
@@ -154,6 +170,7 @@
             "img": "glowny.31"
         },
         {
+            "oid": 7,
             "name": "knight",
             "energy": 20,
             "strength": 20,
@@ -164,6 +181,7 @@
             "img": "glowny.111"
         },
         {
+            "oid": 8,
             "name": "sorcerer",
             "energy": 10,
             "strength": 10,
@@ -174,6 +192,7 @@
             "img": "glowny.175"
         },
         {
+            "oid": 9,
             "name": "villager",
             "energy": 10,
             "strength": 10,
@@ -186,6 +205,7 @@
     ],
     "creatures": [
         {
+            "oid": 10,
             "name": "gargoyl",
             "energy": 100,
             "strength": 80,
@@ -197,6 +217,7 @@
             "img": "gargoil.0"
         },
         {
+            "oid": 11,
             "name": "skeletor",
             "energy": 60,
             "strength": 70,
@@ -208,6 +229,7 @@
             "img": "szkielet.0"
         },
         {
+            "oid": 12,
             "name": "wolf",
             "energy": 20,
             "strength": 35,
@@ -219,6 +241,7 @@
             "img": "wilk.0"
         },
         {
+            "oid": 13,
             "name": "hog",
             "energy": 20,
             "strength": 30,
@@ -230,6 +253,7 @@
             "img": "dzik.0"
         },
         {
+            "oid": 14,
             "name": "gloom",
             "energy": 30,
             "strength": 15,
@@ -241,6 +265,7 @@
             "img": "gloom.0"
         },
         {
+            "oid": 15,
             "name": "varpoon",
             "energy": 45,
             "strength": 40,
@@ -252,6 +277,7 @@
             "img": "warpun.0"
         },
         {
+            "oid": 16,
             "name": "skeerial",
             "energy": 100,
             "strength": 85,
@@ -263,6 +289,7 @@
             "img": "skirial.0"
         },
         {
+            "oid": 17,
             "name": "humanoid",
             "energy": 40,
             "strength": 40,
@@ -274,6 +301,7 @@
             "img": "humanoid.0"
         },
         {
+            "oid": 18,
             "name": "spider",
             "energy": 1,
             "strength": 170,
@@ -285,6 +313,7 @@
             "img": "pajak.0"
         },
         {
+            "oid": 19,
             "name": "boss",
             "energy": 200,
             "strength": 190,
@@ -298,6 +327,7 @@
     ],
     "items": [
         {
+            "oid": 8,
             "name": "commonAxe",
             "strength": 6,
             "resistance": 2,
@@ -312,6 +342,7 @@
             "img": "gad.17"
         },
         {
+            "oid": 9,
             "name": "stormAxe",
             "strength": 9,
             "resistance": 3,
@@ -326,6 +357,7 @@
             "img": "gad.17"
         },
         {
+            "oid": 10,
             "name": "chromicAxe",
             "strength": 12,
             "resistance": 5,
@@ -340,6 +372,7 @@
             "img": "gad.17"
         },
         {
+            "oid": 11,
             "name": "goldenAxe",
             "strength": 25,
             "resistance": 10,
@@ -354,6 +387,7 @@
             "img": "gad.17"
         },
         {
+            "oid": 115,
             "name": "orksAxe",
             "strength": 10,
             "resistance": 7,
@@ -368,6 +402,7 @@
             "img": "gad.17"
         },
         {
+            "oid": 116,
             "name": "silverAxe",
             "strength": 14,
             "resistance": 5,
@@ -382,6 +417,7 @@
             "img": "gad.17"
         },
         {
+            "oid": 117,
             "name": "warAxe",
             "strength": 8,
             "resistance": 3,
@@ -396,6 +432,7 @@
             "img": "gad.17"
         },
         {
+            "oid": 1,
             "name": "lightSword",
             "strength": 5,
             "resistance": 1,
@@ -410,6 +447,7 @@
             "img": "gad.42"
         },
         {
+            "oid": 2,
             "name": "steelSword",
             "strength": 7,
             "resistance": 2,
@@ -424,6 +462,7 @@
             "img": "gad.16"
         },
         {
+            "oid": 3,
             "name": "silverSword",
             "strength": 12,
             "resistance": 3,
@@ -438,6 +477,7 @@
             "img": "gad.16"
         },
         {
+            "oid": 4,
             "name": "longSword",
             "strength": 10,
             "resistance": 5,
@@ -452,6 +492,7 @@
             "img": "gad.16"
         },
         {
+            "oid": 5,
             "name": "fireSword",
             "strength": 15,
             "resistance": 5,
@@ -466,6 +507,7 @@
             "img": "gad.34"
         },
         {
+            "oid": 6,
             "name": "dragonFangSword",
             "strength": 25,
             "resistance": 8,
@@ -480,6 +522,7 @@
             "img": "gad.34"
         },
         {
+            "oid": 7,
             "name": "szczerbiecSword",
             "strength": 50,
             "resistance": 15,
@@ -494,6 +537,7 @@
             "img": "gad.34"
         },
         {
+            "oid": 112,
             "name": "barbarianSword",
             "strength": 8,
             "resistance": 3,
@@ -508,6 +552,7 @@
             "img": "gad.16"
         },
         {
+            "oid": 113,
             "name": "hornetSword",
             "strength": 14,
             "resistance": 1,
@@ -522,6 +567,7 @@
             "img": "gad.16"
         },
         {
+            "oid": 114,
             "name": "chaosSword",
             "strength": 13,
             "resistance": 1,
@@ -536,6 +582,7 @@
             "img": "gad.42"
         },
         {
+            "oid": 16,
             "name": "woodenShield",
             "strength": 0,
             "resistance": 8,
@@ -550,6 +597,7 @@
             "img": "gad.15"
         },
         {
+            "oid": 17,
             "name": "steelShield",
             "strength": 0,
             "resistance": 15,
@@ -564,6 +612,7 @@
             "img": "gad.29"
         },
         {
+            "oid": 18,
             "name": "stormShield",
             "strength": 0,
             "resistance": 19,
@@ -578,6 +627,7 @@
             "img": "gad.29"
         },
         {
+            "oid": 19,
             "name": "gremlinsShield",
             "strength": 0,
             "resistance": 25,
@@ -592,6 +642,7 @@
             "img": "gad.15"
         },
         {
+            "oid": 12,
             "name": "stoneHammer",
             "strength": 7,
             "resistance": 2,
@@ -606,6 +657,7 @@
             "img": "gad.18"
         },
         {
+            "oid": 13,
             "name": "heavyHammer",
             "strength": 10,
             "resistance": 3,
@@ -620,6 +672,7 @@
             "img": "gad.18"
         },
         {
+            "oid": 14,
             "name": "diamondHammer",
             "strength": 25,
             "resistance": 5,
@@ -634,6 +687,7 @@
             "img": "gad.18"
         },
         {
+            "oid": 15,
             "name": "goblinsHammer",
             "strength": 30,
             "resistance": 5,
@@ -648,6 +702,7 @@
             "img": "gad.18"
         },
         {
+            "oid": 118,
             "name": "battleHammer",
             "strength": 9,
             "resistance": 2,
@@ -662,6 +717,7 @@
             "img": "gad.18"
         },
         {
+            "oid": 119,
             "name": "steelHammer",
             "strength": 11,
             "resistance": 5,
@@ -676,6 +732,7 @@
             "img": "gad.18"
         },
         {
+            "oid": 120,
             "name": "graniteHammer",
             "strength": 13,
             "resistance": 7,
@@ -690,6 +747,7 @@
             "img": "gad.18"
         },
         {
+            "oid": 20,
             "name": "commonBow",
             "strength": 10,
             "resistance": 0,
@@ -704,6 +762,7 @@
             "img": "gad.19"
         },
         {
+            "oid": 21,
             "name": "specialBow",
             "strength": 15,
             "resistance": 0,
@@ -718,6 +777,7 @@
             "img": "gad.19"
         },
         {
+            "oid": 22,
             "name": "elfBow",
             "strength": 20,
             "resistance": 0,
@@ -732,6 +792,7 @@
             "img": "gad.19"
         },
         {
+            "oid": 107,
             "name": "falconBow",
             "strength": 38,
             "resistance": 0,
@@ -746,6 +807,7 @@
             "img": "gad.19"
         },
         {
+            "oid": 39,
             "name": "commonArrows",
             "strength": 15,
             "resistance": 0,
@@ -760,6 +822,7 @@
             "img": "gad.20"
         },
         {
+            "oid": 40,
             "name": "poisonedArrows",
             "strength": 20,
             "resistance": 0,
@@ -774,6 +837,7 @@
             "img": "gad.20"
         },
         {
+            "oid": 41,
             "name": "magicArrows",
             "strength": 25,
             "resistance": 0,
@@ -788,6 +852,7 @@
             "img": "gad.20"
         },
         {
+            "oid": 108,
             "name": "falconTalonsArrows",
             "strength": 35,
             "resistance": 0,
@@ -802,6 +867,7 @@
             "img": "gad.20"
         },
         {
+            "oid": 23,
             "name": "pointedHelmet",
             "strength": 0,
             "resistance": 5,
@@ -816,6 +882,7 @@
             "img": "gad.22"
         },
         {
+            "oid": 24,
             "name": "hornedHelmet",
             "strength": 2,
             "resistance": 5,
@@ -830,6 +897,7 @@
             "img": "gad.22"
         },
         {
+            "oid": 69,
             "name": "klingonHelmet",
             "strength": 2,
             "resistance": 6,
@@ -844,6 +912,7 @@
             "img": "gad.33"
         },
         {
+            "oid": 70,
             "name": "magicHelmet",
             "strength": 2,
             "resistance": 6,
@@ -858,6 +927,7 @@
             "img": "gad.22"
         },
         {
+            "oid": 109,
             "name": "sorasilsHelmet",
             "strength": 8,
             "resistance": 10,
@@ -872,6 +942,7 @@
             "img": "gad.22"
         },
         {
+            "oid": 25,
             "name": "leatherBoots",
             "strength": 0,
             "resistance": 0,
@@ -886,6 +957,7 @@
             "img": "gad.23"
         },
         {
+            "oid": 26,
             "name": "shoedBoots",
             "strength": 0,
             "resistance": 2,
@@ -900,6 +972,7 @@
             "img": "gad.23"
         },
         {
+            "oid": 54,
             "name": "lightBoots",
             "strength": 0,
             "resistance": 0,
@@ -914,6 +987,7 @@
             "img": "gad.23"
         },
         {
+            "oid": 55,
             "name": "fightingBoots",
             "strength": 2,
             "resistance": 4,
@@ -928,6 +1002,7 @@
             "img": "gad.23"
         },
         {
+            "oid": 87,
             "name": "miraculousBoots",
             "strength": 1,
             "resistance": 3,
@@ -942,6 +1017,7 @@
             "img": "gad.23"
         },
         {
+            "oid": 27,
             "name": "lightArmour",
             "strength": 0,
             "resistance": 10,
@@ -956,6 +1032,7 @@
             "img": "gad.21"
         },
         {
+            "oid": 28,
             "name": "coatOfMailArmour",
             "strength": 0,
             "resistance": 18,
@@ -970,6 +1047,7 @@
             "img": "gad.21"
         },
         {
+            "oid": 29,
             "name": "steelArmour",
             "strength": 0,
             "resistance": 13,
@@ -984,6 +1062,7 @@
             "img": "gad.21"
         },
         {
+            "oid": 30,
             "name": "heavyArmour",
             "strength": 0,
             "resistance": 22,
@@ -998,6 +1077,7 @@
             "img": "gad.32"
         },
         {
+            "oid": 31,
             "name": "silverArmour",
             "strength": 0,
             "resistance": 28,
@@ -1012,6 +1092,7 @@
             "img": "gad.32"
         },
         {
+            "oid": 91,
             "name": "scaledArmour",
             "strength": 0,
             "resistance": 12,
@@ -1026,6 +1107,7 @@
             "img": "gad.32"
         },
         {
+            "oid": 92,
             "name": "lightingArmour",
             "strength": 10,
             "resistance": 30,
@@ -1040,6 +1122,7 @@
             "img": "gad.21"
         },
         {
+            "oid": 93,
             "name": "ogreArmour",
             "strength": 0,
             "resistance": 43,
@@ -1054,6 +1137,7 @@
             "img": "gad.32"
         },
         {
+            "oid": 94,
             "name": "vingrensArmour",
             "strength": 12,
             "resistance": 32,
@@ -1068,6 +1152,7 @@
             "img": "gad.32"
         },
         {
+            "oid": 32,
             "name": "sterydiusHerb",
             "strength": 0,
             "resistance": 2,
@@ -1082,6 +1167,7 @@
             "img": "gad.26"
         },
         {
+            "oid": 33,
             "name": "furialisHerb",
             "strength": 2,
             "resistance": 0,
@@ -1096,6 +1182,7 @@
             "img": "gad.26"
         },
         {
+            "oid": 34,
             "name": "molesRootHerb",
             "strength": -5,
             "resistance": 0,
@@ -1110,6 +1197,7 @@
             "img": "gad.26"
         },
         {
+            "oid": 35,
             "name": "castorHerb",
             "strength": 0,
             "resistance": 0,
@@ -1124,6 +1212,7 @@
             "img": "gad.26"
         },
         {
+            "oid": 36,
             "name": "spinachHerb",
             "strength": 3,
             "resistance": 0,
@@ -1138,6 +1227,7 @@
             "img": "gad.26"
         },
         {
+            "oid": 37,
             "name": "bayLeafHerb",
             "strength": 0,
             "resistance": 0,
@@ -1152,6 +1242,7 @@
             "img": "gad.26"
         },
         {
+            "oid": 38,
             "name": "blackGrassHerb",
             "strength": 0,
             "resistance": 0,
@@ -1166,6 +1257,7 @@
             "img": "gad.26"
         },
         {
+            "oid": 42,
             "name": "magicMissileScroll",
             "strength": 25,
             "resistance": 0,
@@ -1180,6 +1272,7 @@
             "img": "gad.28"
         },
         {
+            "oid": 43,
             "name": "fireballScroll",
             "strength": 45,
             "resistance": 0,
@@ -1194,6 +1287,7 @@
             "img": "gad.28"
         },
         {
+            "oid": 44,
             "name": "chaosBreathScroll",
             "strength": 20,
             "resistance": 0,
@@ -1208,6 +1302,7 @@
             "img": "gad.28"
         },
         {
+            "oid": 45,
             "name": "flamesScroll",
             "strength": 35,
             "resistance": 0,
@@ -1222,6 +1317,7 @@
             "img": "gad.28"
         },
         {
+            "oid": 46,
             "name": "lightingScroll",
             "strength": 55,
             "resistance": 0,
@@ -1236,6 +1332,7 @@
             "img": "gad.27"
         },
         {
+            "oid": 47,
             "name": "mindProbeScroll",
             "strength": 0,
             "resistance": 0,
@@ -1250,6 +1347,7 @@
             "img": "gad.27"
         },
         {
+            "oid": 48,
             "name": "curingScroll",
             "strength": 0,
             "resistance": 0,
@@ -1264,6 +1362,7 @@
             "img": "gad.27"
         },
         {
+            "oid": 49,
             "name": "healingScroll",
             "strength": 0,
             "resistance": 0,
@@ -1278,6 +1377,7 @@
             "img": "gad.27"
         },
         {
+            "oid": 50,
             "name": "brightnessScroll",
             "strength": 10,
             "resistance": 0,
@@ -1292,6 +1392,7 @@
             "img": "gad.27"
         },
         {
+            "oid": 51,
             "name": "intuitionScroll",
             "strength": 0,
             "resistance": 0,
@@ -1306,6 +1407,7 @@
             "img": "gad.27"
         },
         {
+            "oid": 52,
             "name": "godsWrathScroll",
             "strength": 70,
             "resistance": 0,
@@ -1320,6 +1422,7 @@
             "img": "gad.27"
         },
         {
+            "oid": 53,
             "name": "slowDownScroll",
             "strength": 0,
             "resistance": 0,
@@ -1334,6 +1437,7 @@
             "img": "gad.27"
         },
         {
+            "oid": 88,
             "name": "conversionScroll",
             "strength": 0,
             "resistance": 0,
@@ -1348,6 +1452,7 @@
             "img": "gad.27"
         },
         {
+            "oid": 89,
             "name": "explosionScroll",
             "strength": 40,
             "resistance": 0,
@@ -1362,6 +1467,7 @@
             "img": "gad.28"
         },
         {
+            "oid": 110,
             "name": "unsureScroll",
             "strength": 20,
             "resistance": 0,
@@ -1376,6 +1482,7 @@
             "img": "gad.28"
         },
         {
+            "oid": 111,
             "name": "intimidateScroll",
             "strength": 50,
             "resistance": 0,
@@ -1390,6 +1497,7 @@
             "img": "gad.28"
         },
         {
+            "oid": 56,
             "name": "ogreBoneClub",
             "strength": 7,
             "resistance": 2,
@@ -1404,6 +1512,7 @@
             "img": "gad.25"
         },
         {
+            "oid": 57,
             "name": "woodenClub",
             "strength": 4,
             "resistance": 1,
@@ -1418,6 +1527,7 @@
             "img": "gad.25"
         },
         {
+            "oid": 58,
             "name": "pricklyClub",
             "strength": 9,
             "resistance": 2,
@@ -1432,6 +1542,7 @@
             "img": "gad.25"
         },
         {
+            "oid": 59,
             "name": "ruffianlyClub",
             "strength": 11,
             "resistance": 3,
@@ -1446,6 +1557,7 @@
             "img": "gad.25"
         },
         {
+            "oid": 60,
             "name": "siegeCatapult",
             "strength": 60,
             "resistance": 20,
@@ -1460,6 +1572,7 @@
             "img": "gad.46"
         },
         {
+            "oid": 61,
             "name": "ruiningCatapult",
             "strength": 40,
             "resistance": 10,
@@ -1474,6 +1587,7 @@
             "img": "gad.46"
         },
         {
+            "oid": 62,
             "name": "lightCatapult",
             "strength": 30,
             "resistance": 6,
@@ -1488,6 +1602,7 @@
             "img": "gad.46"
         },
         {
+            "oid": 63,
             "name": "ogreCatapult",
             "strength": 90,
             "resistance": 15,
@@ -1502,6 +1617,7 @@
             "img": "gad.46"
         },
         {
+            "oid": 64,
             "name": "smallStone",
             "strength": 10,
             "resistance": 0,
@@ -1516,6 +1632,7 @@
             "img": "gad.47"
         },
         {
+            "oid": 65,
             "name": "bigStone",
             "strength": 20,
             "resistance": 0,
@@ -1530,6 +1647,7 @@
             "img": "gad.47"
         },
         {
+            "oid": 66,
             "name": "mediumStone",
             "strength": 15,
             "resistance": 0,
@@ -1544,6 +1662,7 @@
             "img": "gad.47"
         },
         {
+            "oid": 67,
             "name": "graniteStone",
             "strength": 40,
             "resistance": 0,
@@ -1558,6 +1677,7 @@
             "img": "gad.47"
         },
         {
+            "oid": 68,
             "name": "marbleStone",
             "strength": 30,
             "resistance": 0,
@@ -1572,6 +1692,7 @@
             "img": "gad.47"
         },
         {
+            "oid": 71,
             "name": "plePlePotion",
             "strength": 0,
             "resistance": 0,
@@ -1586,6 +1707,7 @@
             "img": "gad.30"
         },
         {
+            "oid": 72,
             "name": "poisonPotion",
             "strength": -10,
             "resistance": -10,
@@ -1600,6 +1722,7 @@
             "img": "gad.30"
         },
         {
+            "oid": 73,
             "name": "sheepTonguePotion",
             "strength": 5,
             "resistance": 2,
@@ -1614,6 +1737,7 @@
             "img": "gad.30"
         },
         {
+            "oid": 74,
             "name": "honeyPotion",
             "strength": 4,
             "resistance": 0,
@@ -1628,6 +1752,7 @@
             "img": "gad.30"
         },
         {
+            "oid": 75,
             "name": "halucinumPotion",
             "strength": 0,
             "resistance": 0,
@@ -1642,6 +1767,7 @@
             "img": "gad.30"
         },
         {
+            "oid": 76,
             "name": "curePotion",
             "strength": 0,
             "resistance": 0,
@@ -1656,6 +1782,7 @@
             "img": "gad.30"
         },
         {
+            "oid": 99,
             "name": "winePotion",
             "strength": 0,
             "resistance": 0,
@@ -1670,6 +1797,7 @@
             "img": "gad.30"
         },
         {
+            "oid": 100,
             "name": "trollMilkPotion",
             "strength": 0,
             "resistance": 1,
@@ -1684,6 +1812,7 @@
             "img": "gad.30"
         },
         {
+            "oid": 101,
             "name": "waterPotion",
             "strength": 0,
             "resistance": 0,
@@ -1698,6 +1827,7 @@
             "img": "gad.30"
         },
         {
+            "oid": 102,
             "name": "motorolumPotion",
             "strength": 0,
             "resistance": 0,
@@ -1712,6 +1842,7 @@
             "img": "gad.30"
         },
         {
+            "oid": 103,
             "name": "bloodPotion",
             "strength": -20,
             "resistance": 0,
@@ -1726,6 +1857,7 @@
             "img": "gad.30"
         },
         {
+            "oid": 104,
             "name": "umkoumPotion",
             "strength": 3,
             "resistance": 0,
@@ -1740,6 +1872,7 @@
             "img": "gad.30"
         },
         {
+            "oid": 77,
             "name": "hogMeatFood",
             "strength": 0,
             "resistance": 0,
@@ -1754,6 +1887,7 @@
             "img": "gad.36"
         },
         {
+            "oid": 78,
             "name": "gargoylMeatFood",
             "strength": 0,
             "resistance": 0,
@@ -1768,6 +1902,7 @@
             "img": "gad.36"
         },
         {
+            "oid": 79,
             "name": "wolfMeatFood",
             "strength": 0,
             "resistance": 0,
@@ -1782,6 +1917,7 @@
             "img": "gad.36"
         },
         {
+            "oid": 90,
             "name": "carrionFood",
             "strength": 0,
             "resistance": 0,
@@ -1796,6 +1932,7 @@
             "img": ""
         },
         {
+            "oid": 105,
             "name": "haunchFood",
             "strength": 0,
             "resistance": 0,
@@ -1810,6 +1947,7 @@
             "img": "gad.36"
         },
         {
+            "oid": 80,
             "name": "goldTreasure",
             "strength": 0,
             "resistance": 0,
@@ -1824,6 +1962,7 @@
             "img": "gad.35"
         },
         {
+            "oid": 81,
             "name": "stonesTreasure",
             "strength": 0,
             "resistance": 0,
@@ -1838,6 +1977,7 @@
             "img": "gad.35"
         },
         {
+            "oid": 82,
             "name": "coinsTreasure",
             "strength": 0,
             "resistance": 0,
@@ -1852,6 +1992,7 @@
             "img": "gad.35"
         },
         {
+            "oid": 83,
             "name": "diamondsTreasure",
             "strength": 0,
             "resistance": 0,
@@ -1866,6 +2007,7 @@
             "img": "gad.35"
         },
         {
+            "oid": 84,
             "name": "hogSkin",
             "strength": 0,
             "resistance": 5,
@@ -1880,6 +2022,7 @@
             "img": "gad.38"
         },
         {
+            "oid": 85,
             "name": "gargoylSkin",
             "strength": 0,
             "resistance": 9,
@@ -1894,6 +2037,7 @@
             "img": "gad.38"
         },
         {
+            "oid": 86,
             "name": "wolfSkin",
             "strength": 0,
             "resistance": 8,
@@ -1908,6 +2052,7 @@
             "img": "gad.38"
         },
         {
+            "oid": 106,
             "name": "furSkin",
             "strength": 0,
             "resistance": 3,
@@ -1922,6 +2067,7 @@
             "img": "gad.38"
         },
         {
+            "oid": 95,
             "name": "whaleSpear",
             "strength": 17,
             "resistance": 1,
@@ -1936,6 +2082,7 @@
             "img": "gad.24"
         },
         {
+            "oid": 96,
             "name": "longSpear",
             "strength": 10,
             "resistance": 1,
@@ -1950,6 +2097,7 @@
             "img": "gad.24"
         },
         {
+            "oid": 97,
             "name": "wolfFangSpear",
             "strength": 20,
             "resistance": 2,
@@ -1964,6 +2112,7 @@
             "img": "gad.24"
         },
         {
+            "oid": 98,
             "name": "tuskSpear",
             "strength": 30,
             "resistance": 3,

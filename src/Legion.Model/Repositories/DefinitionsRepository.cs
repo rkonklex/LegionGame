@@ -10,9 +10,7 @@ namespace Legion.Model.Repositories
     public class DefinitionsRepository : IDefinitionsRepository
     {
         private static readonly string FilePath = Path.Combine("data", "model.json");
-        private static readonly string OldModelMappingFilePath = Path.Combine("data", "old.model.mapping.json");
         private DefinitionsModel _model;
-        private OldModelMappings _mappings;
 
         public DefinitionsRepository()
         {
@@ -28,13 +26,6 @@ namespace Legion.Model.Repositories
             {
                 throw new Exception("Unable to load main game model!");
             }
-
-            var mappingsJson = File.ReadAllText(OldModelMappingFilePath);
-            _mappings = JsonConvert.DeserializeObject<OldModelMappings>(mappingsJson);
-            if (_mappings == null)
-            {
-                throw new Exception("Unable to load main game model mappings!");
-            }
         }
 
         public List<BuildingDefinition> Buildings => _model.Buildings;
@@ -45,15 +36,9 @@ namespace Legion.Model.Repositories
 
         public List<RaceDefinition> Races => _model.Races;
 
-        public ItemDefinition GetItemByOldIndex(int index)
+        public ItemDefinition GetItemByOldIndex(int oid)
         {
-            var mapping = _mappings.Items.FirstOrDefault(m => m.Index == index);
-            if (mapping != null)
-            {
-                var item = Items.FirstOrDefault(i => i.Name.Equals(mapping.Name));
-                return item;
-            }
-            return null;
+            return Items.FirstOrDefault(m => m.Oid == oid);
         }
     }
 }

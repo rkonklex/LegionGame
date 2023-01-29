@@ -44,7 +44,6 @@
     <Content Include="data/**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Remove="data\old.model.mapping.json" />
   </ItemGroup>
 
   <ItemGroup>
