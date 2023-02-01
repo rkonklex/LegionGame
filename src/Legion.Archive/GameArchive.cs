@@ -5,6 +5,7 @@ using System.Text;
 using Legion.Model;
 using Legion.Model.Repositories;
 using Legion.Model.Types;
+using Legion.Model.Types.Definitions;
 
 namespace Legion.Archive
 {
@@ -308,11 +309,10 @@ namespace Legion.Archive
                     var building = new Building();
                     building.X = _helper.ReadInt16(bytes, pos + 2);
                     building.Y = _helper.ReadInt16(bytes, pos + 4);
-                    var buildingType = _helper.ReadInt16(bytes, pos + 6);
-                    //TODO: check if building type is correct
-                    if (buildingType > 0 && building.X > 0 && building.Y > 0)
+                    var buildingType = GetBuildingType(_helper.ReadInt16(bytes, pos + 6));
+                    if (buildingType != null && building.X > 0 && building.Y > 0)
                     {
-                        building.Type = _definitionsRepository.Buildings[buildingType - 1];
+                        building.Type = buildingType;
                         city.Buildings.Add(building);
                     }
 
@@ -329,6 +329,11 @@ namespace Legion.Archive
                 cities.Add(city);
             }
             return cities;
+        }
+
+        private BuildingDefinition GetBuildingType(int oid)
+        {
+            return _definitionsRepository.Buildings.FirstOrDefault(b => b.Oid == oid);
         }
 
         private void LoadCitiesNames(byte[] bytes, ref int pos, List<City> cities)
