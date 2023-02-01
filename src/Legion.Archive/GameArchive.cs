@@ -41,7 +41,7 @@ namespace Legion.Archive
             var archiveName = reader.ReadCString(20);
 
             var players = new List<Player>();
-            for (var id = 0; id <= 4; id++)
+            for (var id = 1; id <= 5; id++)
             {
                 var player = new Player();
                 player.Id = id;
@@ -109,8 +109,8 @@ namespace Legion.Archive
             _armiesRepository.Armies.AddRange(armies);
             _citiesRepository.Cities.AddRange(cities);
             _playersRepository.Players.AddRange(players);
-            _playersRepository.UserPlayer = players[1];
-            _playersRepository.ChaosPlayer = players[players.Count - 1];
+            _playersRepository.UserPlayer = players.First();
+            _playersRepository.ChaosPlayer = players.Last();
         }
 
         private List<Army> LoadArmies(IBinaryReader reader, List<Player> players)
@@ -126,7 +126,7 @@ namespace Legion.Archive
                 army.Id = id;
                 army.X = armyData[ArmyInfo.TX];
                 army.Y = armyData[ArmyInfo.TY];
-                army.Owner = players[armyData[ArmyInfo.TMAG]];
+                army.Owner = GetPlayer(players, armyData[ArmyInfo.TMAG]);
                 army.DaysToGetInfo = armyData[ArmyInfo.TMAGMA];
                 army.Food = armyData[ArmyInfo.TAMO];
                 //NOTE: update target object later by providing correct reference to existing object (they have to be loaded first)
@@ -177,18 +177,26 @@ namespace Legion.Archive
                     }
 
                     var characterType = characterData[ArmyInfo.TRASA];
-                    character.Type = _definitionsRepository.Races[characterType];
+                    character.Type = GetCharacterType(characterType);
 
                     army.Characters.Add(character);
                 }
 
-                if (army.Characters.Count > 0)
+                if (army.Characters.Count > 0 && army.Owner != null)
                 {
                     armies.Add(army);
                 }
             }
 
             return armies;
+        }
+
+        private CharacterDefinition GetCharacterType(int oid)
+        {
+            return Enumerable.Concat(
+                _definitionsRepository.Races.Cast<CharacterDefinition>(),
+                _definitionsRepository.Creatures.Cast<CharacterDefinition>()
+            ).FirstOrDefault(c => c.Oid == oid);
         }
 
         private Item GetItem(int type)
@@ -204,15 +212,22 @@ namespace Legion.Archive
 
         private void LoadPlayers(IBinaryReader reader, List<Player> players)
         {
-            for (var id = 0; id <= 4; id++)
+            reader.ReadInt32Array(PlayerInfo.ArrayLength); // skip player 0
+
+            for (var id = 1; id <= 4; id++)
             {
                 var playerData = reader.ReadInt32Array(PlayerInfo.ArrayLength);
 
-                var player = players[id];
+                var player = GetPlayer(players, id);
                 player.Money = playerData[PlayerInfo.P_MONEY];
                 player.Power = playerData[PlayerInfo.P_POWER];
                 player.Unknown = playerData[PlayerInfo.P_UNKNOWN];
             }
+        }
+
+        private Player GetPlayer(List<Player> players, int id)
+        {
+            return players.FirstOrDefault(p => p.Id == id);
         }
 
         private void LoadArmiesNames(IBinaryReader reader, List<Army> armies)
@@ -244,10 +259,12 @@ namespace Legion.Archive
 
         private void LoadPlayerNames(IBinaryReader reader, List<Player> players)
         {
-            for (var i = 0; i <= 4; i++)
+            reader.ReadText(); // skip player 0
+
+            for (var id = 1; id <= 4; id++)
             {
-                var playerName = reader.ReadText();
-                players[i].Name = playerName;
+                var player = GetPlayer(players, id);
+                player.Name = reader.ReadText();
             }
         }
 
@@ -267,7 +284,7 @@ namespace Legion.Archive
                 city.Y = cityData1[CityInfo.M_Y];
                 city.Population = cityData1[CityInfo.M_LUDZIE];
                 city.Tax = cityData1[CityInfo.M_PODATEK];
-                city.Owner = players[cityData1[CityInfo.M_CZYJE]];
+                city.Owner = GetPlayer(players, cityData1[CityInfo.M_CZYJE]);
                 city.Morale = cityData1[CityInfo.M_MORALE];
                 city.DaysToGetInfo = cityData2[CityInfo.M_Y];
                 city.Food = cityData2[CityInfo.M_LUDZIE];
