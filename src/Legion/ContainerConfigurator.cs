@@ -43,7 +43,7 @@ namespace Legion
 
             builder.RegisterType<InitialDataGenerator>().As<IInitialDataGenerator>().SingleInstance();
             builder.RegisterType<GameArchive>().As<IGameArchive>().SingleInstance();
-            builder.RegisterType<BytesHelper>().As<IBytesHelper>().SingleInstance();
+            builder.RegisterType<AmigaBinaryReader>().As<IBinaryReader>().SingleInstance();
 
             builder.RegisterType<CitiesHelper>().As<ICitiesHelper>().SingleInstance();
             builder.RegisterType<ArmiesHelper>().As<IArmiesHelper>().SingleInstance();

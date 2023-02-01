@@ -1,7 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using Legion.Model;
 using Legion.Model.Repositories;
 using Legion.Model.Types;
@@ -11,7 +11,7 @@ namespace Legion.Archive
 {
     public class GameArchive : IGameArchive
     {
-        private readonly IBytesHelper _helper;
+        private readonly Func<byte[], IBinaryReader> _readerFactory;
         private readonly ILegionInfo _legionInfo;
         private readonly IArmiesRepository _armiesRepository;
         private readonly ICitiesRepository _citiesRepository;
@@ -19,14 +19,14 @@ namespace Legion.Archive
         private readonly IDefinitionsRepository _definitionsRepository;
 
         public GameArchive(
-            IBytesHelper helper,
+            Func<byte[], IBinaryReader> readerFactory,
             ILegionInfo legionInfo,
             IArmiesRepository armiesRepository,
             ICitiesRepository citiesRepository,
             IPlayersRepository playersRepository,
             IDefinitionsRepository definitionsRepository)
         {
-            _helper = helper;
+            _readerFactory = readerFactory;
             _legionInfo = legionInfo;
             _armiesRepository = armiesRepository;
             _citiesRepository = citiesRepository;
@@ -36,11 +36,9 @@ namespace Legion.Archive
 
         public void LoadGame(string path)
         {
-            var bytes = File.ReadAllBytes(path);
-            var pos = 0;
+            var reader = _readerFactory(File.ReadAllBytes(path));
 
-            var archiveName = Encoding.Default.GetString(bytes, pos, 20);
-            pos += 20;
+            var archiveName = reader.ReadCString(20);
 
             var players = new List<Player>();
             for (var id = 0; id <= 4; id++)
@@ -51,37 +49,35 @@ namespace Legion.Archive
             }
 
             // Load armies and theirs characters data
-            var armies = LoadArmies(bytes, ref pos, players);
+            var armies = LoadArmies(reader, players);
 
             // TODO: Load conflicts info between players
             // 'wojna(5,5)
-            pos += 36;
+            reader.Skip(36);
 
             // Load players info
-            LoadPlayers(bytes, ref pos, players);
+            LoadPlayers(reader, players);
 
             // Load armies and theirs characters names
-            LoadArmiesNames(bytes, ref pos, armies);
+            LoadArmiesNames(reader, armies);
 
             // Load player names
-            LoadPlayerNames(bytes, ref pos, players);
+            LoadPlayerNames(reader, players);
 
             // TODO: Load preferences
             //'prefs(10) 
-            pos += 11;
+            reader.Skip(11);
 
             // Load cities info
-            var cities = LoadCities(bytes, ref pos, players);
+            var cities = LoadCities(reader, players);
 
             // Load cities names
-            LoadCitiesNames(bytes, ref pos, cities);
+            LoadCitiesNames(reader, cities);
 
             // 44535 / 0xADF7
 
-            _legionInfo.CurrentDay = _helper.ReadInt16(bytes, pos);
-            pos += 2;
-            _legionInfo.Power = _helper.ReadInt16(bytes, pos);
-            pos += 2;
+            _legionInfo.CurrentDay = reader.ReadInt16();
+            _legionInfo.Power = reader.ReadInt16();
 
             // TODO: adventures:
             /*
@@ -117,96 +113,73 @@ namespace Legion.Archive
             _playersRepository.ChaosPlayer = players[players.Count - 1];
         }
 
-        private List<Army> LoadArmies(byte[] bytes, ref int pos, List<Player> players)
+        private List<Army> LoadArmies(IBinaryReader reader, List<Player> players)
         {
             var armies = new List<Army>();
 
             // Load Armies and theirs characters
             for (var id = 0; id <= 40; id++)
             {
+                var armyData = reader.ReadInt16Array(ArmyInfo.ArrayLength);
+
                 var army = new Army();
                 army.Id = id;
-                army.X = _helper.ReadInt16(bytes, pos + 2);
-                army.Y = _helper.ReadInt16(bytes, pos + 4);
-                army.Owner = players[_helper.ReadInt16(bytes, pos + 52)];
-                army.DaysToGetInfo = _helper.ReadInt16(bytes, pos + 60);
-                army.Food = _helper.ReadInt16(bytes, pos + 24);
+                army.X = armyData[ArmyInfo.TX];
+                army.Y = armyData[ArmyInfo.TY];
+                army.Owner = players[armyData[ArmyInfo.TMAG]];
+                army.DaysToGetInfo = armyData[ArmyInfo.TMAGMA];
+                army.Food = armyData[ArmyInfo.TAMO];
                 //NOTE: update target object later by providing correct reference to existing object (they have to be loaded first)
                 army.Target = new MapPosition
                 {
-                    X = _helper.ReadInt16(bytes, pos + 10),
-                    Y = _helper.ReadInt16(bytes, pos + 12)
+                    X = armyData[ArmyInfo.TCELX],
+                    Y = armyData[ArmyInfo.TCELY]
                 };
-                army.CurrentAction = (ArmyActions) _helper.ReadInt16(bytes, pos + 14);
-
-                pos += 62;
+                army.CurrentAction = (ArmyActions) armyData[ArmyInfo.TTRYB];
 
                 for (var ch = 1; ch <= 10; ch++)
                 {
-                    /*
-                    TEM=0 : TX=1 : TY=2 : TSI=3 : TSZ=4 : TCELX=5 : TCELY=6 : TTRYB=7 : TE=8 : TP=9
-                    TBOB=10 : TKLAT=11 : TAMO=12 : 
-                    TGLOWA=13 : TKORP=14 : TNOGI=15 : TLEWA=16 : TPRAWA=17
-                    TPLECAK=18 : 
-                    TMAG=26 : TDOSW=27 : TRASA=28 : TWAGA=29 : TMAGMA=30
-                    */
+                    var characterData = reader.ReadInt16Array(ArmyInfo.ArrayLength);
 
-                    // TODO: handle these properties:
-                    // TKLAT=11 : TWAGA=29 
+                    if (characterData[ArmyInfo.TE] <= 0 || characterData[ArmyInfo.TEM] <= 0)
+                    {
+                        continue;
+                    }
+
                     var character = new Character();
                     character.Id = ch;
-                    character.EnergyMax = _helper.ReadInt16(bytes, pos);
-                    character.X = _helper.ReadInt16(bytes, pos + 2);
-                    character.Y = _helper.ReadInt16(bytes, pos + 4);
-                    character.Strength = _helper.ReadInt16(bytes, pos + 6);
-                    character.Speed = _helper.ReadInt16(bytes, pos + 8);
-                    character.SpeedMax = _helper.ReadInt16(bytes, pos + 24);
-                    character.TargetX = _helper.ReadInt16(bytes, pos + 10);
-                    character.TargetY = _helper.ReadInt16(bytes, pos + 12);
-                    character.CurrentAction = (CharacterActionType) _helper.ReadInt16(bytes, pos + 14);
-                    character.Energy = _helper.ReadInt16(bytes, pos + 16);
-                    character.Resistance = _helper.ReadInt16(bytes, pos + 18);
-                    character.Magic = _helper.ReadInt16(bytes, pos + 52);
-                    character.MagicMax = _helper.ReadInt16(bytes, pos + 60);
-                    character.Experience = _helper.ReadInt16(bytes, pos + 54);
-                    
-                    var headType = _helper.ReadInt16(bytes, pos + 26);
-                    var torseType = _helper.ReadInt16(bytes, pos + 28);
-                    var feetsType = _helper.ReadInt16(bytes, pos + 30);
-                    var leftHandType = _helper.ReadInt16(bytes, pos + 32);
-                    var rightHandType = _helper.ReadInt16(bytes, pos + 34);
+                    character.EnergyMax = characterData[ArmyInfo.TEM];
+                    character.X = characterData[ArmyInfo.TX];
+                    character.Y = characterData[ArmyInfo.TY];
+                    character.Strength = characterData[ArmyInfo.TSI];
+                    character.Speed = characterData[ArmyInfo.TSZ];
+                    character.SpeedMax = characterData[ArmyInfo.TAMO];
+                    character.TargetX = characterData[ArmyInfo.TCELX];
+                    character.TargetY = characterData[ArmyInfo.TCELY];
+                    character.CurrentAction = (CharacterActionType)characterData[ArmyInfo.TTRYB];
+                    character.Energy = characterData[ArmyInfo.TE];
+                    character.Resistance = characterData[ArmyInfo.TP];
+                    character.Magic = characterData[ArmyInfo.TMAG];
+                    character.MagicMax = characterData[ArmyInfo.TMAGMA];
+                    character.Experience = characterData[ArmyInfo.TDOSW];
 
                     character.Equipment = new CharacterEquipment();
-                    character.Equipment.Head = GetItem(headType);
-                    character.Equipment.Torse = GetItem(torseType);
-                    character.Equipment.Feets = GetItem(feetsType);
-                    character.Equipment.LeftHand = GetItem(leftHandType);
-                    character.Equipment.RightHand = GetItem(rightHandType);
+                    character.Equipment.Head = GetItem(characterData[ArmyInfo.TGLOWA]);
+                    character.Equipment.Torse = GetItem(characterData[ArmyInfo.TKLAT]);
+                    character.Equipment.Feets = GetItem(characterData[ArmyInfo.TNOGI]);
+                    character.Equipment.LeftHand = GetItem(characterData[ArmyInfo.TLEWA]);
+                    character.Equipment.RightHand = GetItem(characterData[ArmyInfo.TPRAWA]);
 
-                    var backpackNo = 0;
-                    for (var b = 18; b < 26; b++)
+                    for (var b = 0; b < 8; b++)
                     {
-                        var itemType = _helper.ReadInt16(bytes, pos + b*2);
-                        if (itemType > 0 && itemType < _definitionsRepository.Items.Count)
-                        {
-                            var item = GetItem(itemType);
-                            if (item != null)
-                            {
-                                character.Equipment.Backpack[backpackNo] = item;
-                            }
-                        }
-                        backpackNo++;
+                        var itemType = characterData[ArmyInfo.TPLECAK + b];
+                        character.Equipment.Backpack[b] = GetItem(itemType);
                     }
 
-                    var characterType = _helper.ReadInt16(bytes, pos + 56);
+                    var characterType = characterData[ArmyInfo.TRASA];
                     character.Type = _definitionsRepository.Races[characterType];
 
-                    if (character.Energy > 0 && character.EnergyMax > 0)
-                    {
-                        army.Characters.Add(character);
-                    }
-
-                    pos += 62; // 31 properties each have 2 bytes (index start at 0)
+                    army.Characters.Add(character);
                 }
 
                 if (army.Characters.Count > 0)
@@ -229,26 +202,25 @@ namespace Legion.Archive
             return null;
         }
 
-        private void LoadPlayers(byte[] bytes, ref int pos, List<Player> players)
+        private void LoadPlayers(IBinaryReader reader, List<Player> players)
         {
             for (var id = 0; id <= 4; id++)
             {
-                var player = players[id];
-                player.Money = _helper.ReadInt32(bytes, pos);
-                player.Power = _helper.ReadInt32(bytes, pos + 4);
-                player.Unknown = _helper.ReadInt32(bytes, pos + 8);
+                var playerData = reader.ReadInt32Array(PlayerInfo.ArrayLength);
 
-                pos += 16;
+                var player = players[id];
+                player.Money = playerData[PlayerInfo.P_MONEY];
+                player.Power = playerData[PlayerInfo.P_POWER];
+                player.Unknown = playerData[PlayerInfo.P_UNKNOWN];
             }
         }
 
-        private void LoadArmiesNames(byte[] bytes, ref int pos, List<Army> armies)
+        private void LoadArmiesNames(IBinaryReader reader, List<Army> armies)
         {
             for (var id = 0; id <= 40; id++)
             {
                 Army army = null;
-                var armyName = _helper.ReadText(bytes, pos);
-                pos += armyName.Length + 1;
+                var armyName = reader.ReadText();
                 if (!string.IsNullOrEmpty(armyName))
                 {
                     army = armies.FirstOrDefault(a => a.Id == id);
@@ -257,8 +229,7 @@ namespace Legion.Archive
 
                 for (var chid = 1; chid <= 10; chid++)
                 {
-                    var characterName = _helper.ReadText(bytes, pos);
-                    pos += characterName.Length + 1;
+                    var characterName = reader.ReadText();
                     if (army != null && !string.IsNullOrEmpty(characterName))
                     {
                         var character = army.Characters.FirstOrDefault(ch => ch.Id == chid);
@@ -271,52 +242,51 @@ namespace Legion.Archive
             }
         }
 
-        private void LoadPlayerNames(byte[] bytes, ref int pos, List<Player> players)
+        private void LoadPlayerNames(IBinaryReader reader, List<Player> players)
         {
             for (var i = 0; i <= 4; i++)
             {
-                var playerName = _helper.ReadText(bytes, pos);
-                pos += playerName.Length + 1;
+                var playerName = reader.ReadText();
                 players[i].Name = playerName;
             }
         }
 
-        private List<City> LoadCities(byte[] bytes, ref int pos, List<Player> players)
+        private List<City> LoadCities(IBinaryReader reader, List<Player> players)
         {
             var cities = new List<City>();
             // Load cities info
             for (var id = 0; id <= 50; id++)
             {
+                var cityData1 = reader.ReadInt16Array(CityInfo.ArrayLength);
+                var cityData2 = reader.ReadInt16Array(CityInfo.ArrayLength);
+
                 var city = new City();
                 city.Id = id;
-                city.WallType = _helper.ReadInt16(bytes, pos);
-                city.X = _helper.ReadInt16(bytes, pos + 2);
-                city.Y = _helper.ReadInt16(bytes, pos + 4);
-                city.Population = _helper.ReadInt16(bytes, pos + 6);
-                city.Tax = _helper.ReadInt16(bytes, pos + 8);
-                city.Owner = players[_helper.ReadInt16(bytes, pos + 10)];
-                city.Morale = _helper.ReadInt16(bytes, pos + 12);
-                pos += 14;
-                city.DaysToGetInfo = _helper.ReadInt16(bytes, pos + 4);
-                city.Food = _helper.ReadInt16(bytes, pos + 6);
-                city.DaysToSetNewRecruiters = _helper.ReadInt16(bytes, pos + 8);
-                city.Craziness = _helper.ReadInt16(bytes, pos + 12);
-                pos += 14;
+                city.WallType = cityData1[CityInfo.M_MUR];
+                city.X = cityData1[CityInfo.M_X];
+                city.Y = cityData1[CityInfo.M_Y];
+                city.Population = cityData1[CityInfo.M_LUDZIE];
+                city.Tax = cityData1[CityInfo.M_PODATEK];
+                city.Owner = players[cityData1[CityInfo.M_CZYJE]];
+                city.Morale = cityData1[CityInfo.M_MORALE];
+                city.DaysToGetInfo = cityData2[CityInfo.M_Y];
+                city.Food = cityData2[CityInfo.M_LUDZIE];
+                city.DaysToSetNewRecruiters = cityData2[CityInfo.M_PODATEK];
+                city.Craziness = cityData2[CityInfo.M_MORALE];
 
                 for (var bid = 2; bid <= 20; bid++)
                 {
+                    var buildingData = reader.ReadInt16Array(CityInfo.ArrayLength);
                     //0, 1 are city info, rest are buildings
                     var building = new Building();
-                    building.X = _helper.ReadInt16(bytes, pos + 2);
-                    building.Y = _helper.ReadInt16(bytes, pos + 4);
-                    var buildingType = GetBuildingType(_helper.ReadInt16(bytes, pos + 6));
+                    building.X = buildingData[CityInfo.M_X];
+                    building.Y = buildingData[CityInfo.M_Y];
+                    var buildingType = GetBuildingType(buildingData[CityInfo.M_LUDZIE]);
                     if (buildingType != null && building.X > 0 && building.Y > 0)
                     {
                         building.Type = buildingType;
                         city.Buildings.Add(building);
                     }
-
-                    pos += 14;
                 }
 
                 //TODO: price modificators for items:
@@ -336,12 +306,11 @@ namespace Legion.Archive
             return _definitionsRepository.Buildings.FirstOrDefault(b => b.Oid == oid);
         }
 
-        private void LoadCitiesNames(byte[] bytes, ref int pos, List<City> cities)
+        private void LoadCitiesNames(IBinaryReader reader, List<City> cities)
         {
             for (var id = 0; id <= 50; id++)
             {
-                var name = _helper.ReadText(bytes, pos);
-                pos += name.Length + 1;
+                var name = reader.ReadText();
                 if (!string.IsNullOrEmpty(name))
                 {
                     var city = cities.FirstOrDefault(c => c.Id == id);
