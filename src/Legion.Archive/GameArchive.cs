@@ -51,9 +51,17 @@ namespace Legion.Archive
             // Load armies and theirs characters data
             var armies = LoadArmies(reader, players);
 
-            // TODO: Load conflicts info between players
-            // 'wojna(5,5)
-            reader.Skip(36);
+            // Load conflicts info between players
+            reader.ReadInt8Array(6); // skip player 0
+            for (var i = 1; i <= 5; i++)
+            {
+                var wars = reader.ReadInt8Array(6);
+                var player = GetPlayer(players, i);
+                for (var j = 0; j <= 5; j++)
+                {
+                    player.UpdateWar(GetPlayer(players, j), wars[j]);
+                }
+            }
 
             // Load players info
             LoadPlayers(reader, players);
