@@ -242,11 +242,10 @@ namespace Legion.Archive
         {
             for (var id = 0; id <= 40; id++)
             {
-                Army army = null;
                 var armyName = reader.ReadText();
-                if (!string.IsNullOrEmpty(armyName))
+                var army = armies.FirstOrDefault(a => a.Id == id);
+                if (army != null && !string.IsNullOrEmpty(armyName))
                 {
-                    army = armies.FirstOrDefault(a => a.Id == id);
                     army.Name = armyName;
                 }
 
