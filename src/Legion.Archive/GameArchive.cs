@@ -173,7 +173,7 @@ namespace Legion.Archive
 
                     character.Equipment = new CharacterEquipment();
                     character.Equipment.Head = GetItem(characterData[ArmyInfo.TGLOWA]);
-                    character.Equipment.Torse = GetItem(characterData[ArmyInfo.TKLAT]);
+                    character.Equipment.Torse = GetItem(characterData[ArmyInfo.TKORP]);
                     character.Equipment.Feets = GetItem(characterData[ArmyInfo.TNOGI]);
                     character.Equipment.LeftHand = GetItem(characterData[ArmyInfo.TLEWA]);
                     character.Equipment.RightHand = GetItem(characterData[ArmyInfo.TPRAWA]);
