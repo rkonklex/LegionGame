@@ -94,19 +94,17 @@ namespace Legion
 
         public void OpenMenu()
         {
-            ViewsManager.CurrentView = ViewsManager.Menu;
+            ViewsManager.OpenMenu();
         }
 
-        public void OpenMap(TerrainActionContext context)
+        public void OpenMap()
         {
-            ViewsManager.CurrentView = ViewsManager.Map;
-            context?.ActionAfter?.Invoke();
+            ViewsManager.OpenMap();
         }
 
         public void OpenTerrain(TerrainActionContext context)
         {
-            ViewsManager.Terrain.Context = context;
-            ViewsManager.CurrentView = ViewsManager.Terrain;
+            ViewsManager.OpenTerrain(context);
         }
     }
 }

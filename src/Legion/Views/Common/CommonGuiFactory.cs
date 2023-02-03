@@ -36,7 +36,7 @@ namespace Legion.Views.Common
                 _viewSwitcher.OpenMenu();
                 //TODO: keep archives path in common place
                 _gameArchive.LoadGame(Path.Combine("data", "archive", name));
-                _viewSwitcher.OpenMap(null);
+                _viewSwitcher.OpenMap();
             };
             if (onExit != null)
             {

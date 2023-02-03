@@ -54,7 +54,7 @@ namespace Legion.Views.Menu.Layers
                 var position = InputManager.GetMousePostion();
                 if (position.Y < TopBoundary)
                 {
-                    _viewSwitcher.OpenMap(null);
+                    _viewSwitcher.OpenMap();
                 }
                 else if (position.Y > BottomBoundary)
                 {

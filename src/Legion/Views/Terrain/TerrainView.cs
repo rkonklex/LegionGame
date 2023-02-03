@@ -27,7 +27,8 @@ namespace Legion.Views.Terrain
         {
             if (InputManager.GetIsKeyDown(Keys.Escape))
             {
-                _viewSwitcher.OpenMap(null);
+                _viewSwitcher.OpenMap();
+                (Context as TerrainActionContext)?.ActionAfter?.Invoke();
             }
         }
     }

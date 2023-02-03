@@ -1,12 +1,13 @@
 using Gui.Elements;
 using Gui.Services;
+using Legion.Model;
 
 namespace Legion.Views
 {
     public interface ILegionViewsManager : IViewsManager
     {
-        View Menu { get; }
-        View Map { get; }
-        View Terrain { get; }
+        void OpenMenu();
+        void OpenMap();
+        void OpenTerrain(TerrainActionContext context);
     }
 }

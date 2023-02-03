@@ -4,7 +4,7 @@ namespace Legion.Model
     {
         // switching between Views
         void OpenMenu();
-        void OpenMap(TerrainActionContext context);
+        void OpenMap();
         void OpenTerrain(TerrainActionContext context);
     }
 }
