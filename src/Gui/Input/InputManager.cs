@@ -25,13 +25,6 @@ namespace Gui.Input
             _currentKeyboardState = Keyboard.GetState();
         }
 
-        public static Rectangle GetMouseBounds()
-        {
-            var pos = GetMousePostion();
-            // Return a 1x1 squre representing the mouse click's bounding box.
-            return new Rectangle(pos.X, pos.Y, 1, 1);
-        }
-
         public static Point GetMousePostion()
         {
             var position = _currentMouseState.Position;

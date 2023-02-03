@@ -132,9 +132,9 @@ namespace Legion.Views.Terrain.Layers
                 if (!_wasMouseDown)
                 {
                     _wasMouseDown = true;
-                    var mouseBounds = InputManager.GetMouseBounds();
+                    var mousePos = InputManager.GetMousePostion();
 
-                    return HandleClick(mouseBounds);
+                    return HandleClick(mousePos);
                 }
             }
             else
@@ -145,19 +145,19 @@ namespace Legion.Views.Terrain.Layers
             return false;
         }
 
-        public bool HandleClick(Rectangle mouseBounds)
+        public bool HandleClick(Point mousePosition)
         {
-            var handled = HandleTerrainClicked(mouseBounds.Location);
+            var handled = HandleTerrainClicked(mousePosition);
             if (handled) return true;
 
-            var enemyChar = CharactersUtils.FindCharacterAtPosition(EnemyArmy, mouseBounds.Location);
+            var enemyChar = CharactersUtils.FindCharacterAtPosition(EnemyArmy, mousePosition);
             if (enemyChar != null)
             {
                 HandleCharacterClicked(enemyChar);
                 return true;
             }
 
-            var userChar = CharactersUtils.FindCharacterAtPosition(UserArmy, mouseBounds.Location);
+            var userChar = CharactersUtils.FindCharacterAtPosition(UserArmy, mousePosition);
             if (userChar != null)
             {
                 HandleCharacterClicked(userChar);
