@@ -9,7 +9,6 @@ namespace Gui.Elements
     {
         public SelectableElement(IGuiServices guiServices) : base(guiServices)
         {
-            Clicked += args => IsMouseOver = false;
         }
         
         public event Action<HandledEventArgs> MouseEnter;
@@ -19,8 +18,6 @@ namespace Gui.Elements
 
         protected virtual bool OnMouseEnter()
         {
-            IsMouseOver = true;
-
             var args = new HandledEventArgs();
             MouseEnter?.Invoke(args);
             return args.Handled;
@@ -28,8 +25,6 @@ namespace Gui.Elements
 
         protected virtual bool OnMouseLeave()
         {
-            IsMouseOver = false;
-
             var args = new HandledEventArgs();
             MouseLeave?.Invoke(args);
             return args.Handled;
@@ -38,18 +33,20 @@ namespace Gui.Elements
         internal override bool UpdateInputInternal()
         {
             var handled = false;
-            var previousPosition = InputManager.GetMousePostion(false);
-            var currentPosition = InputManager.GetMousePostion(true);
+            var currentPosition = InputManager.GetMousePostion();
 
-            var wasMouseInside = Bounds.Contains(previousPosition);
+            // TODO: update IsMouseOver on IsVisible/IsEnabled change
+            var wasMouseInside = IsMouseOver;
             var isMouseInside = Bounds.Contains(currentPosition);
 
-            if (!wasMouseInside && isMouseInside)
+            if (isMouseInside && !wasMouseInside)
             {
+                IsMouseOver = true;
                 handled = OnMouseEnter();
             }
             else if (wasMouseInside && !isMouseInside)
             {
+                IsMouseOver = false;
                 handled = OnMouseLeave();
             }
 

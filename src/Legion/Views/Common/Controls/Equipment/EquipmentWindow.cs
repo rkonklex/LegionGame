@@ -232,7 +232,7 @@ namespace Legion.Views.Common.Controls.Equipment
             _itemsInfoControl.Position = new Point(left, Bounds.Y);
             _characterInfoControl.Position = new Point(Bounds.X + RightColMargin, top);
 
-            var pos = InputManager.GetMousePostion(true);
+            var pos = InputManager.GetMousePostion();
             _dragImage.Bounds= new Rectangle(pos, Point.Zero);
         }
 

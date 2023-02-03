@@ -127,12 +127,12 @@ namespace Legion.Views.Terrain.Layers
 
         public override bool UpdateInput()
         {
-            if (InputManager.GetIsMouseButtonDown(MouseButton.Left, true))
+            if (InputManager.IsMouseButtonDown(MouseButton.Left))
             {
                 if (!_wasMouseDown)
                 {
                     _wasMouseDown = true;
-                    var mouseBounds = InputManager.GetMouseBounds(true);
+                    var mouseBounds = InputManager.GetMouseBounds();
 
                     return HandleClick(mouseBounds);
                 }

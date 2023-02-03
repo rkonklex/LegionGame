@@ -43,17 +43,14 @@ namespace Gui.Elements
 
         private void GetMouseButtonState(MouseButton button, out bool isDown, out bool isUp)
         {
-            var prevState = InputManager.GetIsMouseButtonDown(button, false);
-            var currState = InputManager.GetIsMouseButtonDown(button, true);
-
-            isDown = (!prevState && currState);
-            isUp = (prevState && !currState);
+            isDown = InputManager.IsMouseButtonJustPressed(button);
+            isUp = InputManager.IsMouseButtonJustReleased(button);
         }
 
         internal virtual bool UpdateInputInternal()
         {
             var handled = false;
-            var position = InputManager.GetMousePostion(true);
+            var position = InputManager.GetMousePostion();
 
             var isMouseInside = Bounds.Contains(position);
 

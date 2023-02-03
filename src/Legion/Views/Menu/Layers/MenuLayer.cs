@@ -51,7 +51,7 @@ namespace Legion.Views.Menu.Layers
         {
             if (_loadGameWindow == null)
             {
-                var position = InputManager.GetMousePostion(true);
+                var position = InputManager.GetMousePostion();
                 if (position.Y < TopBoundary)
                 {
                     _viewSwitcher.OpenMap(null);
@@ -81,7 +81,7 @@ namespace Legion.Views.Menu.Layers
             if (_loadGameWindow == null)
             {
                 var swordY = SwordMiddle;
-                var position = InputManager.GetMousePostion(true);
+                var position = InputManager.GetMousePostion();
                 if (position.Y < TopBoundary)
                 {
                     swordY = SwordTop;

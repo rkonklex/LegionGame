@@ -21,7 +21,7 @@ namespace Legion.Views.Map.Layers
             if (_routeDrawer.IsRouteDrawingForPoint)
             {
                 args.Handled = true;
-                var mousePos = InputManager.GetMousePostion(true);
+                var mousePos = InputManager.GetMousePostion();
                 _routeDrawer.EndRouteDrawingForPoint(mousePos);
             }
         }
@@ -31,7 +31,7 @@ namespace Legion.Views.Map.Layers
             if (_routeDrawer.IsRouteDrawingForAny)
             {
                 var mapObject = _routeDrawer.DrawingRouteSource;
-                var mousePos = InputManager.GetMousePostion(true);
+                var mousePos = InputManager.GetMousePostion();
 
                 GuiServices.BasicDrawer.DrawLine(LineColor, 
                     new Vector2(mapObject.X, mapObject.Y),

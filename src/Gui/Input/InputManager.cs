@@ -25,53 +25,60 @@ namespace Gui.Input
             _currentKeyboardState = Keyboard.GetState();
         }
 
-        public static Rectangle GetMouseBounds(bool currentState)
+        public static Rectangle GetMouseBounds()
         {
-            var pos = GetMousePostion(currentState);
+            var pos = GetMousePostion();
             // Return a 1x1 squre representing the mouse click's bounding box.
             return new Rectangle(pos.X, pos.Y, 1, 1);
         }
 
-        public static Point GetMousePostion(bool currentState)
+        public static Point GetMousePostion()
         {
-            var position = currentState ? _currentMouseState.Position : _previousMouseState.Position;
+            var position = _currentMouseState.Position;
             var vect = new Vector2(position.X, position.Y);
             Vector2 worldPosition = Vector2.Transform(vect, Matrix.Invert(ScaleMatrix));
             return new Point((int)worldPosition.X, (int)worldPosition.Y);
         }
 
-        public static bool GetIsMouseButtonUp(MouseButton btn, bool currentState)
+        public static bool IsMouseButtonUp(MouseButton btn)
         {
-            // Simply returns whether the button state is released or not.
-
-            if (currentState)
-                switch (btn)
-                {
-                    case MouseButton.Left:
-                        return _currentMouseState.LeftButton == ButtonState.Released;
-                    case MouseButton.Middle:
-                        return _currentMouseState.MiddleButton == ButtonState.Released;
-                    case MouseButton.Right:
-                        return _currentMouseState.RightButton == ButtonState.Released;
-                }
-            else
-                switch (btn)
-                {
-                    case MouseButton.Left:
-                        return _previousMouseState.LeftButton == ButtonState.Released;
-                    case MouseButton.Middle:
-                        return _previousMouseState.MiddleButton == ButtonState.Released;
-                    case MouseButton.Right:
-                        return _previousMouseState.RightButton == ButtonState.Released;
-                }
-
-            return false;
+            return GetMouseButtonState(_currentMouseState, btn) == ButtonState.Released;
         }
 
-        public static bool GetIsMouseButtonDown(MouseButton btn, bool currentState)
+        public static bool WasMouseButtonUp(MouseButton btn)
         {
-            // This will just call the method above and negate.
-            return !GetIsMouseButtonUp(btn, currentState);
+            return GetMouseButtonState(_previousMouseState, btn) == ButtonState.Released;
+        }
+
+        public static bool IsMouseButtonDown(MouseButton btn)
+        {
+            return GetMouseButtonState(_currentMouseState, btn) == ButtonState.Pressed;
+        }
+
+        public static bool WasMouseButtonDown(MouseButton btn)
+        {
+            return GetMouseButtonState(_previousMouseState, btn) == ButtonState.Pressed;
+        }
+
+        public static bool IsMouseButtonJustPressed(MouseButton btn)
+        {
+            return IsMouseButtonDown(btn) && WasMouseButtonUp(btn);
+        }
+
+        public static bool IsMouseButtonJustReleased(MouseButton btn)
+        {
+            return WasMouseButtonDown(btn) && IsMouseButtonUp(btn);
+        }
+
+        private static ButtonState GetMouseButtonState(MouseState mouseState, MouseButton btn)
+        {
+            return btn switch
+            {
+                MouseButton.Left => mouseState.LeftButton,
+                MouseButton.Middle => mouseState.MiddleButton,
+                MouseButton.Right => mouseState.RightButton,
+                _ => throw new System.NotImplementedException(),
+            };
         }
 
         // TODO: Keyboard input stuff goes here.
