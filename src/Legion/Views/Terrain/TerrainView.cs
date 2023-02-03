@@ -25,7 +25,7 @@ namespace Legion.Views.Terrain
 
         public override void Update()
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (InputManager.GetIsKeyDown(Keys.Escape))
             {
                 _viewSwitcher.OpenMap(null);
             }
