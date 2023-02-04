@@ -86,16 +86,16 @@ namespace Legion.Views.Map.Controls
             Label2 = new Label(GuiServices) { IsVerticalCenter = true };
             image = new Image(GuiServices);
 
-            Elements.Add(InnerPanel);
-            Elements.Add(PriceLabel);
-            Elements.Add(UpButton);
-            Elements.Add(DownButton);
-            Elements.Add(OkButton);
-            Elements.Add(CancelButton);
-            Elements.Add(PriceLabel);
-            Elements.Add(Label1);
-            Elements.Add(Label2);
-            Elements.Add(image);
+            AddElement(InnerPanel);
+            AddElement(PriceLabel);
+            AddElement(UpButton);
+            AddElement(DownButton);
+            AddElement(OkButton);
+            AddElement(CancelButton);
+            AddElement(PriceLabel);
+            AddElement(Label1);
+            AddElement(Label2);
+            AddElement(image);
 
             UpdateBounds();
             ConnectEvents();

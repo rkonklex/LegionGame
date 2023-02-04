@@ -62,7 +62,7 @@ namespace Legion.Views.Map.Controls
                 {
                     button.Clicked += btnInfo.Value;
                 }
-                Elements.Add(button);
+                AddElement(button);
             }
         }
 

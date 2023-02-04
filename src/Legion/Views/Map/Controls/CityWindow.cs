@@ -130,16 +130,16 @@ namespace Legion.Views.Map.Controls
             image = new Image(GuiServices);
             BuildingsText = new TextBlock(GuiServices) { TextColor = Color.Black };
 
-            Elements.Add(InnerPanel);
-            Elements.Add(OkButton);
-            Elements.Add(MoreButton);
-            Elements.Add(NameLabel);
-            Elements.Add(CountLabel);
-            Elements.Add(TaxLabel);
-            Elements.Add(MoraleLabel);
-            Elements.Add(InfoLabel);
-            Elements.Add(image);
-            Elements.Add(BuildingsText);
+            AddElement(InnerPanel);
+            AddElement(OkButton);
+            AddElement(MoreButton);
+            AddElement(NameLabel);
+            AddElement(CountLabel);
+            AddElement(TaxLabel);
+            AddElement(MoraleLabel);
+            AddElement(InfoLabel);
+            AddElement(image);
+            AddElement(BuildingsText);
 
             UpdateBounds();
             UpdateMoreButtonVisibility();

@@ -6,12 +6,13 @@ namespace Gui.Elements
 {
     public class ContainerElement : ClickableElement
     {
+        private readonly List<DrawableElement> _elements = new();
+
         public ContainerElement(IGuiServices guiServices) : base(guiServices)
         {
-            Elements = new List<DrawableElement>();
         }
 
-        protected List<DrawableElement> Elements { get; private set; }
+        protected IReadOnlyCollection<DrawableElement> Elements => _elements;
 
         internal override bool UpdateInputInternal()
         {
@@ -48,17 +49,17 @@ namespace Gui.Elements
 
         public void AddElement(DrawableElement element)
         {
-            Elements.Add(element);
+            _elements.Add(element);
         }
 
         public void RemoveElement(DrawableElement element)
         {
-            Elements.Remove(element);
+            _elements.Remove(element);
         }
 
         public void ClearElements()
         {
-            Elements.Clear();
+            _elements.Clear();
         }
     }
 }

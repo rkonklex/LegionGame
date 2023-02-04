@@ -48,7 +48,7 @@ namespace Gui.Elements
             {
                 var button = CreateButton(btnNo++, btnName);
                 button.Clicked += args => ButtonClicked?.Invoke(args, btnName);
-                Elements.Add(button);
+                AddElement(button);
             }
         }
 

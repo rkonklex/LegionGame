@@ -37,8 +37,8 @@ namespace Legion.Views.Map.Controls
             _startButton.FillColor = _optionsButton.FillColor = Colors.MapMenuBackgroundColor;
             _startButton.TextColor = _optionsButton.TextColor = Colors.TextLightColor;
 
-            Elements.Add(_startButton);
-            Elements.Add(_optionsButton);
+            AddElement(_startButton);
+            AddElement(_optionsButton);
         }
 
         public override void Draw()

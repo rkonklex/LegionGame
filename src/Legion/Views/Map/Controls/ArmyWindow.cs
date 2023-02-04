@@ -120,17 +120,17 @@ namespace Legion.Views.Map.Controls
             InfoLabel = new Label(GuiServices);
             image = new Image(GuiServices);
 
-            Elements.Add(InnerPanel);
-            Elements.Add(OkButton);
-            Elements.Add(MoreButton);
-            Elements.Add(NameLabel);
-            Elements.Add(CountLabel);
-            Elements.Add(StrengthLabel);
-            Elements.Add(FoodLabel);
-            Elements.Add(SpeedLabel);
-            Elements.Add(ActionLabel);
-            Elements.Add(InfoLabel);
-            Elements.Add(image);
+            AddElement(InnerPanel);
+            AddElement(OkButton);
+            AddElement(MoreButton);
+            AddElement(NameLabel);
+            AddElement(CountLabel);
+            AddElement(StrengthLabel);
+            AddElement(FoodLabel);
+            AddElement(SpeedLabel);
+            AddElement(ActionLabel);
+            AddElement(InfoLabel);
+            AddElement(image);
 
             UpdateBounds();
         }

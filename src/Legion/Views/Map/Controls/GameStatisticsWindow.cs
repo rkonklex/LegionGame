@@ -132,15 +132,15 @@ namespace Legion.Views.Map.Controls
                 Text = _texts.Get("gameStatistics.treasure", _playersRepository.UserPlayer.Money)
             };
 
-            Elements.Add(InnerPanel);
-            Elements.Add(OkButton);
-            Elements.Add(ChartsButton);
-            Elements.Add(Label1);
-            Elements.Add(Label2);
-            Elements.Add(Label3);
-            Elements.Add(Label4);
-            Elements.Add(Label5);
-            Elements.Add(Label6);
+            AddElement(InnerPanel);
+            AddElement(OkButton);
+            AddElement(ChartsButton);
+            AddElement(Label1);
+            AddElement(Label2);
+            AddElement(Label3);
+            AddElement(Label4);
+            AddElement(Label5);
+            AddElement(Label6);
 
             UpdateBounds();
         }

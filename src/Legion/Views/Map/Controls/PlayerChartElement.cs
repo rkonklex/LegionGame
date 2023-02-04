@@ -17,7 +17,7 @@ namespace Legion.Views.Map.Controls
         {
             _player = player;
             _playerLabel = new Label(GuiServices);
-            Elements.Add(_playerLabel);
+            AddElement(_playerLabel);
         }
 
         public override void Update()

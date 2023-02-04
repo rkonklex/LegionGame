@@ -52,7 +52,7 @@ namespace Legion.Views.Map.Controls
 
             InnerPanel = new Panel(GuiServices);
             InnerPanel.Bounds = new Rectangle(Bounds.X + 4, Bounds.Y + 4, 152, 92);
-            Elements.Add(InnerPanel);
+            AddElement(InnerPanel);
 
             OkButton = new BrownButton(GuiServices, _texts.Get("gameStatistics.ok")) { Center = true };
             OkButton.Bounds = new Rectangle(Bounds.X + 116, Bounds.Y + 100, 40, 15);
@@ -68,11 +68,11 @@ namespace Legion.Views.Map.Controls
 
                 var playerElement = new PlayerChartElement(GuiServices, player);
                 playerElement.Bounds = new Rectangle(Bounds.X, Bounds.Y + 8 + (i-1) * 20, 10, 10);
-                Elements.Add(playerElement);
+                AddElement(playerElement);
             }
             
-            Elements.Add(OkButton);
-            Elements.Add(ChartsButton);
+            AddElement(OkButton);
+            AddElement(ChartsButton);
         }
     }
 }
