@@ -73,7 +73,6 @@ namespace Legion.Views.Terrain.Layers
         public override void Update()//GameTime gameTime)
         {
             var gameTime = 20;
-            UpdateInput();
 
             if (IsPaused)
             {
