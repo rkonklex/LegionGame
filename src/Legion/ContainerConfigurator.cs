@@ -61,8 +61,7 @@ namespace Legion
             builder.RegisterType<CommonMapGuiFactory>().As<ICommonMapGuiFactory>().SingleInstance();
 
             //Main Views
-            builder.RegisterType<ViewsManager>().As<IViewsManager>();
-            builder.RegisterType<LegionViewsManager>().As<ILegionViewsManager>();
+            builder.RegisterType<LegionViewsManager>().As<ILegionViewsManager>().As<IViewsManager>();
 
             builder.RegisterType<MenuView>().As<MenuView>().SingleInstance();
             builder.RegisterType<MapView>().As<MapView>().SingleInstance();
