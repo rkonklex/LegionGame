@@ -15,15 +15,18 @@ namespace Legion
         const int WorldHeight = 512;
         const float ScreenWidth = WorldWidth * Scale;
         const float ScreenHeight = WorldHeight * Scale;
+
+        private readonly ILegionViewsManager _viewsManager;
+        private readonly GraphicsDeviceManager _graphics;
         private readonly Matrix _scaleMatrix;
 
-        GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
         BasicDrawer _basicDrawer;
         ImagesStore _imagesStore;
 
-        public LegionGame()
+        public LegionGame(ILegionViewsManager viewsManager)
         {
+            _viewsManager = viewsManager;
             _graphics = new GraphicsDeviceManager(this);
             _graphics.PreferredBackBufferWidth = (int) ScreenWidth;
             _graphics.PreferredBackBufferHeight = (int) ScreenHeight;
@@ -43,7 +46,7 @@ namespace Legion
 
         public Rectangle GameBounds { get; }
 
-        public ILegionViewsManager ViewsManager { get; set; }
+        public ILegionViewsManager ViewsManager => _viewsManager;
 
         public event Action GameLoaded;
 

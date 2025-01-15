@@ -18,14 +18,11 @@ using Legion.Views.Terrain.Layers;
 
 namespace Legion
 {
-    public class ContainerConfigurator
+    public class ContainerConfigurationModule : Module
     {
-        private IContainer _container;
-
-        private void RegisterAll(LegionGame game)
+        protected override void Load(ContainerBuilder builder)
         {
-            var builder = new ContainerBuilder();
-            builder.RegisterInstance(game).As<IGuiServices>().As<IViewSwitcher>();
+            builder.RegisterType<LegionGame>().AsSelf().As<IGuiServices>().As<IViewSwitcher>().SingleInstance();
 
             //Model
             builder.RegisterType<LegionConfig>().As<ILegionConfig>().SingleInstance();
@@ -87,29 +84,6 @@ namespace Legion
             builder.RegisterType<CitiesTurnProcessor>().As<ICitiesTurnProcessor>().SingleInstance();
             builder.RegisterType<ArmiesTurnProcessor>().As<IArmiesTurnProcessor>().SingleInstance();
             builder.RegisterType<WorldTurnProcessor>().As<IWorldTurnProcessor>().SingleInstance();
-
-            _container = builder.Build();
-        }
-
-        public void Configure(LegionGame game)
-        {
-            RegisterAll(game);
-
-            game.ViewsManager = _container.Resolve<ILegionViewsManager>();
-            game.GameLoaded += () =>
-            {
-                var initialDataGenerator = _container.Resolve<IInitialDataGenerator>();
-                initialDataGenerator.Generate();
-
-                ////var archivePath = "/home/bartosz/Pobrane/dh0/legion/Legion/Archiwum/zapis 1";
-                //var archivePath = "/home/bartosz/Pobrane/_legion.lha/legion/Archiwum/Zapis 5";
-                //var gameArchive = container.Resolve<IGameArchive>();
-                //gameArchive.LoadGame(archivePath);
-
-                game.OpenMenu();
-                //game.OpenTerrain(new TerrainActionContext)
-                //game.OpenMap(null);
-            };
         }
     }
 }
