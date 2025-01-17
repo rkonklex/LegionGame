@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AwaitableCoroutine;
 using Legion.Model.Repositories;
 using Legion.Model.Types;
 using Legion.Model.Types.Definitions;
@@ -29,7 +30,7 @@ namespace Legion.Model
             _viewSwitcher = viewSwitcher;
         }
 
-        public void Encounter(Army army, EncounterType encounterType)
+        public async Coroutine Encounter(Army army, EncounterType encounterType)
         {
             Army encounterArmy = null;
             var encounterMessage = new Message();
@@ -90,9 +91,11 @@ namespace Legion.Model
 
             encounterMessage.OnClose = () => { _viewSwitcher.OpenTerrain(battleContext); };
             _messagesService.ShowMessage(encounterMessage);
+
+            await battleContext.ActionFinished;
         }
 
-        public void Hunt(Army army, TerrainType terrainType)
+        public async Coroutine Hunt(Army army, TerrainType terrainType)
         {
             Army creatureArmy = null;
             var creatureTypes = _characterDefinitionsRepository;
@@ -127,10 +130,6 @@ namespace Legion.Model
             battleContext.UserArmy = army;
             battleContext.EnemyArmy = creatureArmy;
             battleContext.Type = TerrainActionType.Battle;
-            battleContext.ActionAfter = () =>
-            {
-                army.CurrentAction = ArmyActions.Camping;
-            };
 
             var huntMessage = new Message();
             huntMessage.Type = MessageType.ArmyTrackedDownBeast;
@@ -138,6 +137,9 @@ namespace Legion.Model
             huntMessage.OnClose = () => { _viewSwitcher.OpenTerrain(battleContext); };
 
             _messagesService.ShowMessage(huntMessage);
+
+            await battleContext.ActionFinished;
+            army.CurrentAction = ArmyActions.Camping;
         }
 
         private Army CreateTempArmy(int charactersCount, CharacterDefinition charactersType = null)

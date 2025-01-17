@@ -1,10 +1,11 @@
+using AwaitableCoroutine;
 using Legion.Model.Types;
 
 namespace Legion.Model
 {
     public interface IBattleManager
     {
-        void AttackOnArmy(Army army, Army targetArmy);
-        void AttackOnCity(Army army, City city);
+        Coroutine AttackOnArmy(Army army, Army targetArmy);
+        Coroutine AttackOnCity(Army army, City city);
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AwaitableCoroutine;
 using Legion.Model.Helpers;
 using Legion.Model.Repositories;
 using Legion.Model.Types;
@@ -30,7 +31,7 @@ namespace Legion.Model
             _viewSwitcher = viewSwitcher;
         }
 
-        public void AttackOnArmy(Army army, Army targetArmy)
+        public async Coroutine AttackOnArmy(Army army, Army targetArmy)
         {
             if (!army.IsUserControlled && !targetArmy.IsUserControlled)
             {
@@ -75,30 +76,29 @@ namespace Legion.Model
                     battleMessage.MapObjects = new List<MapObject> { army, targetArmy };
                 }
 
-                battleContext.ActionAfter = () =>
-                {
-                    if (army.IsKilled)
-                    {
-                        var message = new Message();
-                        message.Type = MessageType.ArmyDestroyed;
-                        message.MapObjects = new List<MapObject> { army };
-                        _messagesService.ShowMessage(message);
-                    }
-                    if (targetArmy.IsKilled)
-                    {
-                        var message = new Message();
-                        message.Type = MessageType.ArmyDestroyed;
-                        message.MapObjects = new List<MapObject> { targetArmy };
-                        _messagesService.ShowMessage(message);
-                    }
-                };
-
                 battleMessage.OnClose = () => { _viewSwitcher.OpenTerrain(battleContext); };
                 _messagesService.ShowMessage(battleMessage);
+
+                await battleContext.ActionFinished;
+
+                if (army.IsKilled)
+                {
+                    var message = new Message();
+                    message.Type = MessageType.ArmyDestroyed;
+                    message.MapObjects = new List<MapObject> { army };
+                    _messagesService.ShowMessage(message);
+                }
+                if (targetArmy.IsKilled)
+                {
+                    var message = new Message();
+                    message.Type = MessageType.ArmyDestroyed;
+                    message.MapObjects = new List<MapObject> { targetArmy };
+                    _messagesService.ShowMessage(message);
+                }
             }
         }
 
-        public void AttackOnCity(Army army, City city)
+        public async Coroutine AttackOnCity(Army army, City city)
         {
             //var wall = 0;
 
@@ -138,7 +138,6 @@ namespace Legion.Model
 
                     var battleContext = new TerrainActionContext();
                     battleContext.Type = TerrainActionType.Battle;
-                    battleContext.ActionAfter = () => AfterAttackOnCity(army, city, cityArmy);
 
                     var battleMessage = new Message();
 
@@ -165,6 +164,9 @@ namespace Legion.Model
 
                     battleMessage.OnClose = () => { _viewSwitcher.OpenTerrain(battleContext); };
                     _messagesService.ShowMessage(battleMessage);
+
+                    await battleContext.ActionFinished;
+                    AfterAttackOnCity(army, city, cityArmy);
                 }
                 else
                 {

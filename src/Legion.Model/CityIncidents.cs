@@ -64,7 +64,7 @@ namespace Legion.Model
             }
         }
 
-        public void Riot(City city)
+        public async void Riot(City city)
         {
             var userArmy = _armiesHelper.FindUserArmyInCity(city);
             if (userArmy == null)
@@ -99,26 +99,6 @@ namespace Legion.Model
             battleContext.UserArmy = userArmy;
             battleContext.EnemyArmy = rebelArmy;
             battleContext.Type = TerrainActionType.Battle;
-            battleContext.ActionAfter = () =>
-            {
-                city.Population -= city.Population / 4;
-
-                if (userArmy.IsKilled)
-                {
-                    city.Owner = null;
-                    city.Morale = 30;
-
-                    var defeatMessage = new Message();
-                    defeatMessage.Type = MessageType.RiotInTheCityLost;
-                    defeatMessage.MapObjects = new List<MapObject> { city };
-                    _messagesService.ShowMessage(defeatMessage);
-                }
-                else
-                {
-                    city.Morale = 50;
-                    city.Craziness += GlobalUtils.Rand(3) + 5;
-                }
-            };
 
             var defenceMessage = new Message();
             defenceMessage.Type = MessageType.RiotInTheCityWithDefence;
@@ -128,6 +108,26 @@ namespace Legion.Model
                 _viewSwitcher.OpenTerrain(battleContext);
             };
             _messagesService.ShowMessage(defenceMessage);
+
+            await battleContext.ActionFinished;
+
+            city.Population -= city.Population / 4;
+
+            if (userArmy.IsKilled)
+            {
+                city.Owner = null;
+                city.Morale = 30;
+
+                var defeatMessage = new Message();
+                defeatMessage.Type = MessageType.RiotInTheCityLost;
+                defeatMessage.MapObjects = new List<MapObject> { city };
+                _messagesService.ShowMessage(defeatMessage);
+            }
+            else
+            {
+                city.Morale = 50;
+                city.Craziness += GlobalUtils.Rand(3) + 5;
+            }
         }
     }
 }
