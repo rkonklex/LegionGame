@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AwaitableCoroutine;
 using Legion.Model.Helpers;
 using Legion.Model.Repositories;
 using Legion.Model.Types;
@@ -18,8 +19,6 @@ namespace Legion.Model
         private readonly IBattleManager _battleManager;
         private readonly IArmyActivities _armyActivities;
         private readonly IMessagesService _messagesService;
-
-        private int _currentTurnArmyIdx = -1;
 
         public ArmiesTurnProcessor(ILegionInfo legionInfo,
             IArmiesRepository armiesRepository,
@@ -40,29 +39,16 @@ namespace Legion.Model
             _messagesService = messagesService;
         }
 
-        public bool IsProcessingTurn { get; private set; }
-
-        public void NextTurn()
+        public async Coroutine NextTurn()
         {
-            IsProcessingTurn = true;
-            _currentTurnArmyIdx = -1;
-        }
-
-        public Army ProcessTurnForNextArmy()
-        {
-            //If GAME_OVER : Goto OVER : End If
-            var idx = ++_currentTurnArmyIdx;
-            if (idx < _armiesRepository.Armies.Count)
+            var armiesSafeEnumerable = _armiesRepository.Armies.ToArray();
+            foreach (var army in armiesSafeEnumerable)
             {
-                var army = _armiesRepository.Armies[idx];
-                ProcessTurn(army);
-                return army;
+                await ProcessTurn(army);
             }
-            IsProcessingTurn = false;
-            return null;
         }
 
-        private void ProcessTurn(Army army)
+        private async Coroutine ProcessTurn(Army army)
         {
             //army.IsTerrainActionAvailable = true;
             UpdateCharactersExperience(army);
@@ -71,7 +57,7 @@ namespace Legion.Model
                 return;
             }
             UpdateDaysToGetInfo(army);
-            HandleArmyCurrentAction(army);
+            await HandleArmyCurrentAction(army);
         }
 
         private void UpdateCharactersExperience(Army army)
@@ -127,7 +113,7 @@ namespace Legion.Model
             }
         }
 
-        private void HandleArmyCurrentAction(Army army)
+        private async Coroutine HandleArmyCurrentAction(Army army)
         {
             switch (army.CurrentAction)
             {
@@ -139,7 +125,7 @@ namespace Legion.Model
                         GiveTheOrder(army);
                         return;
                     }
-                    Move(army);
+                    await Move(army);
                     break;
                 case ArmyActions.Camping:
                     HandleCamping(army);
@@ -281,14 +267,19 @@ namespace Legion.Model
             var dy = obj2.Y - obj1.Y;
             var dist = Math.Abs(Math.Sqrt(dx * dx + dy * dy));
             return (int) dist;
+
         }
 
-        public void Move(Army army)
+        private bool IsArrived(Army army)
+        {
+            return Math.Abs(army.Target.X - army.X) < 3 && Math.Abs(army.Target.Y - army.Y) < 3;
+        }
+
+        public async Coroutine Move(Army army)
         {
             if (army.Target == null || army.Target.Owner == army.Owner)
             {
                 army.CurrentAction = ArmyActions.Camping;
-                army.IsMoving = false;
                 return;
             }
 
@@ -310,23 +301,23 @@ namespace Legion.Model
             var dx = army.Target.X - army.X;
             var dy = army.Target.Y - army.Y;
 
-            var l = Math.Sqrt(dx * dx + dy * dy) + 0.2;
-            var vx = (int) ((dx / l) * (speed + 1));
-            var vy = (int) ((dy / l) * (speed + 1));
+            var l = MathF.Sqrt(dx * dx + dy * dy) + 0.2f;
+            var vx = dx / l;
+            var vy = dy / l;
 
-            if (Math.Abs(vx) > Math.Abs(dx))
+            var x1 = (float)army.X;
+            var y1 = (float)army.Y;
+            for (var i = 0; i <= speed && !IsArrived(army); i++)
             {
-                vx = dx;
-            }
-            if (Math.Abs(vy) > Math.Abs(dy))
-            {
-                vy = dy;
+                x1 += vx;
+                y1 += vy;
+
+                army.X = (int)x1;
+                army.Y = (int)y1;
+                await Coroutine.Yield();
             }
 
-            army.TurnTargetX = army.X + vx;
-            army.TurnTargetY = army.Y + vy;
-
-            army.IsMoving = true;
+            OnMoveEnded(army);
         }
 
         private bool HandleEncounters(Army army)
@@ -422,8 +413,6 @@ namespace Legion.Model
 
         public void OnMoveEnded(Army army)
         {
-            army.IsMoving = false;
-
             if (army.Owner.IsUserControlled)
             {
                 var visitedCity = _armiesHelper.IsArmyInTheCity(army);
@@ -441,8 +430,7 @@ namespace Legion.Model
             // target could be destroyed meanwhile
             if (army.Target != null)
             {
-                var isArrived = Math.Abs(army.Target.X - army.X) < 3 && Math.Abs(army.Target.Y - army.Y) < 3;
-                if (isArrived)
+                if (IsArrived(army))
                 {
                     army.CurrentAction = ArmyActions.Camping;
 

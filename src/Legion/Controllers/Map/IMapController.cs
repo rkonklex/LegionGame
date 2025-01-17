@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AwaitableCoroutine;
 using Legion.Model.Types;
 
 namespace Legion.Controllers.Map
@@ -8,9 +9,6 @@ namespace Legion.Controllers.Map
         List<City> Cities { get; }
         List<Army> Armies { get; }
         bool IsProcessingTurn { get; }
-
-        void NextTurn();
-        Army ProcessTurnForNextArmy();
-        void OnMoveEnded(Army army);
+        Coroutine StartNextTurn();
     }
 }

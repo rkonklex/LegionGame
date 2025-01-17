@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using AwaitableCoroutine;
 using Gui.Services;
 using Legion.Controllers.Map;
 using Legion.Localization;
@@ -17,6 +18,7 @@ namespace Legion.Views.Map.Layers
         private readonly ILegionInfo _legionInfo;
         private readonly ModalLayer _modalLayer;
         private readonly ICommonGuiFactory _commonGuiFactory;
+        private readonly ICoroutineRunner _coroutineRunner;
         private MapMenu _mapMenu;
 
         public MapGuiLayer(
@@ -26,7 +28,8 @@ namespace Legion.Views.Map.Layers
             IPlayersRepository playersRepository,
             ILegionInfo legionInfo,
             ModalLayer modalLayer,
-            ICommonGuiFactory commonGuiFactory) : base(guiServices)
+            ICommonGuiFactory commonGuiFactory,
+            ICoroutineRunner coroutineRunner) : base(guiServices)
         {
             _mapController = mapController;
             _texts = texts;
@@ -34,6 +37,7 @@ namespace Legion.Views.Map.Layers
             _legionInfo = legionInfo;
             _modalLayer = modalLayer;
             _commonGuiFactory = commonGuiFactory;
+            _coroutineRunner = coroutineRunner;
         }
 
         public override void Initialize()
@@ -65,10 +69,14 @@ namespace Legion.Views.Map.Layers
             _modalLayer.Window = window;
         }
 
+        private Coroutine _turnTask;
         private void OnStartClicked(HandledEventArgs args)
         {
             args.Handled = true;
-            _mapController.NextTurn();
+            if (_turnTask == null || _turnTask.IsCompleted)
+            {
+                _turnTask = _coroutineRunner.Create(_mapController.StartNextTurn);
+            }
         }
     }
 }

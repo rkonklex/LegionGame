@@ -1,4 +1,5 @@
 using Autofac;
+using AwaitableCoroutine;
 using Gui.Services;
 using Legion.Archive;
 using Legion.Controllers.Map;
@@ -23,6 +24,7 @@ namespace Legion
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<LegionGame>().AsSelf().As<IGuiServices>().As<IViewSwitcher>().SingleInstance();
+            builder.RegisterType<CoroutineRunner>().As<ICoroutineRunner>().SingleInstance();
 
             //Model
             builder.RegisterType<LegionConfig>().As<ILegionConfig>().SingleInstance();

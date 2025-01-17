@@ -1,4 +1,5 @@
 ﻿using System;
+using AwaitableCoroutine;
 using Gui.Input;
 using Gui.Services;
 using Legion.Model;
@@ -17,6 +18,7 @@ namespace Legion
         const float ScreenHeight = WorldHeight * Scale;
 
         private readonly ILegionViewsManager _viewsManager;
+        private readonly ICoroutineRunner _coroutineRunner;
         private readonly GraphicsDeviceManager _graphics;
         private readonly Matrix _scaleMatrix;
 
@@ -24,9 +26,10 @@ namespace Legion
         BasicDrawer _basicDrawer;
         ImagesStore _imagesStore;
 
-        public LegionGame(ILegionViewsManager viewsManager)
+        public LegionGame(ILegionViewsManager viewsManager, ICoroutineRunner coroutineRunner)
         {
             _viewsManager = viewsManager;
+            _coroutineRunner = coroutineRunner;
             _graphics = new GraphicsDeviceManager(this);
             _graphics.PreferredBackBufferWidth = (int) ScreenWidth;
             _graphics.PreferredBackBufferHeight = (int) ScreenHeight;
@@ -82,6 +85,7 @@ namespace Legion
             //}
 
             base.Update(gameTime);
+            _coroutineRunner.Update();
             ViewsManager.Update();
         }
 

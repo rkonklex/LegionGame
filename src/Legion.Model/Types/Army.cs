@@ -36,11 +36,6 @@ namespace Legion.Model.Types
         
         public MapObject Target { get; set; }
 
-		public int TurnTargetX { get; set; }
-		public int TurnTargetY { get; set; }
-
-        public bool IsMoving { get; set; }
-
         /// <summary>
         /// ARMIA(A,0,TSI)=SILA
         /// </summary>

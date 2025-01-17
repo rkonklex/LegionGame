@@ -18,7 +18,6 @@ namespace Legion.Views.Map.Layers
         private readonly IMapArmyGuiFactory _armyGuiFactory;
         private readonly IMapRouteDrawer _routeDrawer;
         private readonly ModalLayer _modalLayer;
-        private Army _currentArmy;
 
         public ArmiesLayer(
             IGuiServices guiServices,
@@ -61,57 +60,17 @@ namespace Legion.Views.Map.Layers
 
         public override void Update()
         {
+            base.Update();
+
             if (_mapController.IsProcessingTurn)
             {
-                if (_currentArmy != null && _currentArmy.IsMoving)
+                foreach (var armyElement in Elements.Cast<ArmyElement>())
                 {
-                    ProcessArmyMovement(_currentArmy);
-                }
-                else
-                {
-                    _currentArmy = _mapController.ProcessTurnForNextArmy();
-
-                    if (_currentArmy != null && _currentArmy.IsKilled)
+                    if (armyElement.Army.IsKilled)
                     {
-                        RemoveArmy(_currentArmy);
+                        RemoveElement(armyElement);
                     }
                 }
-            }
-        }
-
-        void RemoveArmy(Army army)
-        {
-            var elem = Elements.FirstOrDefault(e =>
-            {
-                var armyElement = e as ArmyElement;
-                return armyElement != null && armyElement.Army == army;
-            });
-
-            RemoveElement(elem);
-        }
-
-        void ProcessArmyMovement(Army army)
-        {
-            var dx = army.TurnTargetX - army.X;
-            var dy = army.TurnTargetY - army.Y;
-
-            var mx = 0;
-            var my = 0;
-
-            if (dx < 0) mx = -1;
-            if (dx > 0) mx = 1;
-
-            if (dy < 0) my = -1;
-            if (dy > 0) my = 1;
-
-            army.X += mx;
-            army.Y += my;
-
-            if (Math.Abs(dx) < 1 && Math.Abs(dy) < 1)
-            {
-                army.X = army.TurnTargetX;
-                army.Y = army.TurnTargetY;
-                _mapController.OnMoveEnded(army);
             }
         }
     }

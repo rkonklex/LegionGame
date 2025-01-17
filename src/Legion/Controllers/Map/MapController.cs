@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AwaitableCoroutine;
 using Legion.Model;
 using Legion.Model.Repositories;
 using Legion.Model.Types;
@@ -31,27 +32,24 @@ namespace Legion.Controllers.Map
 
         public List<Army> Armies => _armiesRepository.Armies;
 
-        public bool IsProcessingTurn => _armiesTurnProcessor.IsProcessingTurn;
+        public bool IsProcessingTurn => _isProcessingTurn;
 
-        public void NextTurn()
+        private bool _isProcessingTurn;
+        public async Coroutine StartNextTurn()
         {
-            if (!_citiesTurnProcessor.IsProcessingTurn && !_armiesTurnProcessor.IsProcessingTurn)
+            try
             {
+                _isProcessingTurn = true;
                 _worldTurnProcessor.NextTurn();
+                await Coroutine.Yield();
                 _citiesTurnProcessor.NextTurn();
-                _armiesTurnProcessor.NextTurn();
+                await Coroutine.Yield();
+                await _armiesTurnProcessor.NextTurn();
+            }
+            finally
+            {
+                _isProcessingTurn = false;
             }
         }
-
-        public Army ProcessTurnForNextArmy()
-        {
-            return _armiesTurnProcessor.ProcessTurnForNextArmy();
-        }
-
-        public void OnMoveEnded(Army army)
-        {
-            _armiesTurnProcessor.OnMoveEnded(army);
-        }
-
     }
 }
