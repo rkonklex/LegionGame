@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using AwaitableCoroutine;
 using Legion.Model.Helpers;
 using Legion.Model.Repositories;
@@ -41,8 +43,17 @@ namespace Legion.Model
 
         public async Coroutine NextTurn()
         {
-            var armiesSafeEnumerable = _armiesRepository.Armies.ToArray();
-            foreach (var army in armiesSafeEnumerable)
+            // Create a copy of the list to avoid modification during iteration
+            var armiesSnapshot = _armiesRepository.Armies.ToArray();
+
+            // Process user-controlled armies first
+            foreach (var army in armiesSnapshot.Where(army => army.IsUserControlled))
+            {
+                await ProcessTurn(army);
+            }
+
+            // Process AI-controlled armies
+            foreach (var army in armiesSnapshot.Where(army => !army.IsUserControlled))
             {
                 await ProcessTurn(army);
             }
@@ -50,66 +61,68 @@ namespace Legion.Model
 
         private async Coroutine ProcessTurn(Army army)
         {
-            //army.IsTerrainActionAvailable = true;
-            UpdateCharactersExperience(army);
-            if (!UpdateFoods(army))
+            if (army.IsUserControlled)
             {
-                return;
+                UpdateCharactersExperience(army);
+
+                var hasEnoughFood = CheckFoodStatus(army);
+                if (!hasEnoughFood)
+                {
+                    // TODO: wait for message window to close before killing the army
+                    _armiesRepository.KillArmy(army);
+                    return;
+                }
             }
-            UpdateDaysToGetInfo(army);
+            else
+            {
+                UpdateDaysToGetInfo(army);
+            }
+
             await HandleArmyCurrentAction(army);
         }
 
         private void UpdateCharactersExperience(Army army)
         {
-            if (army.Owner.IsUserControlled)
+            Debug.Assert(army.IsUserControlled);
+            if (_legionInfo.CurrentDay % 30 == 0)
             {
-                if (_legionInfo.CurrentDay % 30 == 0)
+                foreach (var member in army.Characters)
                 {
-                    foreach (var member in army.Characters)
-                    {
-                        var raceType = member.Type as RaceDefinition;
-                        var experience = member.Experience + GlobalUtils.Rand(raceType.Intelligence);
-                        if (experience <= 95) member.Experience = experience;
-                    }
+                    var raceType = member.Type as RaceDefinition;
+                    var experience = member.Experience + GlobalUtils.Rand(raceType.Intelligence);
+                    if (experience <= 95) member.Experience = experience;
                 }
             }
         }
 
-        private bool UpdateFoods(Army army)
+        private bool CheckFoodStatus(Army army)
         {
-            if (army.Owner.IsUserControlled)
+            Debug.Assert(army.IsUserControlled);
+            var days = army.Food / army.Characters.Count;
+            if (days < 5 && days > 0)
             {
-                var days = army.Food / army.Characters.Count;
-                if (days < 5 && days > 0)
-                {
-                    var message = new Message();
-                    message.Type = MessageType.ArmyLowOnFood;
-                    message.MapObjects = new List<MapObject> { army };
-                    _messagesService.ShowMessage(message);
-                }
-                if (army.Food <= 0)
-                {
-                    var message = new Message();
-                    message.Type = MessageType.ArmyDisbandedNoFood;
-                    message.MapObjects = new List<MapObject> { army };
-                    _messagesService.ShowMessage(message);
-                    // TODO: wait for message window to close before killing the army
-                    _armiesRepository.KillArmy(army);
-                    return false;
-                }
+                var message = new Message();
+                message.Type = MessageType.ArmyLowOnFood;
+                message.MapObjects = new List<MapObject> { army };
+                _messagesService.ShowMessage(message);
+            }
+            else if (army.Food <= 0)
+            {
+                var message = new Message();
+                message.Type = MessageType.ArmyDisbandedNoFood;
+                message.MapObjects = new List<MapObject> { army };
+                _messagesService.ShowMessage(message);
+                return false;
             }
             return true;
         }
 
         private void UpdateDaysToGetInfo(Army army)
         {
-            if (!army.Owner.IsUserControlled)
+            Debug.Assert(!army.IsUserControlled);
+            if (army.DaysToGetInfo < 28 && army.DaysToGetInfo > 0)
             {
-                if (army.DaysToGetInfo < 28 && army.DaysToGetInfo > 0)
-                {
-                    army.DaysToGetInfo--;
-                }
+                army.DaysToGetInfo--;
             }
         }
 
@@ -120,7 +133,7 @@ namespace Legion.Model
                 case ArmyActions.Move:
                 case ArmyActions.FastMove:
                 case ArmyActions.Attack:
-                    if (!army.Owner.IsUserControlled && GlobalUtils.Rand(6) == 1)
+                    if (!army.IsUserControlled && GlobalUtils.Rand(6) == 1)
                     {
                         GiveTheOrder(army);
                         return;
@@ -129,7 +142,7 @@ namespace Legion.Model
                     break;
                 case ArmyActions.Camping:
                     HandleCamping(army);
-                    if (!army.Owner.IsUserControlled)
+                    if (!army.IsUserControlled)
                     {
                         GiveTheOrder(army);
                     }
@@ -142,7 +155,7 @@ namespace Legion.Model
 
         private void HandleCamping(Army army)
         {
-            if (army.Owner.IsUserControlled)
+            if (army.IsUserControlled)
             {
                 if (_armiesHelper.IsArmyInTheCity(army) == null)
                 {
@@ -164,7 +177,7 @@ namespace Legion.Model
 
         private async Coroutine HandleHunting(Army army)
         {
-            if (army.Owner.IsUserControlled)
+            if (army.IsUserControlled)
             {
                 if (_armiesHelper.IsArmyInTheCity(army) == null)
                 {
@@ -190,14 +203,14 @@ namespace Legion.Model
             }
         }
 
-        public void GiveTheOrder(Army army)
+        private void GiveTheOrder(Army army)
         {
             var oldDistance = 120;
 
             foreach (var city in _citiesRepository.Cities)
             {
                 var craziness = 0;
-                if (city.Owner == null || city.Owner.IsUserControlled)
+                if (city.Owner == null || city.IsUserControlled)
                 {
                     craziness = 300 - _legionInfo.Power;
                 }
@@ -205,7 +218,7 @@ namespace Legion.Model
                 {
                     craziness = 2200 + _legionInfo.Power;
                 }
-                if (army.Owner.IsChaosControlled)
+                if (army.IsChaosControlled)
                 {
                     craziness = 1;
                 }
@@ -220,7 +233,7 @@ namespace Legion.Model
 
                 if (army.Owner.GetWar(city.Owner) > 0)
                 {
-                    if (army.Owner.IsChaosControlled && city.Population < 200) continue;
+                    if (army.IsChaosControlled && city.Population < 200) continue;
                     var distance = Distance(army, city);
                     if (distance < oldDistance)
                     {
@@ -266,7 +279,7 @@ namespace Legion.Model
             var dx = obj2.X - obj1.X;
             var dy = obj2.Y - obj1.Y;
             var dist = Math.Abs(Math.Sqrt(dx * dx + dy * dy));
-            return (int) dist;
+            return (int)dist;
 
         }
 
@@ -275,7 +288,7 @@ namespace Legion.Model
             return Math.Abs(army.Target.X - army.X) < 3 && Math.Abs(army.Target.Y - army.Y) < 3;
         }
 
-        public async Coroutine Move(Army army)
+        private async Coroutine Move(Army army)
         {
             if (army.Target == null || army.Target.Owner == army.Owner)
             {
@@ -298,6 +311,52 @@ namespace Legion.Model
                 if (army.Food < 0) army.Food = 0;
             }
 
+            await DoArmyMovement(army, speed);
+
+            if (army.IsUserControlled)
+            {
+                var visitedCity = _armiesHelper.IsArmyInTheCity(army);
+                if (visitedCity != null)
+                {
+                    visitedCity.DaysToGetInfo = 0;
+                }
+            }
+
+            if (army.IsTracked)
+            {
+                //TODO: CENTER[X1,Y1,1]
+            }
+
+            // target could be destroyed meanwhile
+            if (army.Target != null && IsArrived(army))
+            {
+                Debug.Assert(army.CurrentAction == ArmyActions.Attack);
+                army.CurrentAction = ArmyActions.Camping;
+
+                switch (army.Target.Type)
+                {
+                    case MapObjectType.Adventure:
+                        HandleAdventure(army);
+                        break;
+                    case MapObjectType.Army:
+                        await _battleManager.AttackOnArmy(army, (Army)army.Target);
+                        break;
+                    case MapObjectType.City:
+                        await _battleManager.AttackOnCity(army, (City)army.Target);
+                        break;
+                }
+            }
+            else if (army.IsUserControlled)
+            {
+                // not planned adventure can happen meantime
+                await HandleEncounters(army);
+            }
+
+            //BUSY_ANIM
+        }
+
+        private async Coroutine DoArmyMovement(Army army, int speed)
+        {
             var dx = army.Target.X - army.X;
             var dy = army.Target.Y - army.Y;
 
@@ -316,87 +375,83 @@ namespace Legion.Model
                 army.Y = (int)y1;
                 await Coroutine.Yield();
             }
-
-            await OnMoveEnded(army);
         }
 
         private async Coroutine HandleEncounters(Army army)
         {
-            if (army.Owner.IsUserControlled)
+            Debug.Assert(army.IsUserControlled);
+            EncounterType? encounterType = null;
+            var terrainType = _armiesHelper.GetArmyTerrainType(army);
+            switch (terrainType)
             {
-                EncounterType? encounterType = null;
-                var terrainType = _armiesHelper.GetArmyTerrainType(army);
-                switch (terrainType)
-                {
-                    case TerrainType.Swamp:
-                        if (GlobalUtils.Rand(3) == 1)
-                            encounterType = EncounterType.StuckInSwamp;
-                        break;
+                case TerrainType.Swamp:
+                    if (GlobalUtils.Rand(3) == 1)
+                        encounterType = EncounterType.StuckInSwamp;
+                    break;
 
-                    case TerrainType.Snow:
-                        if (GlobalUtils.Rand(5) == 1)
-                            encounterType = EncounterType.RabidWolves;
-                        break;
+                case TerrainType.Snow:
+                    if (GlobalUtils.Rand(5) == 1)
+                        encounterType = EncounterType.RabidWolves;
+                    break;
 
-                    case TerrainType.Forest:
-                        switch (GlobalUtils.Rand(45))
-                        {
-                            case 0:
-                                encounterType = EncounterType.ForestTrolls;
-                                break;
-                            case 1:
-                                encounterType = EncounterType.Gargoyl;
-                                break;
-                            case 2:
-                                encounterType = EncounterType.LoneKnight;
-                                break;
-                            case 3:
-                                encounterType = EncounterType.CaveEntrance;
-                                break;
-                            case 4:
-                                encounterType = EncounterType.Bandits;
-                                break;
-                        }
-                        break;
+                case TerrainType.Forest:
+                    switch (GlobalUtils.Rand(45))
+                    {
+                        case 0:
+                            encounterType = EncounterType.ForestTrolls;
+                            break;
+                        case 1:
+                            encounterType = EncounterType.Gargoyl;
+                            break;
+                        case 2:
+                            encounterType = EncounterType.LoneKnight;
+                            break;
+                        case 3:
+                            encounterType = EncounterType.CaveEntrance;
+                            break;
+                        case 4:
+                            encounterType = EncounterType.Bandits;
+                            break;
+                    }
+                    break;
 
-                    case TerrainType.Steppe:
-                        switch (GlobalUtils.Rand(45))
-                        {
-                            case 1:
-                                encounterType = EncounterType.Bandits;
-                                break;
-                            case 2:
-                                encounterType = EncounterType.LoneKnight;
-                                break;
-                        }
-                        break;
+                case TerrainType.Steppe:
+                    switch (GlobalUtils.Rand(45))
+                    {
+                        case 1:
+                            encounterType = EncounterType.Bandits;
+                            break;
+                        case 2:
+                            encounterType = EncounterType.LoneKnight;
+                            break;
+                    }
+                    break;
 
-                    case TerrainType.Desert:
-                        switch (GlobalUtils.Rand(45))
-                        {
-                            case 1:
-                                encounterType = EncounterType.Bandits;
-                                break;
-                        }
-                        break;
+                case TerrainType.Desert:
+                    switch (GlobalUtils.Rand(45))
+                    {
+                        case 1:
+                            encounterType = EncounterType.Bandits;
+                            break;
+                    }
+                    break;
 
-                    case TerrainType.Rocks:
-                        switch (GlobalUtils.Rand(45))
-                        {
-                            case 1:
-                                encounterType = EncounterType.Bandits;
-                                break;
-                            case 5:
-                                encounterType = EncounterType.CaveEntrance;
-                                break;
-                        }
-                        break;
-                }
+                case TerrainType.Rocks:
+                    switch (GlobalUtils.Rand(45))
+                    {
+                        case 1:
+                            encounterType = EncounterType.Bandits;
+                            break;
+                        case 5:
+                            encounterType = EncounterType.CaveEntrance;
+                            break;
+                    }
+                    break;
+            }
 
-                if (encounterType.HasValue)
-                {
-                    await _armyActivities.Encounter(army, encounterType.Value);
-                }
+            if (encounterType.HasValue)
+            {
+                await _armyActivities.Encounter(army, encounterType.Value);
             }
         }
 
@@ -413,52 +468,6 @@ namespace Legion.Model
                       'nie chcę już więcej przygód 
                       SKIP=1
                     */
-        }
-
-        public async Coroutine OnMoveEnded(Army army)
-        {
-            if (army.Owner.IsUserControlled)
-            {
-                var visitedCity = _armiesHelper.IsArmyInTheCity(army);
-                if (visitedCity != null)
-                {
-                    visitedCity.DaysToGetInfo = 0;
-                }
-            }
-
-            if (army.IsTracked)
-            {
-                //TODO: CENTER[X1,Y1,1]
-            }
-
-            // target could be destroyed meanwhile
-            if (army.Target != null)
-            {
-                if (IsArrived(army))
-                {
-                    army.CurrentAction = ArmyActions.Camping;
-
-                    switch (army.Target.Type)
-                    {
-                        case MapObjectType.Adventure:
-                            HandleAdventure(army);
-                            break;
-                        case MapObjectType.Army:
-                            await _battleManager.AttackOnArmy(army, (Army) army.Target);
-                            break;
-                        case MapObjectType.City:
-                            await _battleManager.AttackOnCity(army, (City) army.Target);
-                            break;
-                    }
-
-                    return;
-                }
-            }
-
-            // not planned adventure can happen meantime
-            await HandleEncounters(army);
-
-            //BUSY_ANIM
         }
     }
 }
