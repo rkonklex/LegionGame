@@ -80,7 +80,7 @@ namespace Legion.Model
             {
                 UpdateCharactersExperience(army);
 
-                var hasEnoughFood = CheckFoodStatus(army);
+                var hasEnoughFood = await CheckFoodStatus(army);
                 if (!hasEnoughFood)
                 {
                     // TODO: wait for message window to close before killing the army
@@ -110,23 +110,17 @@ namespace Legion.Model
             }
         }
 
-        private bool CheckFoodStatus(Army army)
+        private async Coroutine<bool> CheckFoodStatus(Army army)
         {
             Debug.Assert(army.IsUserControlled);
             var days = army.Food / army.Characters.Count;
             if (days < 5 && days > 0)
             {
-                var message = new Message();
-                message.Type = MessageType.ArmyLowOnFood;
-                message.MapObjects = new List<MapObject> { army };
-                _messagesService.ShowMessage(message);
+                await _messagesService.ShowMessageAsync(MessageType.ArmyLowOnFood, army);
             }
             else if (army.Food <= 0)
             {
-                var message = new Message();
-                message.Type = MessageType.ArmyDisbandedNoFood;
-                message.MapObjects = new List<MapObject> { army };
-                _messagesService.ShowMessage(message);
+                await _messagesService.ShowMessageAsync(MessageType.ArmyDisbandedNoFood, army);
                 return false;
             }
             return true;

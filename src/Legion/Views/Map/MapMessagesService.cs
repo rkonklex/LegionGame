@@ -25,18 +25,18 @@ namespace Legion.Views.Map
 
         public void ShowMessage(Message message)
         {
-            var args = new object[message.MapObjects.Count - 1];
-            for (var i = 0; i < message.MapObjects.Count - 1; i++)
+            object[] args = null;
+            if (message.OtherObject is not null)
             {
-                args[i] = message.MapObjects[i + 1].Name;
+                args = [message.OtherObject.Name];
             }
 
             var messageKey = "message." + message.Type.ToString();
             var text = _texts.Get(messageKey, args);
-            var title = message.MapObjects[0].Name;
-            var image = GetImage(message.Type, message.MapObjects[0]);
+            var title = message.MainObject.Name;
+            var image = GetImage(message.Type, message.MainObject);
 
-            _messagesLayer.ShowMessage(title, text, image, message.OnClose);
+            _messagesLayer.ShowMessage(title, text, image, message.NotifyMessageClosed);
         }
 
         private Texture2D GetImage(MessageType messageType, MapObject mapObject)

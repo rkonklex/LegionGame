@@ -38,18 +38,13 @@ namespace Legion.Model
                 var loser = SimulatedBattle(army, targetArmy);
                 if (loser.IsTracked)
                 {
-                    var message = new Message();
-                    message.Type = MessageType.ArmyDestroyed;
-                    message.MapObjects = new List<MapObject> { loser };
-                    _messagesService.ShowMessage(message);
+                    await _messagesService.ShowMessageAsync(MessageType.ArmyDestroyed, loser);
                 }
             }
             else
             {
                 var battleContext = new TerrainActionContext();
                 battleContext.Type = TerrainActionType.Battle;
-
-                var battleMessage = new Message();
 
                 if (army.IsUserControlled)
                 {
@@ -62,8 +57,7 @@ namespace Legion.Model
 
                     targetArmy.DaysToGetInfo = 0;
 
-                    battleMessage.Type = MessageType.UserAttacksArmy;
-                    battleMessage.MapObjects = new List<MapObject> { army, targetArmy };
+                    await _messagesService.ShowMessageAsync(MessageType.UserAttacksArmy, army, targetArmy);
                 }
                 else
                 {
@@ -72,28 +66,19 @@ namespace Legion.Model
 
                     army.DaysToGetInfo = 0;
 
-                    battleMessage.Type = MessageType.EnemyAttacksUserArmy;
-                    battleMessage.MapObjects = new List<MapObject> { army, targetArmy };
+                    await _messagesService.ShowMessageAsync(MessageType.EnemyAttacksUserArmy, army, targetArmy);
                 }
 
-                battleMessage.OnClose = () => { _viewSwitcher.OpenTerrain(battleContext); };
-                _messagesService.ShowMessage(battleMessage);
-
+                _viewSwitcher.OpenTerrain(battleContext);
                 await battleContext.ActionFinished;
 
                 if (army.IsKilled)
                 {
-                    var message = new Message();
-                    message.Type = MessageType.ArmyDestroyed;
-                    message.MapObjects = new List<MapObject> { army };
-                    _messagesService.ShowMessage(message);
+                    await _messagesService.ShowMessageAsync(MessageType.ArmyDestroyed, army);
                 }
                 if (targetArmy.IsKilled)
                 {
-                    var message = new Message();
-                    message.Type = MessageType.ArmyDestroyed;
-                    message.MapObjects = new List<MapObject> { targetArmy };
-                    _messagesService.ShowMessage(message);
+                    await _messagesService.ShowMessageAsync(MessageType.ArmyDestroyed, targetArmy);
                 }
             }
         }
@@ -128,7 +113,7 @@ namespace Legion.Model
             if (!army.IsUserControlled && !city.IsUserControlled)
             {
                 SimulatedBattle(army, cityArmy);
-                AfterAttackOnCity(army, city, cityArmy);
+                await AfterAttackOnCity(army, city, cityArmy);
             }
             else
             {
@@ -139,17 +124,14 @@ namespace Legion.Model
                     var battleContext = new TerrainActionContext();
                     battleContext.Type = TerrainActionType.Battle;
 
-                    var battleMessage = new Message();
-
                     if (city.IsUserControlled)
                     {
                         battleContext.UserArmy = cityArmy;
                         battleContext.EnemyArmy = army;
 
-                        battleMessage.Type = MessageType.EnemyAttacksUserCity;
-                        battleMessage.MapObjects = new List<MapObject> { army, city };
+                        await _messagesService.ShowMessageAsync(MessageType.EnemyAttacksUserCity, army, city);
                     }
-                    if (army.IsUserControlled)
+                    else if (army.IsUserControlled)
                     {
                         battleContext.UserArmy = army;
                         battleContext.EnemyArmy = cityArmy;
@@ -158,25 +140,23 @@ namespace Legion.Model
                         army.Owner.UpdateWar(city.Owner, days);
                         if (city.Owner != null) { city.Owner.UpdateWar(army.Owner, days); }
 
-                        battleMessage.Type = MessageType.UserAttackCity;
-                        battleMessage.MapObjects = new List<MapObject> { army, city };
+                        await _messagesService.ShowMessageAsync(MessageType.UserAttackCity, army, city);
                     }
 
-                    battleMessage.OnClose = () => { _viewSwitcher.OpenTerrain(battleContext); };
-                    _messagesService.ShowMessage(battleMessage);
-
+                    _viewSwitcher.OpenTerrain(battleContext);
                     await battleContext.ActionFinished;
-                    AfterAttackOnCity(army, city, cityArmy);
+
+                    await AfterAttackOnCity(army, city, cityArmy);
                 }
                 else
                 {
                     // city was taken over without battle
-                    AfterAttackOnCity(army, city, null);
+                    await AfterAttackOnCity(army, city, null);
                 }
             }
         }
 
-        private void AfterAttackOnCity(Army army, City city, Army cityArmy)
+        private async Coroutine AfterAttackOnCity(Army army, City city, Army cityArmy)
         {
             var oldPopulation = city.Population;
             // city's population is reduced if there was a battle
@@ -195,40 +175,35 @@ namespace Legion.Model
                     if (populationAfterChaos >= 20) city.Population = populationAfterChaos;
                     city.Buildings.RemoveAll(_ => GlobalUtils.Rand(2) == 1);
 
-                    var burnedCityMessage = new Message();
-                    burnedCityMessage.Type = MessageType.ChaosWarriorsBurnedCity;
-                    burnedCityMessage.MapObjects = new List<MapObject> { city };
-                    _messagesService.ShowMessage(burnedCityMessage);
+                    await _messagesService.ShowMessageAsync(MessageType.ChaosWarriorsBurnedCity, city);
                 }
                 else
                 {
                     var wasCityUserControlled = city.IsUserControlled;
                     city.Owner = army.Owner;
 
-                    if (wasCityUserControlled || army.IsUserControlled || army.IsTracked)
+                    MessageType? messageType = null;
+                    if (army.IsUserControlled)
                     {
-                        var capturedCityMessage = new Message();
-                        capturedCityMessage.MapObjects = new List<MapObject> { army, city };
+                        _citiesHelper.UpdatePriceModificators(city);
+                        messageType = MessageType.UserCapturedCity;
+                    }
+                    else if (wasCityUserControlled)
+                    {
+                        messageType = cityArmy switch
+                        {
+                            null => MessageType.EnemyCapturedUserCity,
+                            _ => MessageType.EnemyConqueredUserCity,
+                        };
+                    }
+                    else if (army.IsTracked)
+                    {
+                        messageType = MessageType.EnemyConqueredCity;
+                    }
 
-                        if (army.IsUserControlled)
-                        {
-                            _citiesHelper.UpdatePriceModificators(city);
-                            capturedCityMessage.Type = MessageType.UserCapturedCity;
-                        }
-                        else if (wasCityUserControlled)
-                        {
-                            capturedCityMessage.Type = cityArmy switch
-                            {
-                                null => MessageType.EnemyCapturedUserCity,
-                                _ => MessageType.EnemyConqueredUserCity,
-                            };
-                        }
-                        else // army.IsTracked
-                        {
-                            capturedCityMessage.Type = MessageType.EnemyConqueredCity;
-                        }
-
-                        _messagesService.ShowMessage(capturedCityMessage);
+                    if (messageType.HasValue)
+                    {
+                        await _messagesService.ShowMessageAsync(messageType.Value, army, city);
                     }
                 }
             }
@@ -237,10 +212,7 @@ namespace Legion.Model
                 if (army.IsTracked || army.IsUserControlled)
                 {
                     //TODO: CENTER[X1, Y1, 1]
-                    var failedMessage = new Message();
-                    failedMessage.Type = MessageType.ArmyDestroyedCapturingCity;
-                    failedMessage.MapObjects = new List<MapObject> { army, city };
-                    _messagesService.ShowMessage(failedMessage);
+                    await _messagesService.ShowMessageAsync(MessageType.ArmyDestroyedCapturingCity, army, city);
                 }
             }
         }

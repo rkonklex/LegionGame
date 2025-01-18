@@ -31,7 +31,7 @@ namespace Legion.Model
             _viewSwitcher = viewSwitcher;
         }
 
-        public void Plague(City city, int type)
+        public async Coroutine Plague(City city, int type)
         {
             if (type == 0)
             {
@@ -39,29 +39,20 @@ namespace Legion.Model
                 if (newPopulation >= 50) city.Population = newPopulation;
                 city.Buildings.RemoveAll(_ => GlobalUtils.Rand(1) == 1);
 
-                var fireMessage = new Message();
-                fireMessage.Type = MessageType.FireInTheCity;
-                fireMessage.MapObjects = new List<MapObject> { city };
-                _messagesService.ShowMessage(fireMessage);
+                await _messagesService.ShowMessageAsync(MessageType.FireInTheCity, city);
             }
             else if (type == 1)
             {
                 var newPopulation = city.Population - city.Population / 2;
                 if (newPopulation >= 50) city.Population = newPopulation;
 
-                var epidemyMessage = new Message();
-                epidemyMessage.Type = MessageType.EpidemyInTheCity;
-                epidemyMessage.MapObjects = new List<MapObject> { city };
-                _messagesService.ShowMessage(epidemyMessage);
+                await _messagesService.ShowMessageAsync(MessageType.EpidemyInTheCity, city);
             }
             else if (type == 2)
             {
                 city.Food = 0;
 
-                var ratsMessage = new Message();
-                ratsMessage.Type = MessageType.RatsInTheCity;
-                ratsMessage.MapObjects = new List<MapObject> { city };
-                _messagesService.ShowMessage(ratsMessage);
+                await _messagesService.ShowMessageAsync(MessageType.RatsInTheCity, city);
             }
         }
 
@@ -73,10 +64,7 @@ namespace Legion.Model
                 city.Owner = null;
                 city.Morale = 30;
                 //TODO: //CENTER[MIASTA(M, 0, M_X), MIASTA(M, 0, M_Y), 1]
-                var riotMessage = new Message();
-                riotMessage.Type = MessageType.RiotInTheCity;
-                riotMessage.MapObjects = new List<MapObject> { city };
-                _messagesService.ShowMessage(riotMessage);
+                await _messagesService.ShowMessageAsync(MessageType.RiotInTheCity, city);
                 return;
             }
 
@@ -96,20 +84,14 @@ namespace Legion.Model
             }
 
             //TODO: BITWA[_ATAK,40,1,1,0,1,1,1,TEREN,M]
+            await _messagesService.ShowMessageAsync(MessageType.RiotInTheCityWithDefence, city, userArmy);
+
             var battleContext = new TerrainActionContext();
             battleContext.UserArmy = userArmy;
             battleContext.EnemyArmy = rebelArmy;
             battleContext.Type = TerrainActionType.Battle;
 
-            var defenceMessage = new Message();
-            defenceMessage.Type = MessageType.RiotInTheCityWithDefence;
-            defenceMessage.MapObjects = new List<MapObject> { city, userArmy };
-            defenceMessage.OnClose = () =>
-            {
-                _viewSwitcher.OpenTerrain(battleContext);
-            };
-            _messagesService.ShowMessage(defenceMessage);
-
+            _viewSwitcher.OpenTerrain(battleContext);
             await battleContext.ActionFinished;
 
             city.Population -= city.Population / 4;
@@ -119,10 +101,7 @@ namespace Legion.Model
                 city.Owner = null;
                 city.Morale = 30;
 
-                var defeatMessage = new Message();
-                defeatMessage.Type = MessageType.RiotInTheCityLost;
-                defeatMessage.MapObjects = new List<MapObject> { city };
-                _messagesService.ShowMessage(defeatMessage);
+                await _messagesService.ShowMessageAsync(MessageType.RiotInTheCityLost, city);
             }
             else
             {

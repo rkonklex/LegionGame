@@ -5,7 +5,7 @@ namespace Legion.Model
 {
     public interface ICityIncidents
     {
-        void Plague(City city, int type);
+        Coroutine Plague(City city, int type);
         Coroutine Riot(City city);
     }
 }

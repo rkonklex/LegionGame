@@ -33,42 +33,41 @@ namespace Legion.Model
         public async Coroutine Encounter(Army army, EncounterType encounterType)
         {
             Army encounterArmy = null;
-            var encounterMessage = new Message();
-            encounterMessage.MapObjects = new List<MapObject> { army };
+            MessageType? encounterMessage = null;
 
             var characterTypes = _characterDefinitionsRepository;
             switch (encounterType)
             {
                 case EncounterType.RabidWolves:
                     encounterArmy = CreateTempArmy(GlobalUtils.Rand(5) + 5, characterTypes.Wolf);
-                    encounterMessage.Type = MessageType.ArmyEncounteredRabidWolves;
+                    encounterMessage = MessageType.ArmyEncounteredRabidWolves;
                     break;
 
                 case EncounterType.Bandits:
                     encounterArmy = CreateTempArmy(GlobalUtils.Rand(5) + 5);
-                    encounterMessage.Type = MessageType.ArmyEncounteredBandits;
+                    encounterMessage = MessageType.ArmyEncounteredBandits;
                     break;
 
                 case EncounterType.StuckInSwamp:
                     encounterArmy = CreateTempArmy(GlobalUtils.Rand(5), characterTypes.Gloom);
-                    encounterMessage.Type = MessageType.ArmyStuckInSwamp;
+                    encounterMessage = MessageType.ArmyStuckInSwamp;
                     break;
 
                 case EncounterType.ForestTrolls:
                     encounterArmy = CreateTempArmy(GlobalUtils.Rand(5) + 5, characterTypes.Troll);
-                    encounterMessage.Type = MessageType.ArmyEncounteredForestTrolls;
+                    encounterMessage = MessageType.ArmyEncounteredForestTrolls;
                     break;
 
                 case EncounterType.Gargoyl:
                     encounterArmy = CreateTempArmy(GlobalUtils.Rand(1) + 1, characterTypes.Gargoyle);
-                    encounterMessage.Type = MessageType.ArmyEncounteredGargoyl;
+                    encounterMessage = MessageType.ArmyEncounteredGargoyl;
                     break;
 
                 case EncounterType.LoneKnight:
                     encounterArmy = CreateTempArmy(1);
                     encounterArmy.Characters.First().Experience = GlobalUtils.Rand(30) + 20;
                     encounterArmy.Characters.First().Aggression = 40;
-                    encounterMessage.Type = MessageType.ArmyEncounteredLoneKnight;
+                    encounterMessage = MessageType.ArmyEncounteredLoneKnight;
                     break;
 
                 case EncounterType.CaveEntrance:
@@ -78,20 +77,20 @@ namespace Legion.Model
                         var character = _armiesRepository.AddNpc(encounterArmy, _legionInfo.Power);
                         character.Aggression = 150 + GlobalUtils.Rand(50);
                     }
-                    encounterMessage.Type = MessageType.ArmyEncounteredCaveEntrance;
+                    encounterMessage = MessageType.ArmyEncounteredCaveEntrance;
                     break;
 
                 default: throw new ArgumentException("Invalid EncounterType", nameof(encounterType));
             }
+
+            await _messagesService.ShowMessageAsync(encounterMessage.Value, army);
 
             var battleContext = new TerrainActionContext();
             battleContext.UserArmy = army;
             battleContext.EnemyArmy = encounterArmy;
             battleContext.Type = TerrainActionType.Battle;
 
-            encounterMessage.OnClose = () => { _viewSwitcher.OpenTerrain(battleContext); };
-            _messagesService.ShowMessage(encounterMessage);
-
+            _viewSwitcher.OpenTerrain(battleContext);
             await battleContext.ActionFinished;
         }
 
@@ -126,19 +125,16 @@ namespace Legion.Model
                 }
             }
 
+            await _messagesService.ShowMessageAsync(MessageType.ArmyTrackedDownBeast, army);
+
             var battleContext = new TerrainActionContext();
             battleContext.UserArmy = army;
             battleContext.EnemyArmy = creatureArmy;
             battleContext.Type = TerrainActionType.Battle;
 
-            var huntMessage = new Message();
-            huntMessage.Type = MessageType.ArmyTrackedDownBeast;
-            huntMessage.MapObjects = new List<MapObject> { army };
-            huntMessage.OnClose = () => { _viewSwitcher.OpenTerrain(battleContext); };
-
-            _messagesService.ShowMessage(huntMessage);
-
+            _viewSwitcher.OpenTerrain(battleContext);
             await battleContext.ActionFinished;
+
             army.CurrentAction = ArmyActions.Camping;
         }
 
