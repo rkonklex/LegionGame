@@ -85,13 +85,7 @@ namespace Legion.Model
 
             await _messagesService.ShowMessageAsync(encounterMessage.Value, army);
 
-            var battleContext = new TerrainActionContext();
-            battleContext.UserArmy = army;
-            battleContext.EnemyArmy = encounterArmy;
-            battleContext.Type = TerrainActionType.Battle;
-
-            _viewSwitcher.OpenTerrain(battleContext);
-            await battleContext.ActionFinished;
+            await _viewSwitcher.OpenTerrainAsync(army, encounterArmy);
         }
 
         public async Coroutine Hunt(Army army, TerrainType terrainType)
@@ -127,13 +121,7 @@ namespace Legion.Model
 
             await _messagesService.ShowMessageAsync(MessageType.ArmyTrackedDownBeast, army);
 
-            var battleContext = new TerrainActionContext();
-            battleContext.UserArmy = army;
-            battleContext.EnemyArmy = creatureArmy;
-            battleContext.Type = TerrainActionType.Battle;
-
-            _viewSwitcher.OpenTerrain(battleContext);
-            await battleContext.ActionFinished;
+            await _viewSwitcher.OpenTerrainAsync(army, creatureArmy);
 
             army.CurrentAction = ArmyActions.Camping;
         }

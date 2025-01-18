@@ -86,13 +86,7 @@ namespace Legion.Model
             //TODO: BITWA[_ATAK,40,1,1,0,1,1,1,TEREN,M]
             await _messagesService.ShowMessageAsync(MessageType.RiotInTheCityWithDefence, city, userArmy);
 
-            var battleContext = new TerrainActionContext();
-            battleContext.UserArmy = userArmy;
-            battleContext.EnemyArmy = rebelArmy;
-            battleContext.Type = TerrainActionType.Battle;
-
-            _viewSwitcher.OpenTerrain(battleContext);
-            await battleContext.ActionFinished;
+            await _viewSwitcher.OpenTerrainAsync(userArmy, rebelArmy);
 
             city.Population -= city.Population / 4;
 

@@ -43,14 +43,8 @@ namespace Legion.Model
             }
             else
             {
-                var battleContext = new TerrainActionContext();
-                battleContext.Type = TerrainActionType.Battle;
-
                 if (army.IsUserControlled)
                 {
-                    battleContext.UserArmy = army;
-                    battleContext.EnemyArmy = targetArmy;
-
                     var days = GlobalUtils.Rand(30) + 10;
                     army.Owner.UpdateWar(targetArmy.Owner, days);
                     targetArmy.Owner.UpdateWar(army.Owner, days);
@@ -58,19 +52,15 @@ namespace Legion.Model
                     targetArmy.DaysToGetInfo = 0;
 
                     await _messagesService.ShowMessageAsync(MessageType.UserAttacksArmy, army, targetArmy);
+                    await _viewSwitcher.OpenTerrainAsync(army, targetArmy);
                 }
                 else
                 {
-                    battleContext.UserArmy = targetArmy;
-                    battleContext.EnemyArmy = army;
-
                     army.DaysToGetInfo = 0;
 
                     await _messagesService.ShowMessageAsync(MessageType.EnemyAttacksUserArmy, army, targetArmy);
+                    await _viewSwitcher.OpenTerrainAsync(targetArmy, army);
                 }
-
-                _viewSwitcher.OpenTerrain(battleContext);
-                await battleContext.ActionFinished;
 
                 if (army.IsKilled)
                 {
@@ -121,30 +111,20 @@ namespace Legion.Model
                 {
                     //TODO: CENTER[X1,Y1,1]
 
-                    var battleContext = new TerrainActionContext();
-                    battleContext.Type = TerrainActionType.Battle;
-
                     if (city.IsUserControlled)
                     {
-                        battleContext.UserArmy = cityArmy;
-                        battleContext.EnemyArmy = army;
-
                         await _messagesService.ShowMessageAsync(MessageType.EnemyAttacksUserCity, army, city);
+                        await _viewSwitcher.OpenTerrainAsync(cityArmy, army);
                     }
                     else if (army.IsUserControlled)
                     {
-                        battleContext.UserArmy = army;
-                        battleContext.EnemyArmy = cityArmy;
-
                         var days = GlobalUtils.Rand(30) + 10;
                         army.Owner.UpdateWar(city.Owner, days);
                         if (city.Owner != null) { city.Owner.UpdateWar(army.Owner, days); }
 
                         await _messagesService.ShowMessageAsync(MessageType.UserAttackCity, army, city);
+                        await _viewSwitcher.OpenTerrainAsync(army, cityArmy);
                     }
-
-                    _viewSwitcher.OpenTerrain(battleContext);
-                    await battleContext.ActionFinished;
 
                     await AfterAttackOnCity(army, city, cityArmy);
                 }
