@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AwaitableCoroutine;
 using Legion.Model.Helpers;
 using Legion.Model.Repositories;
 using Legion.Model.Types;
@@ -64,7 +65,7 @@ namespace Legion.Model
             }
         }
 
-        public async void Riot(City city)
+        public async Coroutine Riot(City city)
         {
             var userArmy = _armiesHelper.FindUserArmyInCity(city);
             if (userArmy == null)

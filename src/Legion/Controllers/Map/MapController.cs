@@ -42,8 +42,7 @@ namespace Legion.Controllers.Map
                 _isProcessingTurn = true;
                 _worldTurnProcessor.NextTurn();
                 await Coroutine.Yield();
-                _citiesTurnProcessor.NextTurn();
-                await Coroutine.Yield();
+                await _citiesTurnProcessor.NextTurn();
                 await _armiesTurnProcessor.NextTurn();
             }
             finally

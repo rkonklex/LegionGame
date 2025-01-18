@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using AwaitableCoroutine;
 using Legion.Model.Repositories;
 using Legion.Model.Types;
 using Legion.Utils;
@@ -12,8 +14,6 @@ namespace Legion.Model
         private readonly ICityIncidents _cityIncidents;
         private readonly ILegionInfo _legionInfo;
 
-        private int _currentTurnCityIdx = -1;
-
         public CitiesTurnProcessor(ICitiesRepository citiesRepository,
             IArmiesRepository armiesRepository,
             ICityIncidents cityIncidents,
@@ -25,20 +25,33 @@ namespace Legion.Model
             _legionInfo = legionInfo;
         }
 
-        public bool IsProcessingTurn => _currentTurnCityIdx >= 0;
+        public bool IsProcessingTurn { get; private set; }
 
-        public void NextTurn()
+        public async Coroutine NextTurn()
         {
-            for (var i = ++_currentTurnCityIdx; i < _citiesRepository.Cities.Count; i++)
+            if (IsProcessingTurn)
             {
-                _currentTurnCityIdx = i;
-                var city = _citiesRepository.Cities[i];
-                ProcessTurn(city);
+                throw new InvalidOperationException("Turn is already in progress");
             }
-            _currentTurnCityIdx = -1;
+
+            IsProcessingTurn = true;
+            try
+            {
+                // Create a copy of the list to avoid modification during iteration
+                var citiesSnapshot = _citiesRepository.Cities.ToList();
+
+                foreach (var city in citiesSnapshot)
+                {
+                    await ProcessTurn(city);
+                }
+            }
+            finally
+            {
+                IsProcessingTurn = false;
+            }
         }
 
-        private void ProcessTurn(City city)
+        private async Coroutine ProcessTurn(City city)
         {
             if (city.DaysToGetInfo < 25 && city.DaysToGetInfo > 0) city.DaysToGetInfo--;
             if (city.DaysToSetNewRecruiters > 0) city.DaysToSetNewRecruiters--;
@@ -62,7 +75,7 @@ namespace Legion.Model
 
             ProcessTaxes(city);
             ProcessGranaries(city);
-            ProcessPopulation(city);
+            await ProcessPopulationAsync(city);
             ProcessRecruiting(city);
         }
 
@@ -87,7 +100,7 @@ namespace Legion.Model
             }
         }
 
-        private void ProcessPopulation(City city)
+        private async Coroutine ProcessPopulationAsync(City city)
         {
             if (city.Owner != null)
             {
@@ -103,7 +116,7 @@ namespace Legion.Model
 
                     if (morale <= 0)
                     {
-                        _cityIncidents.Riot(city);
+                        await _cityIncidents.Riot(city);
                     }
                 }
                 else

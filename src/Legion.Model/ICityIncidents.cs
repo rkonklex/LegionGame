@@ -1,3 +1,4 @@
+using AwaitableCoroutine;
 using Legion.Model.Types;
 
 namespace Legion.Model
@@ -5,6 +6,6 @@ namespace Legion.Model
     public interface ICityIncidents
     {
         void Plague(City city, int type);
-        void Riot(City city);
+        Coroutine Riot(City city);
     }
 }
