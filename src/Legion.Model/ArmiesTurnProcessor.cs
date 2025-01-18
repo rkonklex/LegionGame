@@ -41,21 +41,36 @@ namespace Legion.Model
             _messagesService = messagesService;
         }
 
+        public bool IsProcessingTurn { get; private set; }
+
         public async Coroutine NextTurn()
         {
-            // Create a copy of the list to avoid modification during iteration
-            var armiesSnapshot = _armiesRepository.Armies.ToArray();
-
-            // Process user-controlled armies first
-            foreach (var army in armiesSnapshot.Where(army => army.IsUserControlled))
+            if (IsProcessingTurn)
             {
-                await ProcessTurn(army);
+                throw new InvalidOperationException("Turn is already in progress");
             }
 
-            // Process AI-controlled armies
-            foreach (var army in armiesSnapshot.Where(army => !army.IsUserControlled))
+            IsProcessingTurn = true;
+            try
             {
-                await ProcessTurn(army);
+                // Create a copy of the list to avoid modification during iteration
+                var armiesSnapshot = _armiesRepository.Armies.ToArray();
+
+                // Process user-controlled armies first
+                foreach (var army in armiesSnapshot.Where(army => army.IsUserControlled))
+                {
+                    await ProcessTurn(army);
+                }
+
+                // Process AI-controlled armies
+                foreach (var army in armiesSnapshot.Where(army => !army.IsUserControlled))
+                {
+                    await ProcessTurn(army);
+                }
+            }
+            finally
+            {
+                IsProcessingTurn = false;
             }
         }
 

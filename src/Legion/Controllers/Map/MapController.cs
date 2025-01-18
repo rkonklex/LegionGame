@@ -32,23 +32,14 @@ namespace Legion.Controllers.Map
 
         public List<Army> Armies => _armiesRepository.Armies;
 
-        public bool IsProcessingTurn => _isProcessingTurn;
+        public bool IsProcessingTurn => _citiesTurnProcessor.IsProcessingTurn || _armiesTurnProcessor.IsProcessingTurn;
 
-        private bool _isProcessingTurn;
         public async Coroutine StartNextTurn()
         {
-            try
-            {
-                _isProcessingTurn = true;
-                _worldTurnProcessor.NextTurn();
-                await Coroutine.Yield();
-                await _citiesTurnProcessor.NextTurn();
-                await _armiesTurnProcessor.NextTurn();
-            }
-            finally
-            {
-                _isProcessingTurn = false;
-            }
+            _worldTurnProcessor.NextTurn();
+            await Coroutine.Yield();
+            await _citiesTurnProcessor.NextTurn();
+            await _armiesTurnProcessor.NextTurn();
         }
     }
 }
