@@ -38,8 +38,8 @@ namespace Legion.Controllers.Map
         {
             _worldTurnProcessor.NextTurn();
             await Coroutine.Yield();
-            await _citiesTurnProcessor.NextTurn();
             await _armiesTurnProcessor.NextTurn();
+            await _citiesTurnProcessor.NextTurn();
         }
     }
 }
