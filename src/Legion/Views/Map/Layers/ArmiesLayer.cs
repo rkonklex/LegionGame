@@ -64,12 +64,10 @@ namespace Legion.Views.Map.Layers
 
             if (_mapController.IsProcessingTurn)
             {
-                foreach (var armyElement in Elements.Cast<ArmyElement>())
+                var elementsToRemove = Elements.Cast<ArmyElement>().Where(e => e.Army.IsKilled).ToList();
+                foreach (var element in elementsToRemove)
                 {
-                    if (armyElement.Army.IsKilled)
-                    {
-                        RemoveElement(armyElement);
-                    }
+                    RemoveElement(element);
                 }
             }
         }
