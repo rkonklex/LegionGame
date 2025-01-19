@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using Gui.Elements;
 using Gui.Services;
 using Legion.Model;
 using Legion.Views.Map;
@@ -14,7 +12,6 @@ namespace Legion.Views
         private readonly Lazy<MenuView> _menuView;
         private readonly Lazy<MapView> _mapView;
         private readonly Lazy<TerrainView> _terrainView;
-        private List<View> _views;
 
         public LegionViewsManager(Lazy<MenuView> menuView, Lazy<MapView> mapView, Lazy<TerrainView> terrainView)
         {
@@ -23,20 +20,12 @@ namespace Legion.Views
             _terrainView = terrainView;
         }
 
-        protected override List<View> Views
+        protected override void OnInitialize()
         {
-            get
-            {
-                if (_views is null)
-                {
-                    _views = [_menuView.Value, _mapView.Value, _terrainView.Value];
-                }
-                return _views;
-            }
-            set
-            {
-                _views = value;
-            }
+            AddView(_menuView.Value);
+            AddView(_mapView.Value);
+            AddView(_terrainView.Value);
+            OpenMenu();
         }
 
         public void OpenMenu()

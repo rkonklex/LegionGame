@@ -1,11 +1,19 @@
+using System;
 using System.Collections.Generic;
 using Gui.Elements;
+using Gui.Input;
 
 namespace Gui.Services
 {
     public abstract class ViewsManager : IViewsManager
     {
-        protected abstract List<View> Views { get; set; }
+        private readonly List<View> _views = new();
+        protected IReadOnlyCollection<View> Views => _views;
+
+        protected void AddView(View view)
+        {
+            _views.Add(view);
+        }
 
         private View _currentView;
         public View CurrentView
@@ -27,30 +35,26 @@ namespace Gui.Services
 
         public void Initialize()
         {
+            OnInitialize();
             foreach (var view in Views)
             {
                 view.InitializeInternal();
             }
         }
 
+        protected virtual void OnInitialize()
+        {
+        }
+
         public void Update()
         {
+            InputManager.Update();
             CurrentView.UpdateInternal();
-
-            // foreach (var view in Views)
-            // {
-            //     if (view.IsVisible) { view.UpdateInternal(); }
-            // }
         }
 
         public void Draw()
         {
             CurrentView.DrawInternal();
-
-            // foreach (var view in Views)
-            // {
-            //     if (view.IsVisible) { view.DrawInternal(); }
-            // }
         }
     }
 }

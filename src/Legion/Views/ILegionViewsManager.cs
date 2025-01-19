@@ -4,10 +4,7 @@ using Legion.Model;
 
 namespace Legion.Views
 {
-    public interface ILegionViewsManager : IViewsManager
+    public interface ILegionViewsManager : IViewsManager, IViewSwitcher
     {
-        void OpenMenu();
-        void OpenMap();
-        void OpenTerrain(TerrainActionContext context);
     }
 }

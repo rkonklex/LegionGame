@@ -80,8 +80,6 @@ namespace Gui.Elements
                 updateables = Layers.Where(la => la.IsEnabled);
             }
 
-            InputManager.Update();
-
             foreach (var layer in updateables.Reverse())
             {
                 if (layer.UpdateInputInternal())

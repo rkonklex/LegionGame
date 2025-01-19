@@ -23,7 +23,7 @@ namespace Legion
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<LegionGame>().AsSelf().As<IGuiServices>().As<IViewSwitcher>().SingleInstance();
+            builder.RegisterType<LegionGame>().AsSelf().As<IGuiServices>().SingleInstance();
             builder.RegisterType<CoroutineRunner>().As<ICoroutineRunner>().SingleInstance();
 
             //Model
@@ -60,7 +60,7 @@ namespace Legion
             builder.RegisterType<CommonMapGuiFactory>().As<ICommonMapGuiFactory>().SingleInstance();
 
             //Main Views
-            builder.RegisterType<LegionViewsManager>().As<ILegionViewsManager>().As<IViewsManager>();
+            builder.RegisterType<LegionViewsManager>().As<ILegionViewsManager>().As<IViewSwitcher>().SingleInstance();
 
             builder.RegisterType<MenuView>().As<MenuView>().SingleInstance();
             builder.RegisterType<MapView>().As<MapView>().SingleInstance();

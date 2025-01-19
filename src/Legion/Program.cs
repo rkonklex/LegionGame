@@ -29,10 +29,6 @@ namespace Legion
                     //var archivePath = "/home/bartosz/Pobrane/_legion.lha/legion/Archiwum/Zapis 5";
                     //var gameArchive = container.Resolve<IGameArchive>();
                     //gameArchive.LoadGame(archivePath);
-
-                    game.OpenMenu();
-                    //game.OpenTerrain(new TerrainActionContext)
-                    //game.OpenMap(null);
                 };
 
                 game.Run();

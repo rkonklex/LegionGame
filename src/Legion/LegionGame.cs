@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Legion
 {
-    public class LegionGame : Game, IGuiServices, IViewSwitcher
+    public class LegionGame : Game, IGuiServices
     {
         const float Scale = 1.5f;
         const int WorldWidth = 640;
@@ -45,8 +45,6 @@ namespace Legion
 
         public IImagesStore ImagesStore => _imagesStore;
 
-        public IViewSwitcher ViewSwitcher => this;
-
         public Rectangle GameBounds { get; }
 
         public ILegionViewsManager ViewsManager => _viewsManager;
@@ -78,12 +76,6 @@ namespace Legion
 
         protected override void Update(GameTime gameTime)
         {
-            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
-            //    Keyboard.GetState().IsKeyDown(Keys.Escape))
-            //{
-            //    Exit();
-            //}
-
             base.Update(gameTime);
             _coroutineRunner.Update();
             ViewsManager.Update();
@@ -97,21 +89,6 @@ namespace Legion
             ViewsManager.Draw();
 
             _spriteBatch.End();
-        }
-
-        public void OpenMenu()
-        {
-            ViewsManager.OpenMenu();
-        }
-
-        public void OpenMap()
-        {
-            ViewsManager.OpenMap();
-        }
-
-        public void OpenTerrain(TerrainActionContext context)
-        {
-            ViewsManager.OpenTerrain(context);
         }
     }
 }
