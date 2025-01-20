@@ -16,19 +16,16 @@ namespace Legion.Views.Map.Layers
     {
         private readonly IMapController _mapController;
         private readonly IMapArmyGuiFactory _armyGuiFactory;
-        private readonly IMapRouteDrawer _routeDrawer;
         private readonly ModalLayer _modalLayer;
 
         public ArmiesLayer(
             IGuiServices guiServices,
             IMapController mapController,
             IMapArmyGuiFactory armyGuiFactory,
-            IMapRouteDrawer routeDrawer,
             ModalLayer modalLayer) : base(guiServices)
         {
             _mapController = mapController;
             _armyGuiFactory = armyGuiFactory;
-            _routeDrawer = routeDrawer;
             _modalLayer = modalLayer;
         }
 
@@ -43,15 +40,8 @@ namespace Legion.Views.Map.Layers
                 var element = new ArmyElement(GuiServices, army);
                 element.Clicked += args =>
                 {
-                    if (_routeDrawer.IsRouteDrawingForMapObject)
-                    {
-                        _routeDrawer.EndRouteDrawingForMapObject(army);
-                    }
-                    else
-                    {
-                        var armyWindow = _armyGuiFactory.CreateArmyWindow(army);
-                        _modalLayer.Window = armyWindow;
-                    }
+                    var armyWindow = _armyGuiFactory.CreateArmyWindow(army);
+                    _modalLayer.Window = armyWindow;
                     args.Handled = true;
                 };
                 AddElement(element);

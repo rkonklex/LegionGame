@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Legion.Model.Types;
 using Microsoft.Xna.Framework;
 
@@ -14,39 +15,73 @@ namespace Legion.Views.Map
 
         public MapObject DrawingRouteSource { get; private set; }
 
+        public event Action RouteDrawingStarted;
+
+        public event Action RouteDrawingEnded;
+
         private Action<MapObject, Point> DrawingRouteForPointEnded { get; set; }
 
         private Action<MapObject, MapObject> DrawingRouteForMapObjectEnded { get; set; }
 
-
         public void StartRouteDrawingForPoint(MapObject mapObject, Action<MapObject, Point> onDrawingEnded)
         {
+            if (IsRouteDrawingForAny)
+            {
+                throw new InvalidOperationException("Route drawing is already in progress");
+            }
             DrawingRouteSource = mapObject;
             DrawingRouteForPointEnded = onDrawingEnded;
             IsRouteDrawingForPoint = true;
-            IsRouteDrawingForMapObject = false;
+            RouteDrawingStarted?.Invoke();
         }
 
         public void StartRouteDrawingForMapObject(MapObject mapObject, Action<MapObject, MapObject> onDrawingEnded)
         {
+            if (IsRouteDrawingForAny)
+            {
+                throw new InvalidOperationException("Route drawing is already in progress");
+            }
             DrawingRouteSource = mapObject;
             DrawingRouteForMapObjectEnded = onDrawingEnded;
-            IsRouteDrawingForPoint = false;
             IsRouteDrawingForMapObject = true;
+            RouteDrawingStarted?.Invoke();
         }
 
         public void EndRouteDrawingForPoint(Point point)
         {
+            if (!IsRouteDrawingForPoint)
+            {
+                throw new InvalidOperationException("Route drawing is not started");
+            }
             DrawingRouteForPointEnded?.Invoke(DrawingRouteSource, point);
-            DrawingRouteSource = null;
-            IsRouteDrawingForPoint = false;
+            FinalizeRouteDrawing();
         }
 
         public void EndRouteDrawingForMapObject(MapObject mapObject)
         {
+            if (!IsRouteDrawingForMapObject)
+            {
+                throw new InvalidOperationException("Route drawing is not started");
+            }
             DrawingRouteForMapObjectEnded?.Invoke(DrawingRouteSource, mapObject);
+            FinalizeRouteDrawing();
+        }
+
+        public void CancelRouteDrawing()
+        {
+            if (!IsRouteDrawingForAny)
+            {
+                throw new InvalidOperationException("Route drawing is not started");
+            }
+            FinalizeRouteDrawing();
+        }
+
+        private void FinalizeRouteDrawing()
+        {
             DrawingRouteSource = null;
+            IsRouteDrawingForPoint = false;
             IsRouteDrawingForMapObject = false;
+            RouteDrawingEnded?.Invoke();
         }
     }
 }

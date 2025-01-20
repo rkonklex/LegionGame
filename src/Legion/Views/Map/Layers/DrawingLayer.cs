@@ -1,6 +1,9 @@
 using System.ComponentModel;
+using System.Diagnostics;
 using Gui.Input;
 using Gui.Services;
+using Legion.Model.Types;
+using Legion.Views.Map.Controls;
 using Microsoft.Xna.Framework;
 
 namespace Legion.Views.Map.Layers
@@ -12,31 +15,60 @@ namespace Legion.Views.Map.Layers
 
         public DrawingLayer(IGuiServices guiServices, IMapRouteDrawer routeDrawer) : base(guiServices)
         {
+            IsModal = true;
+            IsVisible = false;
+
             _routeDrawer = routeDrawer;
-            Clicked += DrawingLayer_Clicked;
+            _routeDrawer.RouteDrawingStarted += () => IsVisible = true;
+            _routeDrawer.RouteDrawingEnded += () => IsVisible = false;
         }
 
-        private void DrawingLayer_Clicked(HandledEventArgs args)
+        protected override bool OnMouseDown(MouseButton button, Point position)
         {
-            if (_routeDrawer.IsRouteDrawingForPoint)
+            Debug.Assert(_routeDrawer.IsRouteDrawingForAny);
+
+            if (button == MouseButton.Left)
             {
-                args.Handled = true;
-                var mousePos = InputManager.GetMousePostion();
-                _routeDrawer.EndRouteDrawingForPoint(mousePos);
+                if (_routeDrawer.IsRouteDrawingForPoint)
+                {
+                    var mousePos = InputManager.GetMousePostion();
+                    _routeDrawer.EndRouteDrawingForPoint(mousePos);
+                    return true;
+                }
+                else if (Parent.HitTest(position, out var hitElement))
+                {
+                    MapObject mapObject = hitElement switch
+                    {
+                        ArmyElement armyElement => armyElement.Army,
+                        CityElement cityElement => cityElement.City,
+                        _ => null,
+                    };
+                    if (mapObject is not null)
+                    {
+                        _routeDrawer.EndRouteDrawingForMapObject(mapObject);
+                        return true;
+                    }
+                }
             }
+            else if (button == MouseButton.Right)
+            {
+                _routeDrawer.CancelRouteDrawing();
+                return true;
+            }
+
+            return false;
         }
 
         public override void Draw()
         {
-            if (_routeDrawer.IsRouteDrawingForAny)
-            {
-                var mapObject = _routeDrawer.DrawingRouteSource;
-                var mousePos = InputManager.GetMousePostion();
+            Debug.Assert(_routeDrawer.IsRouteDrawingForAny);
 
-                GuiServices.BasicDrawer.DrawLine(LineColor, 
-                    new Vector2(mapObject.X, mapObject.Y),
-                    mousePos.ToVector2());
-            }
+            var mapObject = _routeDrawer.DrawingRouteSource;
+            var mousePos = InputManager.GetMousePostion();
+
+            GuiServices.BasicDrawer.DrawLine(LineColor, 
+                new Vector2(mapObject.X, mapObject.Y),
+                mousePos.ToVector2());
         }
     }
 }

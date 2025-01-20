@@ -34,5 +34,17 @@ namespace Gui.Elements
         public virtual void Initialize() { }
         public virtual void Update() { }
         public virtual void Draw() { }
+
+        public virtual bool HitTest(Point position, out DrawableElement hitElement)
+        {
+            if (IsVisible && Bounds.Contains(position))
+            {
+                hitElement = this;
+                return true;
+            }
+
+            hitElement = null;
+            return false;
+        }
     }
 }

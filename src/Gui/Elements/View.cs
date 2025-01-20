@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Gui.Input;
 using Gui.Services;
+using Microsoft.Xna.Framework;
 
 namespace Gui.Elements
 {
@@ -122,6 +123,23 @@ namespace Gui.Elements
             {
                 layer.OnHide();
             }
+        }
+
+        public bool HitTest(Point position, out DrawableElement hitElement)
+        {
+            if (IsVisible)
+            {
+                foreach (var layer in Layers.Reverse())
+                {
+                    if (layer.HitTest(position, out hitElement))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            hitElement = null;
+            return false;
         }
     }
 }

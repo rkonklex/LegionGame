@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Gui.Services;
+using Microsoft.Xna.Framework;
 
 namespace Gui.Elements
 {
@@ -60,6 +61,22 @@ namespace Gui.Elements
         public void ClearElements()
         {
             _elements.Clear();
+        }
+
+        public override bool HitTest(Point position, out DrawableElement hitElement)
+        {
+            if (IsVisible)
+            {
+                foreach (var elem in Elements.Reverse())
+                {
+                    if (elem.HitTest(position, out hitElement))
+                    {
+                        return true;
+                    }
+                }
+            }
+            hitElement = null;
+            return false;
         }
     }
 }

@@ -15,6 +15,8 @@ namespace Legion.Views.Map.Controls
             _city = city;
         }
 
+        public City City => _city;
+
         public override void Update()
         {
             var cityImage = GetCityImage();

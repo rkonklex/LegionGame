@@ -14,6 +14,10 @@ namespace Legion.Views.Map
 
         MapObject DrawingRouteSource { get; }
 
+        event Action RouteDrawingStarted;
+
+        event Action RouteDrawingEnded;
+
         void StartRouteDrawingForPoint(MapObject mapObject, Action<MapObject, Point> onDrawingEnded);
 
         void StartRouteDrawingForMapObject(MapObject mapObject, Action<MapObject, MapObject> onDrawingEnded);
@@ -21,5 +25,7 @@ namespace Legion.Views.Map
         void EndRouteDrawingForPoint(Point point);
 
         void EndRouteDrawingForMapObject(MapObject mapObject);
+
+        void CancelRouteDrawing();
     }
 }
