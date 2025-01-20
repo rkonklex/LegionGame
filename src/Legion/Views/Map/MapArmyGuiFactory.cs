@@ -14,125 +14,30 @@ namespace Legion.Views.Map
     public class MapArmyGuiFactory : IMapArmyGuiFactory
     {
         private readonly IGuiServices _guiServices;
-        private readonly ILegionConfig _legionConfig;
         private readonly ITexts _texts;
         private readonly ICommonMapGuiFactory _commonMapGuiFactory;
         private readonly IMapRouteDrawer _mapRouteDrawer;
         private readonly ModalLayer _modalLayer;
-        private List<Texture2D> _armyWindowImages;
 
         public MapArmyGuiFactory(
             IGuiServices guiServices,
-            ILegionConfig legionConfig,
             ITexts texts,
             ICommonMapGuiFactory commonMapGuiFactory,
             IMapRouteDrawer mapRouteDrawer,
             ModalLayer modalLayer)
         {
             _guiServices = guiServices;
-            _legionConfig = legionConfig;
             _texts = texts;
             _commonMapGuiFactory = commonMapGuiFactory;
             _mapRouteDrawer = mapRouteDrawer;
             _modalLayer = modalLayer;
-
-            guiServices.GameLoaded += LoadImages;
-        }
-
-        private void LoadImages()
-        {
-            _armyWindowImages = _guiServices.ImagesStore.GetImages("army.windowUsers");
         }
 
         public ArmyWindow CreateArmyWindow(Army army)
         {
-            var window = new ArmyWindow(_guiServices);
-            var hasData = false;
-            var infoText = "";
+            var window = new ArmyWindow(_guiServices, _texts, army);
 
-            window.NameText = army.Name;
-            window.Image = _armyWindowImages[army.Owner.Id - 1];
-
-            window.ButtonOkText = _texts.Get("infoWindow.ok");
-            if (army.Owner.IsUserControlled)
-            {
-                window.ButtonMoreText = _texts.Get("infoWindow.commands");
-                hasData = true;
-            }
-            else
-            {
-                window.ButtonMoreText = _texts.Get("infoWindow.inquiry");
-                if (army.DaysToGetInfo > 28 && army.DaysToGetInfo < 100)
-                {
-                    hasData = false;
-                    infoText = _texts.Get("infoWindow.noInformation");
-                }
-                else
-                {
-                    infoText = army.DaysToGetInfo > 1 ?
-                        _texts.Get("infoWindow.informationsInXDays", army.DaysToGetInfo) :
-                        _texts.Get("infoWindow.informationsInOneDay");
-                    hasData = false;
-                }
-                if (army.DaysToGetInfo == 0 || army.DaysToGetInfo == 100)
-                {
-                    hasData = true;
-                    window.ButtonMoreText = _texts.Get("infoWindow.trace");
-                }
-            }
-
-            if (!hasData && !_legionConfig.GoDmOdE)
-            {
-                window.InfoText = infoText;
-            }
-            else
-            {
-                var count = army.Characters.Count;
-                window.CountText = count == 1 ?
-                    _texts.Get("armyInfo.oneWarrior") :
-                    _texts.Get("armyInfo.xWarriors", count);
-
-                int foodCount = army.Food / army.Characters.Count;
-                if (foodCount > 1) window.FoodText = _texts.Get("armyInfo.foodForXDays", foodCount);
-                else if (foodCount == 1) window.FoodText = _texts.Get("armyInfo.foodForOneDay");
-                else window.FoodText = _texts.Get("armyInfo.noMoreFood");
-
-                window.StrengthText = _texts.Get("armyInfo.strength", army.Strength);
-                window.SpeedText = _texts.Get("armyInfo.speed", army.Speed);
-
-                window.ActionText = "";
-                switch (army.CurrentAction)
-                {
-                    case ArmyActions.Camping:
-                        window.ActionText = _texts.Get("armyInfo.camping");
-                        /* TODO:
-                         If TEREN>69
-                            RO$=RO$+" w "+MIASTA$(TEREN-70)
-                         End If 
-                         */
-                        break;
-                    case ArmyActions.Move:
-                    case ArmyActions.FastMove:
-                        window.ActionText = _texts.Get("armyInfo.moving");
-                        break;
-                    case ArmyActions.Attack:
-                        window.ActionText = _texts.Get("armyInfo.attackingX", army.Target.Name);
-                        /* TODO:
-                         If CELY=0
-                            R2$=ARMIA$(CELX,0)
-                         Else 
-                            R2$=MIASTA$(CELX)
-                         End If 
-                         RO$="Atakujemy "+R2$
-                        */
-                        break;
-                    case ArmyActions.Hunting:
-                        window.ActionText = _texts.Get("armyInfo.hunting");
-                        break;
-                }
-            }
-
-            if (army.Owner.IsUserControlled)
+            if (army.IsUserControlled)
             {
                 window.MoreClicked += args =>
                 {
