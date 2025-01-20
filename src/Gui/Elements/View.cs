@@ -9,7 +9,6 @@ namespace Gui.Elements
     {
         private readonly IGuiServices _guiServices;
         private bool _isVisible;
-        private Layer _blockingLayer;
 
         public View(IGuiServices guiServices)
         {
@@ -54,9 +53,6 @@ namespace Gui.Elements
             foreach (var layer in Layers)
             {
                 layer.Parent = this;
-                layer.IsEnabled = true;
-                layer.IsVisible = true;
-
                 layer.InitializeInternal();
             }
         }
@@ -69,28 +65,29 @@ namespace Gui.Elements
 
             if (!IsVisible) { return; }
 
-            IEnumerable<Layer> updateables;
+            // Make a snapshot to protect against list modification during the update loop
+            var updateables = Layers.Where(la => la.IsVisible && la.IsEnabled).ToArray();
 
-            if (_blockingLayer != null)
+            var topMostModal = updateables.LastOrDefault(la => la.IsModal);
+            if (topMostModal != null)
             {
-                updateables = new List<Layer> { _blockingLayer };
+                topMostModal.UpdateInputInternal();
+                topMostModal.UpdateInternal();
             }
             else
             {
-                updateables = Layers.Where(la => la.IsEnabled);
-            }
-
-            foreach (var layer in updateables.Reverse())
-            {
-                if (layer.UpdateInputInternal())
+                foreach (var layer in updateables.Reverse())
                 {
-                    break;
+                    if (layer.UpdateInputInternal())
+                    {
+                        break;
+                    }
                 }
-            }
 
-            foreach (var layer in updateables)
-            {
-                layer.UpdateInternal();
+                foreach (var layer in updateables)
+                {
+                    layer.UpdateInternal();
+                }
             }
         }
 
@@ -125,16 +122,6 @@ namespace Gui.Elements
             {
                 layer.OnHide();
             }
-        }
-
-        public void BlockLayers(Layer layer)
-        {
-            _blockingLayer = layer;
-        }
-
-        public void UnblockLayers()
-        {
-            _blockingLayer = null;
         }
     }
 }

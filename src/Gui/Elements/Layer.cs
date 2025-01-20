@@ -11,6 +11,8 @@ namespace Gui.Elements
 
         public View Parent { get; set; }
 
+        public bool IsModal { get; set; }
+
         public virtual void OnShow() { }
 
         public virtual void OnHide() { }

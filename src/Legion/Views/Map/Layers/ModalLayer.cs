@@ -11,6 +11,8 @@ namespace Legion.Views.Map.Layers
     {
         public ModalLayer(IGuiServices guiServices) : base(guiServices)
         {
+            IsModal = true;
+            IsVisible = false;
         }
 
         private Window _window;
@@ -24,7 +26,7 @@ namespace Legion.Views.Map.Layers
                 {
                     _window.Closing -= OnWindowClosing;
                     RemoveElement(_window);
-                    Parent.UnblockLayers();
+                    IsVisible = false;
                 }
 
                 _window = value;
@@ -32,8 +34,8 @@ namespace Legion.Views.Map.Layers
                 if (_window != null)
                 {
                     AddElement(_window);
+                    IsVisible = true;
                     _window.Closing += OnWindowClosing;
-                    Parent.BlockLayers(this);
                 }
             }
         }
