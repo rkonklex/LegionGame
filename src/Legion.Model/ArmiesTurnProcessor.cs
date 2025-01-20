@@ -339,7 +339,6 @@ namespace Legion.Model
             // target could be destroyed meanwhile
             if (army.Target != null && IsArrived(army))
             {
-                Debug.Assert(army.CurrentAction == ArmyActions.Attack);
                 army.CurrentAction = ArmyActions.Camping;
 
                 switch (army.Target.Type)
