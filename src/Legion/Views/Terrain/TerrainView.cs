@@ -18,10 +18,9 @@ namespace Legion.Views.Terrain
             IViewSwitcher viewSwitcher) : base(guiServices)
         {
             _viewSwitcher = viewSwitcher;
-            Layers = new List<Layer> { terrainLayer, charactersLayer };
+            AddLayer(terrainLayer);
+            AddLayer(charactersLayer);
         }
-
-        protected override IEnumerable<Layer> Layers { get; }
 
         public override void Update()
         {

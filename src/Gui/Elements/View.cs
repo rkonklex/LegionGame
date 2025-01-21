@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gui.Input;
@@ -8,6 +9,7 @@ namespace Gui.Elements
 {
     public abstract class View
     {
+        private readonly List<Layer> _layers = [];
         private readonly IGuiServices _guiServices;
         private bool _isVisible;
 
@@ -16,7 +18,33 @@ namespace Gui.Elements
             _guiServices = guiServices;
         }
 
-        protected abstract IEnumerable<Layer> Layers { get; }
+        protected IReadOnlyCollection<Layer> Layers => _layers;
+
+        public void AddLayer(Layer layer)
+        {
+            if (layer.Parent is not null && layer.Parent != this)
+            {
+                throw new InvalidOperationException("Layer already has a different parent");
+            }
+            if (!_layers.Contains(layer))
+            {
+                _layers.Add(layer);
+                layer.Parent = this;
+            }
+        }
+
+        public void RemoveLayer(Layer layer)
+        {
+            if (layer.Parent is not null && layer.Parent != this)
+            {
+                throw new InvalidOperationException("Layer does not belong to this view");
+            }
+            if (_layers.Contains(layer))
+            {
+                _layers.Remove(layer);
+                layer.Parent = null;
+            }
+        }
 
         public bool IsVisible
         {
@@ -53,7 +81,6 @@ namespace Gui.Elements
 
             foreach (var layer in Layers)
             {
-                layer.Parent = this;
                 layer.InitializeInternal();
             }
         }

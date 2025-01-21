@@ -15,12 +15,12 @@ namespace Legion.Views.Map
             DrawingLayer drawingLayer,
             ModalLayer messagesLayer) : base(guiServices)
         {
-            Layers = new List<MapLayer> {mapLayer, citiesLayer, armiesLayer, mapGuiLayer, drawingLayer, messagesLayer};
+            AddLayer(mapLayer);
+            AddLayer(citiesLayer);
+            AddLayer(armiesLayer);
+            AddLayer(mapGuiLayer);
+            AddLayer(drawingLayer);
+            AddLayer(messagesLayer);
         }
-
-        protected override IEnumerable<Layer> Layers { get; }
-
-
-        
     }
 }

@@ -9,7 +9,20 @@ namespace Gui.Elements
             Bounds = guiServices.GameBounds;
         }
 
-        public View Parent { get; set; }
+        private View _parent;
+        public View Parent
+        {
+            get => _parent;
+            set
+            {
+                if (_parent != value)
+                {
+                    _parent?.RemoveLayer(this);
+                    _parent = value;
+                    _parent?.AddLayer(this);
+                }
+            }
+        }
 
         public bool IsModal { get; set; }
 
