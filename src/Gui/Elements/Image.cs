@@ -11,7 +11,7 @@ namespace Gui.Elements
 
         public Texture2D Data { get; set; }
 
-        public override void Draw()
+        protected override void OnDraw()
         {
             if (Data != null)
             {

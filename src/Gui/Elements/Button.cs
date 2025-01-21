@@ -59,10 +59,10 @@ namespace Gui.Elements
             Label.IsHorizontalCenter = Center;
         }
 
-        public override void Draw()
+        protected override void OnDraw()
         {
-            base.Draw();
-            Label.Draw();
+            base.OnDraw();
+            Label.DrawInternal();
         }
     }
 }

@@ -64,7 +64,7 @@ namespace Legion.Views.Common.Controls.Equipment
             }
         }
 
-        public override void Draw()
+        protected override void OnDraw()
         {
             GuiServices.BasicDrawer.DrawBorder(Color.Black, Bounds);
         }

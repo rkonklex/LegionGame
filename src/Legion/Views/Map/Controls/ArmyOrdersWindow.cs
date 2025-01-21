@@ -103,9 +103,9 @@ namespace Legion.Views.Map.Controls
 
         public event Action<HandledEventArgs> ExitClicked;
 
-        public override void Draw()
+        protected override void OnDraw()
         {
-            base.Draw();
+            base.OnDraw();
 
             //TODO: selected action marker 
             /*

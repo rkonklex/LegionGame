@@ -225,7 +225,7 @@ namespace Legion.Views.Terrain.Layers
             return handled;
         }
 
-        public override void Draw()
+        protected override void OnDraw()
         {
             DrawCharacters();
 

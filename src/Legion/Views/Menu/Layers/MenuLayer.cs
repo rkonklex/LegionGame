@@ -75,9 +75,9 @@ namespace Legion.Views.Menu.Layers
             }
         }
 
-        public override void Draw()
+        protected override void OnDraw()
         {
-            base.Draw();
+            base.OnDraw();
             GuiServices.BasicDrawer.DrawImage(_background, 0, 0);
 
             if (_loadGameWindow == null)

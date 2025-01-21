@@ -14,7 +14,7 @@ namespace Gui.Elements
         public Color DarkColor { get; set; } = Colors.PanelDarkColor;
         public Color LightColor { get; set; } = Colors.PanelLightColor;
 
-        public override void Draw()
+        protected override void OnDraw()
         {
             var (x, y, width, height) = Bounds;
             var topLeftColor = Invert ? DarkColor : LightColor;

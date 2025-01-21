@@ -19,9 +19,9 @@ namespace Gui.Elements
 
         public Color TextColor { get; set; }
 
-        public override void Draw()
+        protected override void OnDraw()
         {
-            base.Draw();
+            base.OnDraw();
 
             int x = IsHorizontalCenter ? (Bounds.X + Bounds.Width / 2) : Bounds.X;
             int y = IsVerticalCenter ? (Bounds.Y + Bounds.Height / 2) : Bounds.Y;

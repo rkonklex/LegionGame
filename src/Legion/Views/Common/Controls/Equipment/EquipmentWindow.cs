@@ -237,7 +237,7 @@ namespace Legion.Views.Common.Controls.Equipment
             _dragImage.Bounds= new Rectangle(pos, Point.Zero);
         }
 
-        public override void Draw()
+        protected override void OnDraw()
         {
             //GuiServices.BasicDrawer.DrawRectangle(
             //    Colors.WindowBackgroundColor,

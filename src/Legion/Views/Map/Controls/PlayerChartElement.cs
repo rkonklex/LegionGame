@@ -32,7 +32,7 @@ namespace Legion.Views.Map.Controls
             if (_length < 4) _length = 4;
         }
 
-        public override void Draw()
+        protected override void OnDraw()
         {
             var x = Bounds.X + 50;
             var y = Bounds.Y;// - 8;

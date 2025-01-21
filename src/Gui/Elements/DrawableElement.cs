@@ -41,12 +41,12 @@ namespace Gui.Elements
 
         internal virtual void DrawInternal()
         {
-            Draw();
+            OnDraw();
         }
 
         protected virtual void OnInitialize() { }
         protected virtual void OnUpdate() { }
-        public virtual void Draw() { }
+        protected virtual void OnDraw() { }
 
         public virtual bool HitTest(Point position, out DrawableElement hitElement)
         {

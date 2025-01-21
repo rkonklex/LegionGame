@@ -18,7 +18,7 @@ namespace Legion.Views.Common.Controls.Equipment
 
         public Character Character { get; set; }
 
-        public override void Draw()
+        protected override void OnDraw()
         {
             GuiServices.BasicDrawer.DrawRectangle(Color.Black, Bounds);
 

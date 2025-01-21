@@ -25,9 +25,9 @@ namespace Legion.Views.Terrain.Layers
             _terrainParts = _terrainGenerator.Generate(TerrainType.Forest, false);
         }
 
-        public override void Draw()
+        protected override void OnDraw()
         {
-            base.Draw();
+            base.OnDraw();
             foreach (var part in _terrainParts)
             {
                 // item can be placeholder only and can have bounds only, to be used in obstacles detection

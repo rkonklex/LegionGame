@@ -23,7 +23,7 @@ namespace Gui.Elements
             Parent = null;
         }
 
-        public override void Draw()
+        protected override void OnDraw()
         {
             GuiServices.BasicDrawer.DrawRectangle(Colors.WindowBackgroundColor, Bounds);
             GuiServices.BasicDrawer.DrawBorder(Colors.WindowBorderColor, Bounds);

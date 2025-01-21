@@ -83,7 +83,7 @@ namespace Legion.Views.Common.Controls.Equipment
             _rightHandContainer.Position = new Point(Bounds.X + 87, Bounds.Y + 58);
         }
 
-        public override void Draw()
+        protected override void OnDraw()
         {
             GuiServices.BasicDrawer.DrawRectangle(Color.Black, Bounds.X + 5, Bounds.Y + 5, 105, 125);
             GuiServices.BasicDrawer.DrawImage(_manImage, Bounds.X + 19, Bounds.Y + 10);

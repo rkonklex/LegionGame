@@ -32,7 +32,7 @@ namespace Legion.Views.Common.Controls.Equipment
 
         public Texture2D Image { get; private set; }
 
-        public override void Draw()
+        protected override void OnDraw()
         {
             if (!IsTransparent)
             {

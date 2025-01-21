@@ -26,7 +26,7 @@ namespace Legion.Views.Map.Controls
             Bounds = new Rectangle(cityX, cityY, cityImage.Width, cityImage.Height);
         }
 
-        public override void Draw()
+        protected override void OnDraw()
         {
             var cityImage = GetCityImage();
 

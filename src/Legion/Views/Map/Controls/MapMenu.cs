@@ -41,7 +41,7 @@ namespace Legion.Views.Map.Controls
             AddElement(_optionsButton);
         }
 
-        public override void Draw()
+        protected override void OnDraw()
         {
             GuiServices.BasicDrawer.DrawBorder(Color.Red,
                 GuiServices.GameBounds.Width - 37,

@@ -59,7 +59,7 @@ namespace Legion.Views.Map.Layers
             return false;
         }
 
-        public override void Draw()
+        protected override void OnDraw()
         {
             Debug.Assert(_routeDrawer.IsRouteDrawingForAny);
 

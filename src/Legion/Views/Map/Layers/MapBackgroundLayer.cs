@@ -16,9 +16,9 @@ namespace Legion.Views.Map.Layers
             _background = GuiServices.ImagesStore.GetImage("map");
         }
 
-        public override void Draw()
+        protected override void OnDraw()
         {
-            base.Draw();
+            base.OnDraw();
             GuiServices.BasicDrawer.DrawImage(_background, 0, 0);
         }
     }

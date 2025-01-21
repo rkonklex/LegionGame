@@ -29,7 +29,7 @@ namespace Legion.Views.Map.Controls
             Bounds = new Rectangle(armyX, armyY, _image.Width, _image.Height);
         }
 
-        public override void Draw()
+        protected override void OnDraw()
         {
             GuiServices.BasicDrawer.DrawImage(_image, Bounds.X, Bounds.Y);
         }
