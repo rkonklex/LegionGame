@@ -17,20 +17,17 @@ namespace Legion.Views.Map
         private readonly ITexts _texts;
         private readonly ICommonMapGuiFactory _commonMapGuiFactory;
         private readonly IMapRouteDrawer _mapRouteDrawer;
-        private readonly ModalLayer _modalLayer;
 
         public MapArmyGuiFactory(
             IGuiServices guiServices,
             ITexts texts,
             ICommonMapGuiFactory commonMapGuiFactory,
-            IMapRouteDrawer mapRouteDrawer,
-            ModalLayer modalLayer)
+            IMapRouteDrawer mapRouteDrawer)
         {
             _guiServices = guiServices;
             _texts = texts;
             _commonMapGuiFactory = commonMapGuiFactory;
             _mapRouteDrawer = mapRouteDrawer;
-            _modalLayer = modalLayer;
         }
 
         public ArmyWindow CreateArmyWindow(Army army)
@@ -42,7 +39,7 @@ namespace Legion.Views.Map
                 window.MoreClicked += args =>
                 {
                     var ordersWindow = CreateArmyOrdersWindow(army);
-                    _modalLayer.Window = ordersWindow;
+                    ordersWindow.Open(window.Parent);
 
                     // TODO: implement all actions handling
                     ordersWindow.MoveClicked += moveArgs => HandleMoveClick(army, ArmyActions.Move);
@@ -60,7 +57,7 @@ namespace Legion.Views.Map
                     ordersWindow.EquipmentClicked += _args =>
                     {
                         var equipmentWindow = new EquipmentWindow(_guiServices, _texts) {Army = army};
-                        _modalLayer.Window = equipmentWindow;
+                        equipmentWindow.Open(ordersWindow.Parent);
                     };
                 };
             }
@@ -68,7 +65,8 @@ namespace Legion.Views.Map
             {
                 window.MoreClicked += args =>
                 {
-                    _modalLayer.Window = _commonMapGuiFactory.CreateBuyInformationWindow(army);
+                    var buyInformationWindow = _commonMapGuiFactory.CreateBuyInformationWindow(army);
+                    buyInformationWindow.Open(window.Parent);
                 };
             }
 

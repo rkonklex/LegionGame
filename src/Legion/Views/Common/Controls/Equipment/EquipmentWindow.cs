@@ -208,7 +208,7 @@ namespace Legion.Views.Common.Controls.Equipment
         {
             if (button == MouseButton.Right)
             {
-                Closing?.Invoke(new HandledEventArgs());
+                Close();
             }
             return base.OnMouseUp(button, position);
         }

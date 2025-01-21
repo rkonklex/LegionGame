@@ -12,15 +12,13 @@ namespace Legion.Views.Map
             CitiesLayer citiesLayer,
             ArmiesLayer armiesLayer,
             MapGuiLayer mapGuiLayer,
-            DrawingLayer drawingLayer,
-            ModalLayer messagesLayer) : base(guiServices)
+            DrawingLayer drawingLayer) : base(guiServices)
         {
             AddLayer(mapLayer);
             AddLayer(citiesLayer);
             AddLayer(armiesLayer);
             AddLayer(mapGuiLayer);
             AddLayer(drawingLayer);
-            AddLayer(messagesLayer);
         }
     }
 }

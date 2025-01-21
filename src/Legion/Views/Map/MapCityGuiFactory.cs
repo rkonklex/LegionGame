@@ -17,21 +17,18 @@ namespace Legion.Views.Map
         private readonly ILegionConfig _legionConfig;
         private readonly ITexts _texts;
         private readonly ICommonMapGuiFactory _commonMapGuiFactory;
-        private readonly ModalLayer _modalLayer;
         private List<Texture2D> _cityWindowImages;
 
         public MapCityGuiFactory(
             IGuiServices guiServices,
             ILegionConfig legionConfig,
             ITexts texts,
-            ICommonMapGuiFactory commonMapGuiFactory,
-            ModalLayer modalLayer)
+            ICommonMapGuiFactory commonMapGuiFactory)
         {
             _guiServices = guiServices;
             _legionConfig = legionConfig;
             _texts = texts;
             _commonMapGuiFactory = commonMapGuiFactory;
-            _modalLayer = modalLayer;
 
             guiServices.GameLoaded += LoadImages;
         }
@@ -130,16 +127,18 @@ namespace Legion.Views.Map
             {
                 window.MoreClicked += args =>
                 {
-                    args.Handled = true;
                     var ordersWindow = CreateCityOrdersWindow(city);
-                    _modalLayer.Window = ordersWindow;
+                    ordersWindow.Open(window.Parent);
+                    args.Handled = true;
                 };
             }
             else
             {
                 window.MoreClicked += args =>
                 {
-                    _modalLayer.Window = _commonMapGuiFactory.CreateBuyInformationWindow(city);
+                    var buyInformationWindow = _commonMapGuiFactory.CreateBuyInformationWindow(city);
+                    buyInformationWindow.Open(window.Parent);
+                    args.Handled = true;
                 };
             }
 

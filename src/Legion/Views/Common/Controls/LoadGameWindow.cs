@@ -26,13 +26,13 @@ namespace Legion.Views.Common.Controls
                 dict.Add(name, args =>
                 {
                     ArchiveNameClicked?.Invoke(args, name);
-                    Closing?.Invoke(args);
+                    Close();
                 });
             }
             dict.Add(texts.Get("exit"), args =>
             {
                 ExitClicked?.Invoke(args);
-                Closing?.Invoke(args);
+                Close();
             });
             ButtonNames = dict;
         }

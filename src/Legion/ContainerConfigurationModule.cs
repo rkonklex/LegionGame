@@ -71,7 +71,6 @@ namespace Legion
             builder.RegisterType<ArmiesLayer>().As<ArmiesLayer>().SingleInstance();
             builder.RegisterType<MapGuiLayer>().As<MapGuiLayer>().SingleInstance();
             builder.RegisterType<DrawingLayer>().As<DrawingLayer>().SingleInstance();
-            builder.RegisterType<ModalLayer>().As<ModalLayer>().SingleInstance();
             // Menu Layers:
             builder.RegisterType<MenuLayer>().As<MenuLayer>().SingleInstance();
 

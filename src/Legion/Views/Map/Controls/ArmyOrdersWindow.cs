@@ -19,21 +19,21 @@ namespace Legion.Views.Map.Controls
                     texts.Get("armyMenu.move"), args =>
                     {
                         MoveClicked?.Invoke(args);
-                        Closing?.Invoke(args);
+                        Close();
                     }
                 },
                 {
                     texts.Get("armyMenu.fastMove"), args =>
                     {
                         FastMoveClicked?.Invoke(args);
-                        Closing?.Invoke(args);
+                        Close();
                     }
                 },
                 {
                     texts.Get("armyMenu.attack"), args =>
                     {
                         AttackClicked?.Invoke(args);
-                        Closing?.Invoke(args);
+                        Close();
                     }
                 }
             };
@@ -43,7 +43,7 @@ namespace Legion.Views.Map.Controls
                 dict.Add(texts.Get("armyMenu.recruit"), args =>
                 {
                     RecruitClicked?.Invoke(args);
-                    Closing?.Invoke(args);
+                    Close();
                 });
             }
             else
@@ -51,20 +51,20 @@ namespace Legion.Views.Map.Controls
                 dict.Add(texts.Get("armyMenu.hunt"), args =>
                 {
                     HuntClicked?.Invoke(args);
-                    Closing?.Invoke(args);
+                    Close();
                 });
             }
 
             dict.Add(texts.Get("armyMenu.camp"), args =>
             {
                 CampClicked?.Invoke(args);
-                Closing?.Invoke(args);
+                Close();
             });
 
             dict.Add(texts.Get("armyMenu.equipment"), args =>
             {
                 EquipmentClicked?.Invoke(args);
-                Closing?.Invoke(args);
+                Close();
             });
 
             if (isTerrainActionButtonVisible)
@@ -72,14 +72,14 @@ namespace Legion.Views.Map.Controls
                 dict.Add(texts.Get("armyMenu.action"), args =>
                 {
                     ActionClicked?.Invoke(args);
-                    Closing?.Invoke(args);
+                    Close();
                 });
             }
 
             dict.Add(texts.Get("armyMenu.exit"), args =>
             {
                 ExitClicked?.Invoke(args);
-                Closing?.Invoke(args);
+                Close();
             });
 
             ButtonNames = dict;

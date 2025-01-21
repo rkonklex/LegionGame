@@ -30,17 +30,9 @@ namespace Legion.Views.Map.Controls
             CreateElements();
         }
 
-        public event Action<HandledEventArgs> OkClicked
-        {
-            add => OkButton.Clicked += value;
-            remove => OkButton.Clicked -= value;
-        }
+        public event Action<HandledEventArgs> OkClicked;
 
-        public event Action<HandledEventArgs> ChartsClicked
-        {
-            add => ChartsButton.Clicked += value;
-            remove => ChartsButton.Clicked -= value;
-        }
+        public event Action<HandledEventArgs> ChartsClicked;
 
         private void CreateElements()
         {
@@ -56,11 +48,19 @@ namespace Legion.Views.Map.Controls
 
             OkButton = new BrownButton(GuiServices, _texts.Get("gameStatistics.ok")) { Center = true };
             OkButton.Bounds = new Rectangle(Bounds.X + 116, Bounds.Y + 100, 40, 15);
-            OkButton.Clicked += args => Closing?.Invoke(args);
+            OkButton.Clicked += args =>
+            {
+                OkClicked?.Invoke(args);
+                Close();
+            };
 
             ChartsButton = new BrownButton(GuiServices, _texts.Get("gameStatistics.charts")) { Center = true };
             ChartsButton.Bounds = new Rectangle(Bounds.X + 4, Bounds.Y + 100, 40, 15);
-            ChartsButton.Clicked += args => Closing?.Invoke(args);
+            ChartsButton.Clicked += args =>
+            {
+                ChartsClicked?.Invoke(args);
+                Close();
+            };
             
             for (int i = 1; i < _playersRepository.Players.Count; i++)
             {

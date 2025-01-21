@@ -100,27 +100,27 @@ namespace Legion.Views.Map.Controls
             set => OkButton.Text = value;
         }
 
-        public event Action<HandledEventArgs> OkClicked
-        {
-            add => OkButton.Clicked += value;
-            remove => OkButton.Clicked -= value;
-        }
+        public event Action<HandledEventArgs> OkClicked;
 
-        public event Action<HandledEventArgs> MoreClicked
-        {
-            add => MoreButton.Clicked += value;
-            remove => MoreButton.Clicked -= value;
-        }
+        public event Action<HandledEventArgs> MoreClicked;
 
         private void CreateElements()
         {
             InnerPanel = new Panel(GuiServices);
 
             OkButton = new BrownButton(GuiServices, "") { Center = true };
-            OkButton.Clicked += args => Closing?.Invoke(args);
+            OkButton.Clicked += args =>
+            {
+                OkClicked?.Invoke(args);
+                Close();
+            };
 
             MoreButton = new BrownButton(GuiServices, "") { Center = true };
-            MoreButton.Clicked += args => Closing?.Invoke(args);
+            MoreButton.Clicked += args =>
+            {
+                MoreClicked?.Invoke(args);
+                Close();
+            };
 
             NameLabel = new Label(GuiServices);
             CountLabel = new Label(GuiServices);

@@ -16,7 +16,6 @@ namespace Legion.Views.Map.Layers
         private readonly ITexts _texts;
         private readonly IPlayersRepository _playersRepository;
         private readonly ILegionInfo _legionInfo;
-        private readonly ModalLayer _modalLayer;
         private readonly ICommonGuiFactory _commonGuiFactory;
         private readonly ICoroutineRunner _coroutineRunner;
         private MapMenu _mapMenu;
@@ -27,7 +26,6 @@ namespace Legion.Views.Map.Layers
             ITexts texts,
             IPlayersRepository playersRepository,
             ILegionInfo legionInfo,
-            ModalLayer modalLayer,
             ICommonGuiFactory commonGuiFactory,
             ICoroutineRunner coroutineRunner) : base(guiServices)
         {
@@ -35,7 +33,6 @@ namespace Legion.Views.Map.Layers
             _texts = texts;
             _playersRepository = playersRepository;
             _legionInfo = legionInfo;
-            _modalLayer = modalLayer;
             _commonGuiFactory = commonGuiFactory;
             _coroutineRunner = coroutineRunner;
         }
@@ -55,18 +52,20 @@ namespace Legion.Views.Map.Layers
             var window = new GameOptionsWindow(GuiServices, _texts, _playersRepository, _legionInfo);
             window.LoadGameClicked += _args =>
             {
-                _modalLayer.Window = _commonGuiFactory.CreateLoadGameWindow(null);
+                var loadGameWindow = _commonGuiFactory.CreateLoadGameWindow(null);
+                loadGameWindow.Open(window.Parent);
             };
             window.StatisticsClicked += _args =>
             {
                 var statsWindow = new GameStatisticsWindow(GuiServices, _texts, _legionInfo, _mapController, _playersRepository);
                 statsWindow.ChartsClicked += __args =>
                 {
-                    _modalLayer.Window = new GameChartsWindow(GuiServices, _texts, _playersRepository);
+                    var gameChartsWindow = new GameChartsWindow(GuiServices, _texts, _playersRepository);
+                    gameChartsWindow.Open(statsWindow.Parent);
                 };
-                _modalLayer.Window = statsWindow;
+                statsWindow.Open(window.Parent);
             };
-            _modalLayer.Window = window;
+            window.Open(Parent);
         }
 
         private Coroutine _turnTask;

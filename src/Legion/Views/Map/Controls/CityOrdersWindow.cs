@@ -17,35 +17,35 @@ namespace Legion.Views.Map.Controls
                     texts.Get("cityMenu.taxes"), args =>
                     {
                         TaxesClicked?.Invoke(args);
-                        Closing?.Invoke(args);
+                        Close();
                     }
                 },
                 {
                     texts.Get("cityMenu.newLegion"), args =>
                     {
                         NewLegionClicked?.Invoke(args);
-                        Closing?.Invoke(args);
+                        Close();
                     }
                 },
                 {
                     texts.Get("cityMenu.newBuildings"), args =>
                     {
                         BuildClicked?.Invoke(args);
-                        Closing?.Invoke(args);
+                        Close();
                     }
                 },
                 {
                     texts.Get("cityMenu.buildWalls"), args =>
                     {
                         WallsBuildClicked?.Invoke(args);
-                        Closing?.Invoke(args);
+                        Close();
                     }
                 },
                 {
                     texts.Get("cityMenu.exit"), args =>
                     {
                         ExitClicked?.Invoke(args);
-                        Closing?.Invoke(args);
+                        Close();
                     }
                 }
             };

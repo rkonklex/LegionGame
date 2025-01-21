@@ -16,17 +16,14 @@ namespace Legion.Views.Map.Layers
     {
         private readonly IMapController _mapController;
         private readonly IMapArmyGuiFactory _armyGuiFactory;
-        private readonly ModalLayer _modalLayer;
 
         public ArmiesLayer(
             IGuiServices guiServices,
             IMapController mapController,
-            IMapArmyGuiFactory armyGuiFactory,
-            ModalLayer modalLayer) : base(guiServices)
+            IMapArmyGuiFactory armyGuiFactory) : base(guiServices)
         {
             _mapController = mapController;
             _armyGuiFactory = armyGuiFactory;
-            _modalLayer = modalLayer;
         }
 
         public override void OnShow()
@@ -41,7 +38,7 @@ namespace Legion.Views.Map.Layers
                 element.Clicked += args =>
                 {
                     var armyWindow = _armyGuiFactory.CreateArmyWindow(army);
-                    _modalLayer.Window = armyWindow;
+                    armyWindow.Open(Parent);
                     args.Handled = true;
                 };
                 AddElement(element);

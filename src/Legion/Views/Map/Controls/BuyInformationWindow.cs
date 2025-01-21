@@ -54,17 +54,9 @@ namespace Legion.Views.Map.Controls
 
         public int Days { get; set; } = 22;
 
-        public event Action<HandledEventArgs> OkClicked
-        {
-            add => OkButton.Clicked += value;
-            remove => OkButton.Clicked -= value;
-        }
+        public event Action<HandledEventArgs> OkClicked;
 
-        public event Action<HandledEventArgs> CancelClicked
-        {
-            add => CancelButton.Clicked += value;
-            remove => CancelButton.Clicked -= value;
-        }
+        public event Action<HandledEventArgs> CancelClicked;
 
         private void CreateElements()
         {
@@ -73,9 +65,17 @@ namespace Legion.Views.Map.Controls
             UpButton = new BrownButton(GuiServices, "+"); //TODO: up arrow
             DownButton = new BrownButton(GuiServices, "-"); //TODO: down arrow
             OkButton = new BrownButton(GuiServices, _texts.Get("buyInfo.ok"));
-            OkButton.Clicked += args => Closing?.Invoke(args);
+            OkButton.Clicked += args =>
+            {
+                OkClicked?.Invoke(args);
+                Close();
+            };
             CancelButton = new BrownButton(GuiServices, _texts.Get("buyInfo.cancel"));
-            CancelButton.Clicked += args => Closing?.Invoke(args);
+            CancelButton.Clicked += args =>
+            {
+                CancelClicked?.Invoke(args);
+                Close();
+            };
 
             PriceLabel = new Label(GuiServices)
             {

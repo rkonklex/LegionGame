@@ -1,7 +1,10 @@
 using Gui.Elements;
+using Gui.Input;
 using Gui.Services;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.ComponentModel;
+using System;
 
 namespace Legion.Views.Map.Controls
 {
@@ -22,14 +25,25 @@ namespace Legion.Views.Map.Controls
             TextLabel = new TextBlock(guiServices);
             TargetLabel = new Label(guiServices);
 
-            Clicked += args => Closing?.Invoke(args);
-
             UpdateBounds();
 
             AddElement(InnerPanel);
             AddElement(ImageElement);
             AddElement(TextLabel);
             AddElement(TargetLabel);
+        }
+
+        public Action<HandledEventArgs> Closing;
+
+        protected override bool OnMouseDown(MouseButton button, Point position)
+        {
+            if (button == MouseButton.Left)
+            {
+                Closing?.Invoke(new HandledEventArgs());
+                Close();
+                return true;
+            }
+            return base.OnMouseDown(button, position);
         }
 
         public Texture2D Image

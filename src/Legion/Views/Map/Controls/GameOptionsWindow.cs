@@ -31,42 +31,42 @@ namespace Legion.Views.Map.Controls
                     texts.Get("mapOptions.loadGame"), args =>
                     {
                         LoadGameClicked?.Invoke(args);
-                        Closing?.Invoke(args);
+                        Close();
                     }
                 },
                 {
                     texts.Get("mapOptions.saveGame"), args =>
                     {
                         SaveGameClicked?.Invoke(args);
-                        Closing?.Invoke(args);
+                        Close();
                     }
                 },
                 {
                     texts.Get("mapOptions.statistics"), args =>
                     {
                         StatisticsClicked?.Invoke(args);
-                        Closing?.Invoke(args);
+                        Close();
                     }
                 },
                 {
                     texts.Get("mapOptions.options"), args =>
                     {
                         OptionsClicked?.Invoke(args);
-                        Closing?.Invoke(args);
+                        Close();
                     }
                 },
                 {
                     texts.Get("mapOptions.endGame"), args =>
                     {
                         EndGameClicked?.Invoke(args);
-                        Closing?.Invoke(args);
+                        Close();
                     }
                 },
                 {
                     texts.Get("mapOptions.exit"), args =>
                     {
                         ExitClicked?.Invoke(args);
-                        Closing?.Invoke(args);
+                        Close();
                     }
                 }
             };
