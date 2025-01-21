@@ -45,9 +45,9 @@ namespace Legion.Views.Map.Layers
             }
         }
 
-        public override void Update()
+        protected override void OnUpdate()
         {
-            base.Update();
+            base.OnUpdate();
 
             if (_mapController.IsProcessingTurn)
             {

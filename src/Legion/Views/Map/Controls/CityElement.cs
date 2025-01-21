@@ -17,14 +17,13 @@ namespace Legion.Views.Map.Controls
 
         public City City => _city;
 
-        public override void Update()
+        protected override void OnUpdate()
         {
+            base.OnUpdate();
             var cityImage = GetCityImage();
             var cityX = _city.X - cityImage.Width / 2;
             var cityY = _city.Y - cityImage.Height / 2;
             Bounds = new Rectangle(cityX, cityY, cityImage.Width, cityImage.Height);
-
-            base.Update();
         }
 
         public override void Draw()

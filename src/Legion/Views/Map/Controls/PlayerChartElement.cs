@@ -20,8 +20,10 @@ namespace Legion.Views.Map.Controls
             AddElement(_playerLabel);
         }
 
-        public override void Update()
+        protected override void OnUpdate()
         {
+            base.OnUpdate();
+
             _playerLabel.Text = _player.Name;
             _playerLabel.Bounds = new Rectangle(Bounds.X + 8, Bounds.Y + 4, 10, 10);
 

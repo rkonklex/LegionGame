@@ -40,8 +40,9 @@ namespace Legion.Views.Common.Controls.Equipment
             remove => _nextButton.Clicked -= value;
         }
 
-        public override void Update()
+        protected override void OnUpdate()
         {
+            base.OnUpdate();
             _prevButton.Position = new Point(Bounds.X, Bounds.Y + 15);
             _nextButton.Position = new Point(Bounds.X + 45, Bounds.Y + 15);
         }

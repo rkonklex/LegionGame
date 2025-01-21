@@ -70,8 +70,10 @@ namespace Legion.Views.Terrain.Layers
             EnemyArmy = _actions.EnemyArmy = null;
         }
 
-        public override void Update()//GameTime gameTime)
+        protected override void OnUpdate()//GameTime gameTime)
         {
+            base.OnUpdate();
+
             var gameTime = 20;
 
             if (IsPaused)

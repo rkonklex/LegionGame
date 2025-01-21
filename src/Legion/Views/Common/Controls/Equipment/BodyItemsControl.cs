@@ -73,8 +73,9 @@ namespace Legion.Views.Common.Controls.Equipment
             }
         }
 
-        public override void Update()
+        protected override void OnUpdate()
         {
+            base.OnUpdate();
             _headContainer.Position = new Point(Bounds.X + 47, Bounds.Y + 8);
             _torseContainer.Position = new Point(Bounds.X + 47, Bounds.Y + 44);
             _feetsContainer.Position = new Point(Bounds.X + 47, Bounds.Y + 108);

@@ -35,8 +35,9 @@ namespace Legion.Views.Common.Controls.Equipment
             }
         }
 
-        public override void Update()
+        protected override void OnUpdate()
         {
+            base.OnUpdate();
             for (var i = 0; i < 4; i++)
             {
                 _groundContainers[i].Position = new Point(Bounds.X + 5 + i * 25, Bounds.Y + 5);

@@ -48,9 +48,9 @@ namespace Gui.Elements
             return base.OnMouseUp(button, position);
         }
 
-        public override void Update()
+        protected override void OnUpdate()
         {
-            base.Update();
+            base.OnUpdate();
 
             int x = Center ? (Bounds.X + Bounds.Width / 2) : (Bounds.X + 4);
             int y = Bounds.Y + Bounds.Height / 2;

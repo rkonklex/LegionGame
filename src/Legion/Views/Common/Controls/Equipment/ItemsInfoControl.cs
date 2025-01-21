@@ -18,10 +18,6 @@ namespace Legion.Views.Common.Controls.Equipment
 
         public Item Item { get; set; }
 
-        public override void Update()
-        {
-        }
-
         public override void Draw()
         {
             //GuiServices.BasicDrawer.DrawBorder(Color.Black, Bounds.X, Bounds.Y + 5, Bounds.Width, Bounds.Height);

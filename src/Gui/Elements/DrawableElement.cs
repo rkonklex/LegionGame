@@ -36,7 +36,7 @@ namespace Gui.Elements
 
         internal virtual void UpdateInternal()
         {
-            Update();
+            OnUpdate();
         }
 
         internal virtual void DrawInternal()
@@ -45,7 +45,7 @@ namespace Gui.Elements
         }
 
         protected virtual void OnInitialize() { }
-        public virtual void Update() { }
+        protected virtual void OnUpdate() { }
         public virtual void Draw() { }
 
         public virtual bool HitTest(Point position, out DrawableElement hitElement)

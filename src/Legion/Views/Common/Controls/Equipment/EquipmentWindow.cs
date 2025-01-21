@@ -213,8 +213,9 @@ namespace Legion.Views.Common.Controls.Equipment
             return base.OnMouseUp(button, position);
         }
 
-        public override void Update()
+        protected override void OnUpdate()
         {
+            base.OnUpdate();
             Bounds = new Rectangle(
                 GuiServices.GameBounds.Width / 2 - WindowWidth / 2,
                 GuiServices.GameBounds.Height / 2 - WindowHeight / 2,

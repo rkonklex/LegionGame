@@ -21,8 +21,9 @@ namespace Legion.Views.Map.Controls
 
         public Army Army => _army;
 
-        public override void Update()
+        protected override void OnUpdate()
         {
+            base.OnUpdate();
             var armyX = _army.X - _image.Width / 2;
             var armyY = _army.Y - _image.Height - 1;
             Bounds = new Rectangle(armyX, armyY, _image.Width, _image.Height);
