@@ -10,8 +10,9 @@ namespace Legion.Views.Map.Layers
 
         public MapBackgroundLayer(IGuiServices guiServices) : base(guiServices) { }
 
-        public override void Initialize()
+        protected override void OnInitialize()
         {
+            base.OnInitialize();
             _background = GuiServices.ImagesStore.GetImage("map");
         }
 

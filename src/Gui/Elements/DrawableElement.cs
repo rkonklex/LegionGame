@@ -31,7 +31,7 @@ namespace Gui.Elements
 
         internal virtual void InitializeInternal()
         {
-            Initialize();
+            OnInitialize();
         }
 
         internal virtual void UpdateInternal()
@@ -44,7 +44,7 @@ namespace Gui.Elements
             Draw();
         }
 
-        public virtual void Initialize() { }
+        protected virtual void OnInitialize() { }
         public virtual void Update() { }
         public virtual void Draw() { }
 

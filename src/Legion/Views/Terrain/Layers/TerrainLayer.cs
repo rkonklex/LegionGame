@@ -12,8 +12,9 @@ namespace Legion.Views.Terrain.Layers
 
         public TerrainLayer(IGuiServices guiServices) : base(guiServices) { }
 
-        public override void Initialize()
+        protected override void OnInitialize()
         {
+            base.OnInitialize();
             _terrainGenerator = new TerrainGenerator(GuiServices.ImagesStore);
         }
 

@@ -37,8 +37,10 @@ namespace Legion.Views.Map.Layers
             _coroutineRunner = coroutineRunner;
         }
 
-        public override void Initialize()
+        protected override void OnInitialize()
         {
+            base.OnInitialize();
+
             _mapMenu = new MapMenu(GuiServices);
             _mapMenu.StartClicked += OnStartClicked;
             _mapMenu.OptionsClicked += OnOptionsClicked;

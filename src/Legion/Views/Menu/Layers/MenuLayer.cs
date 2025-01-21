@@ -39,8 +39,10 @@ namespace Legion.Views.Menu.Layers
             _commonGuiFactory = commonGuiFactory;
         }
 
-        public override void Initialize()
+        protected override void OnInitialize()
         {
+            base.OnInitialize();
+
             _background = GuiServices.ImagesStore.GetImage("mainMenu");
             _sword = GuiServices.ImagesStore.GetImage("mainMenuSword");
 

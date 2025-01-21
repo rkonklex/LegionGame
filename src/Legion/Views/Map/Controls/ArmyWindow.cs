@@ -39,11 +39,6 @@ namespace Legion.Views.Map.Controls
             UpdateArmyInfo();
         }
 
-        public override void Initialize()
-        {
-            base.Initialize();
-        }
-
         public event Action<HandledEventArgs> OkClicked;
 
         public event Action<HandledEventArgs> MoreClicked;
