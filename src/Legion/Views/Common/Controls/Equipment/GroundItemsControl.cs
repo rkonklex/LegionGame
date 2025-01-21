@@ -11,18 +11,13 @@ namespace Legion.Views.Common.Controls.Equipment
 
         public GroundItemsControl(IGuiServices guiServices) : base(guiServices)
         {
+            Size = new Point(80, 120);
             _groundContainers = new ItemContainer[4];
             for (var i = 0; i < 4; i++)
             {
                 _groundContainers[i] = new ItemContainer(GuiServices);
                 AddElement(_groundContainers[i]);
             }
-        }
-
-        public Point Position
-        {
-            get => Bounds.Location;
-            set => Bounds = new Rectangle(value.X, value.Y, 80, 120);
         }
 
         private Character _character;

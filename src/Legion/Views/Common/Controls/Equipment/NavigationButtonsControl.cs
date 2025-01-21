@@ -13,13 +13,17 @@ namespace Legion.Views.Common.Controls.Equipment
 
         public NavigationButtonsControl(IGuiServices guiServices) : base(guiServices)
         {
+            Size = new Point(80, 120);
+
             // TODO: somehow current font displays '<' as '>' (WTF?)
             _prevButton = new BrownButton(GuiServices, ">");
+            _prevButton.Size = new Point(30, 15);
             _prevButton.Center = true;
             AddElement(_prevButton);
 
             // TODO: somehow current font displays '<' as '>' (WTF?)
             _nextButton = new BrownButton(GuiServices, "<");
+            _nextButton.Size = new Point(30, 15);
             _nextButton.Center = true;
             AddElement(_nextButton);
         }
@@ -36,16 +40,10 @@ namespace Legion.Views.Common.Controls.Equipment
             remove => _nextButton.Clicked -= value;
         }
 
-        public Point Position
-        {
-            get => Bounds.Location;
-            set => Bounds = new Rectangle(value.X, value.Y, 80, 120);
-        }
-
         public override void Update()
         {
-            _prevButton.Bounds = new Rectangle(Bounds.X, Bounds.Y + 15, 30, 15);
-            _nextButton.Bounds = new Rectangle(Bounds.X + 45, Bounds.Y + 15, 30, 15);
+            _prevButton.Position = new Point(Bounds.X, Bounds.Y + 15);
+            _nextButton.Position = new Point(Bounds.X + 45, Bounds.Y + 15);
         }
     }
 }

@@ -20,6 +20,8 @@ namespace Legion.Views.Common.Controls.Equipment
 
         public BodyItemsControl(IGuiServices guiServices) : base(guiServices)
         {
+            Size = new Point(80, 120);
+
             _manImage = GuiServices.ImagesStore.GetImage("equipment.man");
 
             _headContainer = new ItemContainer(GuiServices) { IsTransparent = true };
@@ -39,12 +41,6 @@ namespace Legion.Views.Common.Controls.Equipment
             _feetsContainer.Clicked += args => ItemClicked?.Invoke(ItemSlotType.Feets, args);
             _leftHandContainer.Clicked += args => ItemClicked?.Invoke(ItemSlotType.LeftHand, args);
             _rightHandContainer.Clicked += args => ItemClicked?.Invoke(ItemSlotType.RightHand, args);
-        }
-
-        public Point Position
-        {
-            get => Bounds.Location;
-            set => Bounds = new Rectangle(value.X, value.Y, 80, 120);
         }
 
         private Character _character;

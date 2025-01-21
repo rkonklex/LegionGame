@@ -13,12 +13,7 @@ namespace Legion.Views.Common.Controls.Equipment
         public CharacterInfoControl(IGuiServices guiServices, ITexts texts) : base(guiServices)
         {
             _texts = texts;
-        }
-
-        public Point Position
-        {
-            get => Bounds.Location;
-            set => Bounds = new Rectangle(value.X, value.Y, 75, 100);
+            Size = new Point(75, 100);
         }
 
         public Character Character { get; set; }

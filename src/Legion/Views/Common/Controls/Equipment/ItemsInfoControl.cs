@@ -12,13 +12,8 @@ namespace Legion.Views.Common.Controls.Equipment
 
         public ItemsInfoControl(IGuiServices guiServices, ITexts texts) : base(guiServices)
         {
+            Size = new Point(105, 55);
             _texts = texts;
-        }
-
-        public Point Position
-        {
-            get => Bounds.Location;
-            set => Bounds = new Rectangle(value.X, value.Y, 105, 55);
         }
 
         public Item Item { get; set; }

@@ -14,15 +14,10 @@ namespace Legion.Views.Common.Controls.Equipment
 
         public ItemContainer(IGuiServices guiServices) : base(guiServices)
         {
+            Size = new Point(DefaultWidth, DefaultHeight);
         }
 
         public bool IsTransparent { get; set; }
-
-        public Point Position
-        {
-            get => Bounds.Location;
-            set => Bounds = new Rectangle(value.X, value.Y, DefaultWidth, DefaultHeight);
-        }
 
         private Item _item;
         public Item Item

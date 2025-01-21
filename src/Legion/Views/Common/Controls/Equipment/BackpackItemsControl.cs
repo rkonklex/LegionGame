@@ -13,6 +13,7 @@ namespace Legion.Views.Common.Controls.Equipment
 
         public BackpackItemsControl(IGuiServices guiServices) : base(guiServices)
         {
+            Size = new Point(105, 55);
             _backpackContainers = new ItemContainer[8];
             for (var i = 0; i < 8; i++)
             {
@@ -25,12 +26,6 @@ namespace Legion.Views.Common.Controls.Equipment
                     ItemClicked?.Invoke(itemSlot, args);
                 };
             }
-        }
-
-        public Point Position
-        {
-            get => Bounds.Location;
-            set => Bounds = new Rectangle(value.X, value.Y, 105, 55);
         }
 
         private Character _character;
