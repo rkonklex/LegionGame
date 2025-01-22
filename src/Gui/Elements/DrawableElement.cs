@@ -1,5 +1,7 @@
 using Gui.Services;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Gui.Elements
 {
@@ -26,31 +28,64 @@ namespace Gui.Elements
             set => Bounds = new Rectangle(Bounds.Location, value);
         }
 
+        protected virtual IEnumerable<DrawableElement> GetChildren() => Enumerable.Empty<DrawableElement>();
+
         public bool IsVisible { get; set; } = true;
         public bool IsEnabled { get; set; } = true;
 
-        internal virtual void InitializeInternal()
+        public bool IsInitialized { get; private set; } = false;
+
+        internal void InitializeInternal()
         {
-            OnInitialize();
+            if (!IsInitialized)
+            {
+                OnInitialize();
+                foreach (var child in GetChildren())
+                {
+                    child.InitializeInternal();
+                }
+                IsInitialized = true;
+            }
         }
 
-        internal virtual void UpdateInternal()
+        internal void UpdateInternal()
         {
             OnUpdate();
+
+            // Make a copy of the list to avoid modification during iteration
+            var updateables = GetChildren().Where(c => c.IsVisible && c.IsEnabled).ToArray();
+            foreach (var child in updateables)
+            {
+                child.UpdateInternal();
+            }
         }
 
-        internal virtual void DrawInternal()
+        internal void DrawInternal()
         {
             OnDraw();
+
+            var drawables = GetChildren().Where(c => c.IsVisible);
+            foreach (var child in drawables)
+            {
+                child.DrawInternal();
+            }
         }
 
         protected virtual void OnInitialize() { }
         protected virtual void OnUpdate() { }
         protected virtual void OnDraw() { }
 
-        public virtual bool HitTest(Point position, out DrawableElement hitElement)
+        public bool HitTest(Point position, out DrawableElement hitElement)
         {
-            if (IsVisible && Bounds.Contains(position))
+            foreach (var elem in GetChildren().Where(c => c.IsVisible).Reverse())
+            {
+                if (elem.HitTest(position, out hitElement))
+                {
+                    return true;
+                }
+            }
+
+            if (IsHit(position))
             {
                 hitElement = this;
                 return true;
@@ -58,6 +93,11 @@ namespace Gui.Elements
 
             hitElement = null;
             return false;
+        }
+
+        protected virtual bool IsHit(Point position)
+        {
+            return Bounds.Contains(position);
         }
     }
 }

@@ -1,4 +1,5 @@
 using Gui.Services;
+using Microsoft.Xna.Framework;
 
 namespace Gui.Elements
 {
@@ -29,5 +30,10 @@ namespace Gui.Elements
         public virtual void OnShow() { }
 
         public virtual void OnHide() { }
+
+        protected override bool IsHit(Point position)
+        {
+            return false;
+        }
     }
 }

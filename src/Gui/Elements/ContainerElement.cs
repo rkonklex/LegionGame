@@ -13,7 +13,7 @@ namespace Gui.Elements
         {
         }
 
-        protected IReadOnlyCollection<DrawableElement> Elements => _elements;
+        public IReadOnlyCollection<DrawableElement> Elements => _elements;
 
         internal override bool UpdateInputInternal()
         {
@@ -28,28 +28,17 @@ namespace Gui.Elements
             return base.UpdateInputInternal();
         }
 
-        internal override void UpdateInternal()
+        protected override IEnumerable<DrawableElement> GetChildren()
         {
-            base.UpdateInternal();
-
-            foreach (var elem in Elements)
-            {
-                if (elem.IsVisible) elem.UpdateInternal();
-            }
-        }
-
-        internal override void DrawInternal()
-        {
-            base.DrawInternal();
-
-            foreach (var elem in Elements)
-            {
-                if (elem.IsVisible) elem.DrawInternal();
-            }
+            return _elements;
         }
 
         public void AddElement(DrawableElement element)
         {
+            if (IsInitialized)
+            {
+                element.InitializeInternal();
+            }
             _elements.Add(element);
         }
 
@@ -61,22 +50,6 @@ namespace Gui.Elements
         public void ClearElements()
         {
             _elements.Clear();
-        }
-
-        public override bool HitTest(Point position, out DrawableElement hitElement)
-        {
-            if (IsVisible)
-            {
-                foreach (var elem in Elements.Reverse())
-                {
-                    if (elem.HitTest(position, out hitElement))
-                    {
-                        return true;
-                    }
-                }
-            }
-            hitElement = null;
-            return false;
         }
     }
 }

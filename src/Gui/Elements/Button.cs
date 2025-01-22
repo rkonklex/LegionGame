@@ -1,17 +1,24 @@
 using Gui.Input;
 using Gui.Services;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Gui.Elements
 {
     public class Button : Panel
     {
-        protected Label Label;
+        private Label Label;
 
         public Button(IGuiServices guiServices, string text) : base(guiServices)
         {
             Label = new Label(guiServices) { IsVerticalCenter = true };
             Text = text;
+        }
+
+        protected override IEnumerable<DrawableElement> GetChildren()
+        {
+            return [Label];
         }
 
         public bool Center { get; set; }
@@ -57,12 +64,6 @@ namespace Gui.Elements
 
             Label.Bounds = new Rectangle(x, y, 1, 1);
             Label.IsHorizontalCenter = Center;
-        }
-
-        protected override void OnDraw()
-        {
-            base.OnDraw();
-            Label.DrawInternal();
         }
     }
 }
