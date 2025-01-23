@@ -11,7 +11,7 @@ namespace Gui.Elements
         }
 
         private View _parent;
-        public View Parent
+        public new View Parent
         {
             get => _parent;
             set

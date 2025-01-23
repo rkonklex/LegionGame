@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gui.Services;
@@ -35,21 +36,43 @@ namespace Gui.Elements
 
         public void AddElement(DrawableElement element)
         {
-            if (IsInitialized)
+            if (element == this)
             {
-                element.InitializeInternal();
+                throw new InvalidOperationException("Element cannot be its own parent");
             }
+            if (element.Parent is not null)
+            {
+                throw new InvalidOperationException("Element already has a parent");
+            }
+
+                if (IsInitialized)
+                {
+                    element.InitializeInternal();
+                }
+
+                element.Parent = this;
             _elements.Add(element);
-        }
+            }
 
         public void RemoveElement(DrawableElement element)
         {
-            _elements.Remove(element);
-        }
+            if (element.Parent != this)
+            {
+                throw new InvalidOperationException("Element does not belong to this container");
+            }
+
+                _elements.Remove(element);
+                element.Parent = null;
+            }
 
         public void ClearElements()
         {
+            var elementsToRemove = _elements.ToArray();
             _elements.Clear();
+            foreach (var element in elementsToRemove)
+            {
+                element.Parent = null;
+            }
         }
     }
 }

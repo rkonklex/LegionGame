@@ -28,6 +28,8 @@ namespace Gui.Elements
             set => Bounds = new Rectangle(Bounds.Location, value);
         }
 
+        public DrawableElement Parent { get; internal set; }
+
         protected virtual IEnumerable<DrawableElement> GetChildren() => Enumerable.Empty<DrawableElement>();
 
         public bool IsVisible { get; set; } = true;
@@ -43,6 +45,7 @@ namespace Gui.Elements
                 foreach (var child in GetChildren())
                 {
                     child.InitializeInternal();
+                    child.Parent = this;
                 }
                 IsInitialized = true;
             }
