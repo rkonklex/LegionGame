@@ -35,7 +35,7 @@ namespace Legion.Views.Map.Layers
                     _routeDrawer.EndRouteDrawingForPoint(mousePos);
                     return true;
                 }
-                else if (Parent.HitTest(position, out var hitElement))
+                else if (Parent.HitTest(position, out var hitElement, belowLayer: this))
                 {
                     MapObject mapObject = hitElement switch
                     {

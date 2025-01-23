@@ -33,7 +33,7 @@ namespace Gui.Elements
 
         protected override bool IsHit(Point position)
         {
-            return false;
+            return IsModal;
         }
     }
 }

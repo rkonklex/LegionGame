@@ -152,16 +152,18 @@ namespace Gui.Elements
             }
         }
 
-        public bool HitTest(Point position, out DrawableElement hitElement)
+        public bool HitTest(Point position, out DrawableElement hitElement, Layer belowLayer = null)
         {
-            if (IsVisible)
+            var layers = Layers.AsEnumerable();
+            if (belowLayer is not null)
             {
-                foreach (var layer in Layers.Reverse())
+                layers = layers.TakeWhile(la => la != belowLayer);
+            }
+            foreach (var layer in layers.Where(la => la.IsVisible).Reverse())
+            {
+                if (layer.HitTest(position, out hitElement))
                 {
-                    if (layer.HitTest(position, out hitElement))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
 
