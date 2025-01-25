@@ -87,8 +87,6 @@ namespace Gui.Elements
 
         internal void UpdateInternal()
         {
-            if (!IsVisible) { return; }
-
             Update();
 
             if (!IsVisible) { return; }
@@ -99,19 +97,10 @@ namespace Gui.Elements
             var topMostModal = updateables.LastOrDefault(la => la.IsModal);
             if (topMostModal != null)
             {
-                topMostModal.UpdateInputInternal();
                 topMostModal.UpdateInternal();
             }
             else
             {
-                foreach (var layer in updateables.Reverse())
-                {
-                    if (layer.UpdateInputInternal())
-                    {
-                        break;
-                    }
-                }
-
                 foreach (var layer in updateables)
                 {
                     layer.UpdateInternal();
@@ -119,10 +108,53 @@ namespace Gui.Elements
             }
         }
 
+        private InputElement _hoveredElement;
+        internal void UpdateInputInternal()
+        {
+            var position = InputManager.GetMousePostion();
+            var isHit = InputHitTest(position, out var hitElement);
+
+            if (_hoveredElement != hitElement)
+            {
+                var leaveArgs = new MouseEventArgs(position);
+                InputHelper.PropagateEvent(_hoveredElement, leaveArgs, (c, a) => c.OnMouseLeave(a));
+
+                _hoveredElement = hitElement;
+
+                var enterArgs = new MouseEventArgs(position);
+                InputHelper.PropagateEvent(_hoveredElement, leaveArgs, (c, a) => c.OnMouseEnter(a));
+            }
+
+            if (isHit)
+            {
+                if (InputManager.IsMouseButtonJustPressed(MouseButton.Left))
+                {
+                    var args = new MouseButtonEventArgs(MouseButton.Left, position);
+                    InputHelper.PropagateEvent(hitElement, args, (c, a) => c.OnMouseDown(a));
+                }
+
+                if (InputManager.IsMouseButtonJustPressed(MouseButton.Right))
+                {
+                    var args = new MouseButtonEventArgs(MouseButton.Right, position);
+                    InputHelper.PropagateEvent(hitElement, args, (c, a) => c.OnMouseDown(a));
+                }
+
+                if (InputManager.IsMouseButtonJustReleased(MouseButton.Left))
+                {
+                    var args = new MouseButtonEventArgs(MouseButton.Left, position);
+                    InputHelper.PropagateEvent(hitElement, args, (c, a) => c.OnMouseUp(a));
+                }
+
+                if (InputManager.IsMouseButtonJustReleased(MouseButton.Right))
+                {
+                    var args = new MouseButtonEventArgs(MouseButton.Right, position);
+                    InputHelper.PropagateEvent(hitElement, args, (c, a) => c.OnMouseUp(a));
+                }
+            }
+        }
+
         internal void DrawInternal()
         {
-            if (!IsVisible) { return; }
-
             Draw();
 
             var drawables = Layers.Where(la => la.IsVisible);
@@ -164,6 +196,30 @@ namespace Gui.Elements
                 if (layer.HitTest(position, out hitElement))
                 {
                     return true;
+                }
+            }
+
+            hitElement = null;
+            return false;
+        }
+
+        private bool InputHitTest(Point position, out InputElement hitElement)
+        {
+            var hittables = Layers.Where(la => la.IsVisible && la.IsEnabled);
+
+            var topMostModal = hittables.LastOrDefault(la => la.IsModal);
+            if (topMostModal != null)
+            {
+                return topMostModal.InputHitTest(position, out hitElement);
+            }
+            else
+            {
+                foreach (var layer in hittables.Reverse())
+                {
+                    if (layer.InputHitTest(position, out hitElement))
+                    {
+                        return true;
+                    }
                 }
             }
 

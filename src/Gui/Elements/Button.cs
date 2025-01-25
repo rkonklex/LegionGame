@@ -35,24 +35,24 @@ namespace Gui.Elements
             set => Label.TextColor = value;
         }
 
-        protected override bool OnMouseDown(MouseButton button, Point position)
+        protected internal override void OnMouseDown(MouseButtonEventArgs args)
         {
-            if (button == MouseButton.Left)
+            base.OnMouseDown(args);
+
+            if (args.Button == MouseButton.Left)
             {
                 Invert = true;
             }
-
-            return base.OnMouseDown(button, position);
         }
 
-        protected override bool OnMouseUp(MouseButton button, Point position)
+        protected internal override void OnMouseUp(MouseButtonEventArgs args)
         {
-            if (button == MouseButton.Left)
+            base.OnMouseUp(args);
+
+            if (args.Button == MouseButton.Left)
             {
                 Invert = false;
             }
-
-            return base.OnMouseUp(button, position);
         }
 
         protected override void OnUpdate()

@@ -8,6 +8,7 @@ using Legion.Localization;
 using Legion.Model;
 using Legion.Views.Common;
 using Legion.Views.Common.Controls;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Legion.Views.Menu.Layers
@@ -37,6 +38,7 @@ namespace Legion.Views.Menu.Layers
             _viewSwitcher = viewSwitcher;
             _texts = texts;
             _commonGuiFactory = commonGuiFactory;
+            IsModal = true;
         }
 
         protected override void OnInitialize()
@@ -45,14 +47,15 @@ namespace Legion.Views.Menu.Layers
 
             _background = GuiServices.ImagesStore.GetImage("mainMenu");
             _sword = GuiServices.ImagesStore.GetImage("mainMenuSword");
-
-            Clicked += MenuLayer_Clicked;
         }
 
-        private void MenuLayer_Clicked(HandledEventArgs obj)
+        protected override void OnClick(HandledEventArgs args)
         {
+            base.OnClick(args);
+
             if (_loadGameWindow == null)
             {
+                args.Handled = true;
                 var position = InputManager.GetMousePostion();
                 if (position.Y < TopBoundary)
                 {

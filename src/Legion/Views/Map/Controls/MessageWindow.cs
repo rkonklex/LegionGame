@@ -35,15 +35,16 @@ namespace Legion.Views.Map.Controls
 
         public Action<HandledEventArgs> Closing;
 
-        protected override bool OnMouseDown(MouseButton button, Point position)
+        protected override void OnMouseDown(MouseButtonEventArgs args)
         {
-            if (button == MouseButton.Left)
+            base.OnMouseDown(args);
+
+            if (args.Button == MouseButton.Left)
             {
+                args.Handled = true;
                 Closing?.Invoke(new HandledEventArgs());
                 Close();
-                return true;
             }
-            return base.OnMouseDown(button, position);
         }
 
         public Texture2D Image

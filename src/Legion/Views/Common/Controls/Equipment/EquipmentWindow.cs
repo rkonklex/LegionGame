@@ -204,13 +204,15 @@ namespace Legion.Views.Common.Controls.Equipment
             CurrentCharacter = CurrentCharacter;
         }
 
-        protected override bool OnMouseUp(MouseButton button, Point position)
+        protected override void OnMouseDown(MouseButtonEventArgs args)
         {
-            if (button == MouseButton.Right)
+            base.OnMouseDown(args);
+
+            if (args.Button == MouseButton.Right)
             {
+                args.Handled = true;
                 Close();
             }
-            return base.OnMouseUp(button, position);
         }
 
         protected override void OnUpdate()

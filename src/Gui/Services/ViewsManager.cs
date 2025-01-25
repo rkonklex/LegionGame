@@ -49,6 +49,7 @@ namespace Gui.Services
         public void Update()
         {
             InputManager.Update();
+            CurrentView.UpdateInputInternal();
             CurrentView.UpdateInternal();
         }
 

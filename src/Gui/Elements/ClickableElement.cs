@@ -2,69 +2,53 @@
 using System.ComponentModel;
 using Gui.Input;
 using Gui.Services;
-using Microsoft.Xna.Framework;
 
 namespace Gui.Elements
 {
-    public class ClickableElement : DrawableElement
+    public class ClickableElement : InputElement
     {
         private bool _wasDown;
 
         public ClickableElement(IGuiServices guiServices) : base(guiServices) { }
 
         public event Action<HandledEventArgs> Clicked;
-        public event Action<HandledEventArgs> MouseDown;
 
-        protected virtual bool OnMouseDown(MouseButton button, Point position)
+        protected virtual void OnClick(HandledEventArgs args)
         {
-            var args = new HandledEventArgs();
+            Clicked?.Invoke(args);
+        }
 
-            if (!_wasDown)
+        protected internal override void OnMouseDown(MouseButtonEventArgs args)
+        {
+            base.OnMouseDown(args);
+
+            if (args.Button == MouseButton.Left)
             {
+                args.Handled = true;
                 _wasDown = true;
-                MouseDown?.Invoke(args);
             }
-
-            return args.Handled;
         }
 
-        protected virtual bool OnMouseUp(MouseButton button, Point position)
+        protected internal override void OnMouseUp(MouseButtonEventArgs args)
         {
-            var args = new HandledEventArgs();
+            base.OnMouseUp(args);
 
-            if (_wasDown)
+            if (args.Button == MouseButton.Left)
             {
-                _wasDown = false;
-                Clicked?.Invoke(args);
+                args.Handled = true;
+
+                if (_wasDown)
+                {
+                    _wasDown = false;
+                    OnClick(new HandledEventArgs());
+                }
             }
-
-            return args.Handled;
         }
 
-        private void GetMouseButtonState(MouseButton button, out bool isDown, out bool isUp)
+        protected internal override void OnMouseLeave(MouseEventArgs args)
         {
-            isDown = InputManager.IsMouseButtonJustPressed(button);
-            isUp = InputManager.IsMouseButtonJustReleased(button);
+            base.OnMouseLeave(args);
+            _wasDown = false;
         }
-
-        internal virtual bool UpdateInputInternal()
-        {
-            var handled = false;
-            var position = InputManager.GetMousePostion();
-
-            var isMouseInside = Bounds.Contains(position);
-
-            GetMouseButtonState(MouseButton.Left, out bool isLeftDown, out bool isLeftUp);
-            GetMouseButtonState(MouseButton.Right, out bool isRightDown, out bool isRightUp);
-
-            if (isLeftDown && isMouseInside) handled = OnMouseDown(MouseButton.Left, position);
-            if (isRightDown && isMouseInside) handled = OnMouseDown(MouseButton.Right, position);
-            if (isLeftUp) handled = OnMouseUp(MouseButton.Left, position);
-            if (isRightUp) handled = OnMouseUp(MouseButton.Right, position);
-
-            return handled || UpdateInput();
-        }
-
-        public virtual bool UpdateInput() { return false; }
     }
 }

@@ -23,19 +23,20 @@ namespace Legion.Views.Map.Layers
             _routeDrawer.RouteDrawingEnded += () => IsVisible = false;
         }
 
-        protected override bool OnMouseDown(MouseButton button, Point position)
+        protected override void OnMouseDown(MouseButtonEventArgs args)
         {
             Debug.Assert(_routeDrawer.IsRouteDrawingForAny);
 
-            if (button == MouseButton.Left)
+            base.OnMouseDown(args);
+            args.Handled = true;
+
+            if (args.Button == MouseButton.Left)
             {
                 if (_routeDrawer.IsRouteDrawingForPoint)
                 {
-                    var mousePos = InputManager.GetMousePostion();
-                    _routeDrawer.EndRouteDrawingForPoint(mousePos);
-                    return true;
+                    _routeDrawer.EndRouteDrawingForPoint(args.Position);
                 }
-                else if (Parent.HitTest(position, out var hitElement, belowLayer: this))
+                else if (Parent.HitTest(args.Position, out var hitElement, belowLayer: this))
                 {
                     MapObject mapObject = hitElement switch
                     {
@@ -46,17 +47,13 @@ namespace Legion.Views.Map.Layers
                     if (mapObject is not null)
                     {
                         _routeDrawer.EndRouteDrawingForMapObject(mapObject);
-                        return true;
                     }
                 }
             }
-            else if (button == MouseButton.Right)
+            else if (args.Button == MouseButton.Right)
             {
                 _routeDrawer.CancelRouteDrawing();
-                return true;
             }
-
-            return false;
         }
 
         protected override void OnDraw()

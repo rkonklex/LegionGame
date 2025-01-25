@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Linq;
 using Gui.Elements;
 using Gui.Input;
@@ -126,24 +127,14 @@ namespace Legion.Views.Terrain.Layers
             }
         }
 
-        public override bool UpdateInput()
+        protected override void OnClick(HandledEventArgs args)
         {
-            if (InputManager.IsMouseButtonDown(MouseButton.Left))
-            {
-                if (!_wasMouseDown)
-                {
-                    _wasMouseDown = true;
-                    var mousePos = InputManager.GetMousePostion();
+            base.OnClick(args);
 
-                    return HandleClick(mousePos);
-                }
-            }
-            else
+            if (HandleClick(InputManager.GetMousePostion()))
             {
-                _wasMouseDown = false;
+                args.Handled = true;
             }
-
-            return false;
         }
 
         public bool HandleClick(Point mousePosition)

@@ -16,19 +16,6 @@ namespace Gui.Elements
 
         public IReadOnlyCollection<DrawableElement> Elements => _elements;
 
-        internal override bool UpdateInputInternal()
-        {
-            foreach (var elem in ((IEnumerable<DrawableElement>) Elements).Reverse())
-            {
-                if (elem is ClickableElement && elem.IsEnabled && elem.IsVisible)
-                {
-                    var handled = ((ClickableElement) elem).UpdateInputInternal();
-                    if (handled) return true;
-                }
-            }
-            return base.UpdateInputInternal();
-        }
-
         protected override IEnumerable<DrawableElement> GetChildren()
         {
             return _elements;
@@ -45,14 +32,14 @@ namespace Gui.Elements
                 throw new InvalidOperationException("Element already has a parent");
             }
 
-                if (IsInitialized)
-                {
-                    element.InitializeInternal();
-                }
-
-                element.Parent = this;
-            _elements.Add(element);
+            if (IsInitialized)
+            {
+                element.InitializeInternal();
             }
+
+            element.Parent = this;
+            _elements.Add(element);
+        }
 
         public void RemoveElement(DrawableElement element)
         {
@@ -61,9 +48,9 @@ namespace Gui.Elements
                 throw new InvalidOperationException("Element does not belong to this container");
             }
 
-                _elements.Remove(element);
-                element.Parent = null;
-            }
+            _elements.Remove(element);
+            element.Parent = null;
+        }
 
         public void ClearElements()
         {
