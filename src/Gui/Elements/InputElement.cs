@@ -36,8 +36,8 @@ namespace Gui.Elements
         {
             Debug.Assert(IsVisible && IsEnabled);
 
-            var hittables = GetChildren().OfType<InputElement>().Where(c => c.IsVisible && c.IsEnabled);
-            foreach (var elem in hittables.Reverse())
+            var hittables = GetChildren().Where(c => c.IsVisible && c.IsEnabled && c.Contains(position));
+            foreach (var elem in hittables.OfType<InputElement>().Reverse())
             {
                 if (elem.InputHitTest(position, out hitElement))
                 {
@@ -45,7 +45,7 @@ namespace Gui.Elements
                 }
             }
 
-            if (IsHit(position))
+            if (IsHitTarget())
             {
                 hitElement = this;
                 return true;

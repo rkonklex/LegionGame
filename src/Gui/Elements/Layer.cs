@@ -31,9 +31,6 @@ namespace Gui.Elements
 
         public virtual void OnHide() { }
 
-        protected override bool IsHit(Point position)
-        {
-            return IsModal;
-        }
+        protected override bool IsHitTarget() => IsModal;
     }
 }

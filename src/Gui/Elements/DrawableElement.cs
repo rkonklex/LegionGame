@@ -78,9 +78,15 @@ namespace Gui.Elements
         protected virtual void OnUpdate() { }
         protected virtual void OnDraw() { }
 
+        public bool Contains(Point position)
+        {
+            return Bounds.Contains(position);
+        }
+
         public bool HitTest(Point position, out DrawableElement hitElement)
         {
-            foreach (var elem in GetChildren().Where(c => c.IsVisible).Reverse())
+            var hittables = GetChildren().Where(c => c.IsVisible && c.Contains(position));
+            foreach (var elem in hittables.Reverse())
             {
                 if (elem.HitTest(position, out hitElement))
                 {
@@ -88,7 +94,7 @@ namespace Gui.Elements
                 }
             }
 
-            if (IsHit(position))
+            if (IsHitTarget())
             {
                 hitElement = this;
                 return true;
@@ -98,9 +104,6 @@ namespace Gui.Elements
             return false;
         }
 
-        protected virtual bool IsHit(Point position)
-        {
-            return Bounds.Contains(position);
-        }
+        protected virtual bool IsHitTarget() => true;
     }
 }
