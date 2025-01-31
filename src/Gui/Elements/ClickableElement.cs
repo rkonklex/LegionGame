@@ -7,9 +7,25 @@ namespace Gui.Elements
 {
     public class ClickableElement : InputElement
     {
-        private bool _wasDown;
-
         public ClickableElement(IGuiServices guiServices) : base(guiServices) { }
+
+        private bool _isPressed;
+        public bool IsPressed
+        {
+            get => _isPressed;
+            private set
+            {
+                if (_isPressed != value)
+                {
+                    _isPressed = value;
+                    OnPressedChanged();
+                }
+            }
+        }
+
+        protected virtual void OnPressedChanged()
+        {
+        }
 
         public event Action<HandledEventArgs> Clicked;
 
@@ -25,7 +41,7 @@ namespace Gui.Elements
             if (args.Button == MouseButton.Left)
             {
                 args.Handled = true;
-                _wasDown = true;
+                IsPressed = true;
             }
         }
 
@@ -37,9 +53,9 @@ namespace Gui.Elements
             {
                 args.Handled = true;
 
-                if (_wasDown)
+                if (IsPressed)
                 {
-                    _wasDown = false;
+                    IsPressed = false;
                     OnClick(new HandledEventArgs());
                 }
             }
@@ -48,7 +64,7 @@ namespace Gui.Elements
         protected internal override void OnMouseLeave(MouseEventArgs args)
         {
             base.OnMouseLeave(args);
-            _wasDown = false;
+            IsPressed = false;
         }
     }
 }
