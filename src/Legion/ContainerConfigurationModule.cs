@@ -46,6 +46,7 @@ namespace Legion
 
             builder.RegisterType<CitiesHelper>().As<ICitiesHelper>().SingleInstance();
             builder.RegisterType<ArmiesHelper>().As<IArmiesHelper>().SingleInstance();
+            builder.RegisterType<TerrainHelper>().As<ITerrainHelper>().SingleInstance();
 
             //Controllers
             builder.RegisterType<MapController>().As<IMapController>().SingleInstance();

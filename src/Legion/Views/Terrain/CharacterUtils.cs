@@ -68,41 +68,6 @@ namespace Legion.Views.Terrain
 
             return false;
         }
-
-        public static void InitArmyPostion(Army army, int xw, int yw, int type)
-        {
-            //TODO: replace this magic numbers (200/160) by screen width/height or something 
-            var x1 = xw * 200;
-            var y1 = yw * 160;
-            foreach (var character in army.Characters)
-            {
-                if (type == 1)
-                {
-                    var xw2 = 0;
-                    var yw2 = 0;
-                    do
-                    {
-                        xw2 = GlobalUtils.Rand(3);
-                        yw2 = GlobalUtils.Rand(3);
-                    } while (xw2 != xw && yw2 != yw);
-                    x1 = xw2 * 200;
-                    y1 = yw2 * 160;
-                }
-                else if (type == 2)
-                {
-                    x1 = GlobalUtils.Rand(3) * 200;
-                }
-                else if (type == 3)
-                {
-                    y1 = GlobalUtils.Rand(3) * 160;
-                }
-                do
-                {
-                    character.X = GlobalUtils.Rand(200) + x1 + 16;
-                    character.Y = GlobalUtils.Rand(160) + y1 + 20;
-                } while (false); //TODO: while there is no other things in that position
-            }
-        }
     }
 
 }

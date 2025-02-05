@@ -5,7 +5,7 @@ namespace Legion.Model
 {
     public interface IBattleManager
     {
-        Coroutine AttackOnArmy(Army army, Army targetArmy);
+        Coroutine AttackOnArmy(Army army, Army targetArmy, WorldDirection movementDirection);
         Coroutine AttackOnCity(Army army, City city);
     }
 }

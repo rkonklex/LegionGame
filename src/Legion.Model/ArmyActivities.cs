@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AwaitableCoroutine;
+using Legion.Model.Helpers;
 using Legion.Model.Repositories;
 using Legion.Model.Types;
 using Legion.Model.Types.Definitions;
@@ -13,18 +14,21 @@ namespace Legion.Model
     {
         private readonly IArmiesRepository _armiesRepository;
         private readonly ICharacterDefinitionsRepository _characterDefinitionsRepository;
+        private readonly ITerrainHelper _terrainHelper;
         private readonly ILegionInfo _legionInfo;
         private readonly IMessagesService _messagesService;
         private readonly IViewSwitcher _viewSwitcher;
 
         public ArmyActivities(IArmiesRepository armiesRepository,
             ICharacterDefinitionsRepository characterDefinitionsRepository,
+            ITerrainHelper terrainHelper,
             ILegionInfo legionInfo,
             IMessagesService messagesService,
             IViewSwitcher viewSwitcher)
         {
             _armiesRepository = armiesRepository;
             _characterDefinitionsRepository = characterDefinitionsRepository;
+            _terrainHelper = terrainHelper;
             _legionInfo = legionInfo;
             _messagesService = messagesService;
             _viewSwitcher = viewSwitcher;
@@ -34,6 +38,7 @@ namespace Legion.Model
         {
             Army encounterArmy = null;
             MessageType? encounterMessage = null;
+            int xt = 1, yt = 1;
 
             var characterTypes = _characterDefinitionsRepository;
             switch (encounterType)
@@ -46,6 +51,8 @@ namespace Legion.Model
                 case EncounterType.Bandits:
                     encounterArmy = CreateTempArmy(GlobalUtils.Rand(5) + 5);
                     encounterMessage = MessageType.ArmyEncounteredBandits;
+                    xt = GlobalUtils.Rand(2);
+                    yt = GlobalUtils.Rand(2);
                     break;
 
                 case EncounterType.StuckInSwamp:
@@ -68,6 +75,8 @@ namespace Legion.Model
                     encounterArmy.Characters.First().Experience = GlobalUtils.Rand(30) + 20;
                     encounterArmy.Characters.First().Aggression = 40;
                     encounterMessage = MessageType.ArmyEncounteredLoneKnight;
+                    xt = GlobalUtils.Rand(2);
+                    yt = GlobalUtils.Rand(2);
                     break;
 
                 case EncounterType.CaveEntrance:
@@ -78,6 +87,8 @@ namespace Legion.Model
                         character.Aggression = 150 + GlobalUtils.Rand(50);
                     }
                     encounterMessage = MessageType.ArmyEncounteredCaveEntrance;
+                    xt = 1;
+                    yt = 0;
                     break;
 
                 default: throw new ArgumentException("Invalid EncounterType", nameof(encounterType));
@@ -85,7 +96,10 @@ namespace Legion.Model
 
             await _messagesService.ShowMessageAsync(encounterMessage.Value, army);
 
-            await _viewSwitcher.OpenTerrainAsync(army, encounterArmy);
+            var builder = _terrainHelper.BuildTerrainActionContext();
+            builder.SetUserArmy(army, xt, yt, PlacementZone.Fixed);
+            builder.SetEnemyArmy(encounterArmy, xt, yt, PlacementZone.OtherThan);
+            await _viewSwitcher.OpenTerrainAsync(builder.GetResult());
         }
 
         public async Coroutine Hunt(Army army, TerrainType terrainType)
@@ -121,7 +135,12 @@ namespace Legion.Model
 
             await _messagesService.ShowMessageAsync(MessageType.ArmyTrackedDownBeast, army);
 
-            await _viewSwitcher.OpenTerrainAsync(army, creatureArmy);
+            var xw = GlobalUtils.Rand(2);
+            var yw = GlobalUtils.Rand(2);
+            var builder = _terrainHelper.BuildTerrainActionContext();
+            builder.SetUserArmy(army, xw, yw, PlacementZone.Fixed);
+            builder.SetEnemyArmy(creatureArmy, xw, yw, PlacementZone.OtherThan);
+            await _viewSwitcher.OpenTerrainAsync(builder.GetResult());
 
             army.CurrentAction = ArmyActions.Camping;
         }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using AwaitableCoroutine;
 using Legion.Model.Helpers;
@@ -13,6 +14,7 @@ namespace Legion.Model
         private readonly IPlayersRepository _playersRepository;
         private readonly IArmiesHelper _armiesHelper;
         private readonly ICitiesHelper _citiesHelper;
+        private readonly ITerrainHelper _terrainHelper;
         private readonly IMessagesService _messagesService;
         private readonly IViewSwitcher _viewSwitcher;
 
@@ -20,6 +22,7 @@ namespace Legion.Model
             IPlayersRepository playersRepository,
             IArmiesHelper armiesHelper,
             ICitiesHelper citiesHelper,
+            ITerrainHelper terrainHelper,
             IMessagesService messagesService,
             IViewSwitcher viewSwitcher)
         {
@@ -27,11 +30,12 @@ namespace Legion.Model
             _armiesRepository = armiesRepository;
             _armiesHelper = armiesHelper;
             _citiesHelper = citiesHelper;
+            _terrainHelper = terrainHelper;
             _messagesService = messagesService;
             _viewSwitcher = viewSwitcher;
         }
 
-        public async Coroutine AttackOnArmy(Army army, Army targetArmy)
+        public async Coroutine AttackOnArmy(Army army, Army targetArmy, WorldDirection movementDirection)
         {
             if (!army.IsUserControlled && !targetArmy.IsUserControlled)
             {
@@ -43,6 +47,25 @@ namespace Legion.Model
             }
             else
             {
+                var placementZone = movementDirection switch
+                {
+                    WorldDirection.East or WorldDirection.West => PlacementZone.RandomY,
+                    WorldDirection.North or WorldDirection.South => PlacementZone.RandomX,
+                    _ => throw new ArgumentOutOfRangeException(nameof(movementDirection), "Invalid movement direction"),
+                };
+                var (xw1, xw2) = movementDirection switch
+                {
+                    WorldDirection.West => (0, 2),
+                    WorldDirection.East => (2, 0),
+                    _ => (1, 1),
+                };
+                var (yw1, yw2) = movementDirection switch
+                {
+                    WorldDirection.South => (0, 2),
+                    WorldDirection.North => (2, 0),
+                    _ => (1, 1),
+                };
+
                 if (army.IsUserControlled)
                 {
                     var days = GlobalUtils.Rand(30) + 10;
@@ -52,14 +75,22 @@ namespace Legion.Model
                     targetArmy.DaysToGetInfo = 0;
 
                     await _messagesService.ShowMessageAsync(MessageType.UserAttacksArmy, army, targetArmy);
-                    await _viewSwitcher.OpenTerrainAsync(army, targetArmy);
+
+                    var builder = _terrainHelper.BuildTerrainActionContext();
+                    builder.SetUserArmy(army, xw1, yw1, placementZone);
+                    builder.SetEnemyArmy(targetArmy, xw2, yw2, placementZone);
+                    await _viewSwitcher.OpenTerrainAsync(builder.GetResult());
                 }
                 else
                 {
                     army.DaysToGetInfo = 0;
 
                     await _messagesService.ShowMessageAsync(MessageType.EnemyAttacksUserArmy, army, targetArmy);
-                    await _viewSwitcher.OpenTerrainAsync(targetArmy, army);
+
+                    var builder = _terrainHelper.BuildTerrainActionContext();
+                    builder.SetUserArmy(army, xw1, yw1, placementZone);
+                    builder.SetEnemyArmy(targetArmy, xw2, yw2, placementZone);
+                    await _viewSwitcher.OpenTerrainAsync(builder.GetResult());
                 }
 
                 if (army.IsKilled)
@@ -114,7 +145,12 @@ namespace Legion.Model
                     if (city.IsUserControlled)
                     {
                         await _messagesService.ShowMessageAsync(MessageType.EnemyAttacksUserCity, army, city);
-                        await _viewSwitcher.OpenTerrainAsync(cityArmy, army);
+
+                        // BITWA[OBRONA,A,0,0,2,0,2,2,TEREN,MUR]
+                        var builder = _terrainHelper.BuildTerrainActionContext();
+                        builder.SetUserArmy(cityArmy, 0, 0, PlacementZone.RandomX);
+                        builder.SetEnemyArmy(army, 0, 2, PlacementZone.RandomX);
+                        await _viewSwitcher.OpenTerrainAsync(builder.GetResult());
                     }
                     else if (army.IsUserControlled)
                     {
@@ -123,7 +159,12 @@ namespace Legion.Model
                         if (city.Owner != null) { city.Owner.UpdateWar(army.Owner, days); }
 
                         await _messagesService.ShowMessageAsync(MessageType.UserAttackCity, army, city);
-                        await _viewSwitcher.OpenTerrainAsync(army, cityArmy);
+
+                        // BITWA[A,40,0,2,2,0,0,2,TEREN,MUR]
+                        var builder = _terrainHelper.BuildTerrainActionContext();
+                        builder.SetUserArmy(army, 0, 2, PlacementZone.RandomX);
+                        builder.SetEnemyArmy(cityArmy, 0, 0, PlacementZone.RandomX);
+                        await _viewSwitcher.OpenTerrainAsync(builder.GetResult());
                     }
 
                     await AfterAttackOnCity(army, city, cityArmy);

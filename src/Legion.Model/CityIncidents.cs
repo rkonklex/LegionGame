@@ -13,6 +13,7 @@ namespace Legion.Model
         private readonly ICharacterDefinitionsRepository _characterDefinitionsRepository;
         private readonly ILegionInfo _legionInfo;
         private readonly IArmiesHelper _armiesHelper;
+        private readonly ITerrainHelper _terrainHelper;
         private readonly IMessagesService _messagesService;
         private readonly IViewSwitcher _viewSwitcher;
 
@@ -20,6 +21,7 @@ namespace Legion.Model
             ICharacterDefinitionsRepository characterDefinitionsRepository,
             ILegionInfo legionInfo,
             IArmiesHelper armiesHelper,
+            ITerrainHelper terrainHelper,
             IMessagesService messagesService,
             IViewSwitcher viewSwitcher)
         {
@@ -27,6 +29,7 @@ namespace Legion.Model
             _characterDefinitionsRepository = characterDefinitionsRepository;
             _legionInfo = legionInfo;
             _armiesHelper = armiesHelper;
+            _terrainHelper = terrainHelper;
             _messagesService = messagesService;
             _viewSwitcher = viewSwitcher;
         }
@@ -83,10 +86,13 @@ namespace Legion.Model
                 _armiesRepository.AddNpc(rebelArmy, _legionInfo.Power, _characterDefinitionsRepository.Villager);
             }
 
-            //TODO: BITWA[_ATAK,40,1,1,0,1,1,1,TEREN,M]
             await _messagesService.ShowMessageAsync(MessageType.RiotInTheCityWithDefence, city, userArmy);
 
-            await _viewSwitcher.OpenTerrainAsync(userArmy, rebelArmy);
+            //TODO: BITWA[_ATAK,40,1,1,0,1,1,1,TEREN,M]
+            var builder = _terrainHelper.BuildTerrainActionContext();
+            builder.SetUserArmy(userArmy, 1, 1, PlacementZone.Fixed);
+            builder.SetEnemyArmy(rebelArmy, 1, 1, PlacementZone.OtherThan);
+            await _viewSwitcher.OpenTerrainAsync(builder.GetResult());
 
             city.Population -= city.Population / 4;
 

@@ -320,7 +320,7 @@ namespace Legion.Model
                 if (army.Food < 0) army.Food = 0;
             }
 
-            await DoArmyMovement(army, speed);
+            var movementDirection = await DoArmyMovement(army, speed);
 
             if (army.IsUserControlled)
             {
@@ -347,7 +347,7 @@ namespace Legion.Model
                         HandleAdventure(army);
                         break;
                     case MapObjectType.Army:
-                        await _battleManager.AttackOnArmy(army, (Army)army.Target);
+                        await _battleManager.AttackOnArmy(army, (Army)army.Target, movementDirection);
                         break;
                     case MapObjectType.City:
                         await _battleManager.AttackOnCity(army, (City)army.Target);
@@ -363,7 +363,7 @@ namespace Legion.Model
             //BUSY_ANIM
         }
 
-        private async Coroutine DoArmyMovement(Army army, int speed)
+        private async Coroutine<WorldDirection> DoArmyMovement(Army army, int speed)
         {
             var dx = army.Target.X - army.X;
             var dy = army.Target.Y - army.Y;
@@ -382,6 +382,28 @@ namespace Legion.Model
                 army.X = (int)x1;
                 army.Y = (int)y1;
                 await Coroutine.Yield();
+            }
+
+            return GetMovementDirection(dx, dy);
+        }
+
+        private static WorldDirection GetMovementDirection(int dx, int dy)
+        {
+            if (Math.Abs(dx) > Math.Abs(dy))
+            {
+                return dx switch
+                {
+                    >= 0 => WorldDirection.East,
+                    _ => WorldDirection.West
+                };
+            }
+            else
+            {
+                return dy switch
+                {
+                    >= 0 => WorldDirection.South,
+                    _ => WorldDirection.North
+                };
             }
         }
 

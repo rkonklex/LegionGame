@@ -44,9 +44,6 @@ namespace Legion.Views.Terrain.Layers
             UserArmy = _actions.UserArmy = _terrainController.UserArmy = ((TerrainActionContext) Parent.Context).UserArmy;
             EnemyArmy = _actions.EnemyArmy = _terrainController.EnemyArmy = ((TerrainActionContext) Parent.Context).EnemyArmy;
 
-            CharactersUtils.InitArmyPostion(UserArmy, 1, 1, 0);
-            CharactersUtils.InitArmyPostion(EnemyArmy, 1, 1, 1);
-
             foreach (var enemyChar in EnemyArmy.Characters)
             {
                 enemyChar.TargetX = GlobalUtils.Rand(_legionConfig.WorldWidth);
