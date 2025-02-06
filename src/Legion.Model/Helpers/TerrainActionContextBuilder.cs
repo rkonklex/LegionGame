@@ -16,6 +16,10 @@ namespace Legion.Model.Helpers
             _terrainHelper = terrainHelper;
         }
 
+        public void SetScenery(TerrainType terrainType, City city = null)
+        {
+        }
+
         public void SetUserArmy(Army army, int zoneX, int zoneY, PlacementZone type)
         {
             Debug.Assert(army.IsUserControlled);

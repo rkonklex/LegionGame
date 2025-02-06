@@ -481,7 +481,7 @@ namespace Legion.Model
 
             if (encounterType.HasValue)
             {
-                await _armyActivities.Encounter(army, encounterType.Value);
+                await _armyActivities.Encounter(army, terrainType, encounterType.Value);
             }
         }
 

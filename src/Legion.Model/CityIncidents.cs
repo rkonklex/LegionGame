@@ -13,6 +13,7 @@ namespace Legion.Model
         private readonly ICharacterDefinitionsRepository _characterDefinitionsRepository;
         private readonly ILegionInfo _legionInfo;
         private readonly IArmiesHelper _armiesHelper;
+        private readonly ICitiesHelper _citiesHelper;
         private readonly ITerrainHelper _terrainHelper;
         private readonly IMessagesService _messagesService;
         private readonly IViewSwitcher _viewSwitcher;
@@ -21,6 +22,7 @@ namespace Legion.Model
             ICharacterDefinitionsRepository characterDefinitionsRepository,
             ILegionInfo legionInfo,
             IArmiesHelper armiesHelper,
+            ICitiesHelper citiesHelper,
             ITerrainHelper terrainHelper,
             IMessagesService messagesService,
             IViewSwitcher viewSwitcher)
@@ -29,6 +31,7 @@ namespace Legion.Model
             _characterDefinitionsRepository = characterDefinitionsRepository;
             _legionInfo = legionInfo;
             _armiesHelper = armiesHelper;
+            _citiesHelper = citiesHelper;
             _terrainHelper = terrainHelper;
             _messagesService = messagesService;
             _viewSwitcher = viewSwitcher;
@@ -90,6 +93,7 @@ namespace Legion.Model
 
             //TODO: BITWA[_ATAK,40,1,1,0,1,1,1,TEREN,M]
             var builder = _terrainHelper.BuildTerrainActionContext();
+            builder.SetScenery(_citiesHelper.GetCityTerrainType(city), city);
             builder.SetUserArmy(userArmy, 1, 1, PlacementZone.Fixed);
             builder.SetEnemyArmy(rebelArmy, 1, 1, PlacementZone.OtherThan);
             await _viewSwitcher.OpenTerrainAsync(builder.GetResult());

@@ -34,7 +34,7 @@ namespace Legion.Model
             _viewSwitcher = viewSwitcher;
         }
 
-        public async Coroutine Encounter(Army army, EncounterType encounterType)
+        public async Coroutine Encounter(Army army, TerrainType terrainType, EncounterType encounterType)
         {
             Army encounterArmy = null;
             MessageType? encounterMessage = null;
@@ -97,6 +97,7 @@ namespace Legion.Model
             await _messagesService.ShowMessageAsync(encounterMessage.Value, army);
 
             var builder = _terrainHelper.BuildTerrainActionContext();
+            builder.SetScenery(terrainType);
             builder.SetUserArmy(army, xt, yt, PlacementZone.Fixed);
             builder.SetEnemyArmy(encounterArmy, xt, yt, PlacementZone.OtherThan);
             await _viewSwitcher.OpenTerrainAsync(builder.GetResult());
@@ -138,6 +139,7 @@ namespace Legion.Model
             var xw = GlobalUtils.Rand(2);
             var yw = GlobalUtils.Rand(2);
             var builder = _terrainHelper.BuildTerrainActionContext();
+            builder.SetScenery(terrainType);
             builder.SetUserArmy(army, xw, yw, PlacementZone.Fixed);
             builder.SetEnemyArmy(creatureArmy, xw, yw, PlacementZone.OtherThan);
             await _viewSwitcher.OpenTerrainAsync(builder.GetResult());

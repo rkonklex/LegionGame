@@ -47,6 +47,9 @@ namespace Legion.Model
             }
             else
             {
+                var targetCity = _armiesHelper.IsArmyInTheCity(targetArmy);
+                var terrainType = targetCity != null ? _citiesHelper.GetCityTerrainType(targetCity) : _armiesHelper.GetArmyTerrainType(targetArmy);
+
                 var placementZone = movementDirection switch
                 {
                     WorldDirection.East or WorldDirection.West => PlacementZone.RandomY,
@@ -77,6 +80,7 @@ namespace Legion.Model
                     await _messagesService.ShowMessageAsync(MessageType.UserAttacksArmy, army, targetArmy);
 
                     var builder = _terrainHelper.BuildTerrainActionContext();
+                    builder.SetScenery(terrainType, targetCity);
                     builder.SetUserArmy(army, xw1, yw1, placementZone);
                     builder.SetEnemyArmy(targetArmy, xw2, yw2, placementZone);
                     await _viewSwitcher.OpenTerrainAsync(builder.GetResult());
@@ -88,6 +92,7 @@ namespace Legion.Model
                     await _messagesService.ShowMessageAsync(MessageType.EnemyAttacksUserArmy, army, targetArmy);
 
                     var builder = _terrainHelper.BuildTerrainActionContext();
+                    builder.SetScenery(terrainType, targetCity);
                     builder.SetUserArmy(army, xw1, yw1, placementZone);
                     builder.SetEnemyArmy(targetArmy, xw2, yw2, placementZone);
                     await _viewSwitcher.OpenTerrainAsync(builder.GetResult());
@@ -141,6 +146,7 @@ namespace Legion.Model
                 if (cityArmy != null)
                 {
                     //TODO: CENTER[X1,Y1,1]
+                    var terrainType = _citiesHelper.GetCityTerrainType(city);
 
                     if (city.IsUserControlled)
                     {
@@ -148,6 +154,7 @@ namespace Legion.Model
 
                         // BITWA[OBRONA,A,0,0,2,0,2,2,TEREN,MUR]
                         var builder = _terrainHelper.BuildTerrainActionContext();
+                        builder.SetScenery(terrainType);
                         builder.SetUserArmy(cityArmy, 0, 0, PlacementZone.RandomX);
                         builder.SetEnemyArmy(army, 0, 2, PlacementZone.RandomX);
                         await _viewSwitcher.OpenTerrainAsync(builder.GetResult());
@@ -162,6 +169,7 @@ namespace Legion.Model
 
                         // BITWA[A,40,0,2,2,0,0,2,TEREN,MUR]
                         var builder = _terrainHelper.BuildTerrainActionContext();
+                        builder.SetScenery(terrainType, city);
                         builder.SetUserArmy(army, 0, 2, PlacementZone.RandomX);
                         builder.SetEnemyArmy(cityArmy, 0, 0, PlacementZone.RandomX);
                         await _viewSwitcher.OpenTerrainAsync(builder.GetResult());

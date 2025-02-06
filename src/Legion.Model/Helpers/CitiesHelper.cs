@@ -26,5 +26,10 @@ namespace Legion.Model.Helpers
                 city.PriceModificators.Add(itemType, GlobalUtils.Rand(mod));
             }
         }
+
+        public TerrainType GetCityTerrainType(City city)
+        {
+            return TerrainType.Forest;
+        }
     }
 }
