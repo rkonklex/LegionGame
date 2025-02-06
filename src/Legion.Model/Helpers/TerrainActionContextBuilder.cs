@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using Legion.Model.Types;
 
 namespace Legion.Model.Helpers
@@ -18,14 +19,14 @@ namespace Legion.Model.Helpers
         public void SetUserArmy(Army army, int zoneX, int zoneY, PlacementZone type)
         {
             Debug.Assert(army.IsUserControlled);
-            _terrainHelper.PositionCharacters(army, zoneX, zoneY, type);
+            _terrainHelper.PositionCharacters(army, zoneX, zoneY, type, Enumerable.Empty<TerrainObject>());
             _userArmy = army;
         }
 
         public void SetEnemyArmy(Army army, int zoneX, int zoneY, PlacementZone type)
         {
             Debug.Assert(!army.IsUserControlled);
-            _terrainHelper.PositionCharacters(army, zoneX, zoneY, type);
+            _terrainHelper.PositionCharacters(army, zoneX, zoneY, type, _userArmy.Characters);
             _enemyArmy = army;
         }
 

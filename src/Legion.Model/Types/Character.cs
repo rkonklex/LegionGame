@@ -2,8 +2,10 @@ using Legion.Model.Types.Definitions;
 
 namespace Legion.Model.Types
 {
-    // TODO
-    public class Character
+    // Note: moved to base class
+    // X: ARMIA(AR,I,TX)
+    // Y: ARMIA(AR,I,TY)
+    public class Character : TerrainObject
     {
         private static int _id;
 
@@ -21,9 +23,6 @@ namespace Legion.Model.Types
         public CharacterDefinition Type { get; set; }
         
         public string Name { get; set; }
-
-        public int X { get; set; } //TX=1
-        public int Y { get; set; } //TY=2
 
         public int TargetX { get; set; } //TCELX=5
         public int TargetY { get; set; } //TCELY=6

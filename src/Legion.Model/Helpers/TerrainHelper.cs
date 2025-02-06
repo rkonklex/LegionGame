@@ -1,6 +1,8 @@
 ﻿using Legion.Model.Helpers;
 using Legion.Model.Types;
 using Legion.Utils;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Legion.Model
 {
@@ -11,17 +13,38 @@ namespace Legion.Model
             return new TerrainActionContextBuilder(this);
         }
 
-        public void PositionCharacters(Army army, int zoneX, int zoneY, PlacementZone type)
+        public void PositionCharacters(Army army, int zoneX, int zoneY, PlacementZone type, IEnumerable<TerrainObject> otherObjects)
         {
+            var placedObjects = otherObjects.ToList();
             foreach (var character in army.Characters)
             {
-                var (x1, y1) = DetermineZonePosition(zoneX, zoneY, type);
+                var (zoneXOffset, zoneYOffset) = DetermineZonePosition(zoneX, zoneY, type);
+
+                int x, y;
                 do
                 {
-                    character.X = GlobalUtils.Rand(200) + x1 + 16;
-                    character.Y = GlobalUtils.Rand(160) + y1 + 20;
-                } while (false); //TODO: while there is no other things in that position
+                    x = GlobalUtils.Rand(200) + zoneXOffset + 16;
+                    y = GlobalUtils.Rand(160) + zoneYOffset + 20;
+                }
+                while (IsColliding(x, y, placedObjects));
+
+                character.X = x;
+                character.Y = y;
+                character.Box = new(-16, -20, 32, 20);
+                placedObjects.Add(character);
             }
+        }
+
+        private static bool IsColliding(int x, int y, IEnumerable<TerrainObject> objects)
+        {
+            foreach (var obj in objects)
+            {
+                if (obj.BoxContains(x, y))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private static (int, int) DetermineZonePosition(int zoneX, int zoneY, PlacementZone type)
