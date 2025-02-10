@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Legion.Model.Repositories;
+using Legion.Model.Types;
 using Legion.Model.Types.Definitions;
 using Legion.Utils;
 

@@ -13,6 +13,62 @@ namespace Legion.Model
             return new TerrainActionContextBuilder(this);
         }
 
+        public Scenery CreateScenery(SceneryType sceneryType, City city = null)
+        {
+            var d = city is null ? 1 : 2;
+            var scenery = new Scenery(sceneryType);
+
+            // decorations
+            for (int i = 0; i <= 30; i++)
+            {
+                int x = GlobalUtils.Rand(620) + 20;
+                int y = i * 20;
+                int bob = GlobalUtils.Rand(1) + 4;
+                scenery.AddDecoration(x, y, bob);
+            }
+
+            // small obstacles
+            for (int i = 0; i <= 15 / d; i++)
+            {
+                var (x, y) = GetDecorationPosition();
+                var bob = GlobalUtils.Rand(2) + 1;
+                var hrev = GlobalUtils.Rand(1) == 0;
+                var box = new BoundingBox(4, 4, 24, 18);
+                scenery.AddDecoration(x, y, bob, hrev);
+                scenery.AddObstacle(x, y, box);
+            }
+
+            if (city is null)
+            {
+                // trees
+                for (int j = 0; j <= 3; j++)
+                {
+                    var x2 = GlobalUtils.Rand(640);
+                    var y2 = j * 100;
+                    for (int i = 0; i <= 18; i++)
+                    {
+                        var x = x2 + GlobalUtils.Rand(100) - 50;
+                        var y = y2 + (i * 4) - 60;
+                        var bob = GlobalUtils.Rand(2) + 6;
+                        scenery.AddDecoration(x, y, bob);
+                    }
+                    var box1 = new BoundingBox(-50, -60, 190, 130);
+                    var box2 = new BoundingBox(-10, box1.Bottom, 105, 50);
+                    scenery.AddObstacle(x2, y2, box1);
+                    scenery.AddObstacle(x2, y2, box2);
+                }
+            }
+
+            return scenery;
+        }
+
+        private static (int, int) GetDecorationPosition()
+        {
+            const int lx = 20, lszer = 600;
+            const int ly = 20, lwys = 490;
+            return (GlobalUtils.Rand(lszer) + lx, GlobalUtils.Rand(lwys) + ly);
+        }
+
         public void PositionCharacters(Army army, int zoneX, int zoneY, PlacementZone type, IEnumerable<TerrainObject> otherObjects)
         {
             var placedObjects = otherObjects.ToList();

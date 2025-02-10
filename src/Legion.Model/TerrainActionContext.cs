@@ -7,6 +7,7 @@ namespace Legion.Model
 {
     public class TerrainActionContext
     {
+        public Scenery Scenery { get; set; }
         public Army UserArmy { get; set; }
         public Army EnemyArmy { get; set; }
         public TerrainActionType Type { get; set; }

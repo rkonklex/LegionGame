@@ -21,8 +21,7 @@ namespace Legion.Views.Terrain.Layers
         public override void OnShow()
         {
             var context = Parent.Context as TerrainActionContext;
-            //TODO: get terrainType from context
-            _terrainParts = _terrainGenerator.Generate(TerrainType.Forest, false);
+            _terrainParts = _terrainGenerator.Generate(context.Scenery);
         }
 
         protected override void OnDraw()
@@ -30,11 +29,7 @@ namespace Legion.Views.Terrain.Layers
             base.OnDraw();
             foreach (var part in _terrainParts)
             {
-                // item can be placeholder only and can have bounds only, to be used in obstacles detection
-                if (part.Image != null)
-                {
-                    GuiServices.BasicDrawer.DrawImage(part.Image, part.X, part.Y);
-                }
+                GuiServices.BasicDrawer.DrawImage(part.Image, part.X, part.Y);
             }
         }
     }

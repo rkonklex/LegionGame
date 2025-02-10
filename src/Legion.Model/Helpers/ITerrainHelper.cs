@@ -7,6 +7,7 @@ namespace Legion.Model
     public interface ITerrainHelper
     {
         TerrainActionContextBuilder BuildTerrainActionContext();
+        Scenery CreateScenery(SceneryType sceneryType, City city = null);
         void PositionCharacters(Army army, int zoneX, int zoneY, PlacementZone type, IEnumerable<TerrainObject> otherObjects);
     }
 
