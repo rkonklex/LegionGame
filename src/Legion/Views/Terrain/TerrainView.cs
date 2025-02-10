@@ -13,12 +13,14 @@ namespace Legion.Views.Terrain
         private readonly IViewSwitcher _viewSwitcher;
 
         public TerrainView(IGuiServices guiServices,
-            TerrainLayer terrainLayer, 
+            TerrainLayer terrainLayer,
+            BuildingsLayer buildingsLayer, 
             CharactersLayer charactersLayer,
             IViewSwitcher viewSwitcher) : base(guiServices)
         {
             _viewSwitcher = viewSwitcher;
             AddLayer(terrainLayer);
+            AddLayer(buildingsLayer);
             AddLayer(charactersLayer);
         }
 

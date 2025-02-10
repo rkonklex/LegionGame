@@ -15,8 +15,37 @@ namespace Legion.Model
 
         public Scenery CreateScenery(SceneryType sceneryType, City city = null)
         {
-            var d = city is null ? 1 : 2;
             var scenery = new Scenery(sceneryType);
+            var isInsideCity = city is not null;
+
+            if (isInsideCity)
+            {
+                // building foundations (temporary, later replaced by actual buildings)
+                foreach (var building in city.Buildings)
+                {
+                    var box = new BoundingBox(0, 0, building.Width, building.Height + 40);
+                    scenery.AddTemporaryObstacle(building.X, building.Y, box);
+                }
+            }
+
+            PopulateScenery(scenery, isInsideCity);
+
+            scenery.RemoveTemporaryObstacles();
+
+            if (isInsideCity)
+            {
+                foreach (var building in city.Buildings)
+                {
+                    scenery.AddBuilding(building);
+                }
+            }
+
+            return scenery;
+        }
+
+        private static void PopulateScenery(Scenery scenery, bool isInsideCity)
+        {
+            var d = isInsideCity ? 2 : 1;
 
             // decorations
             for (int i = 0; i <= 30; i++)
@@ -30,7 +59,7 @@ namespace Legion.Model
             // small obstacles
             for (int i = 0; i <= 15 / d; i++)
             {
-                var (x, y) = GetDecorationPosition();
+                var (x, y) = GetDecorationPosition(scenery.Obstacles);
                 var bob = GlobalUtils.Rand(2) + 1;
                 var hrev = GlobalUtils.Rand(1) == 0;
                 var box = new BoundingBox(4, 4, 24, 18);
@@ -38,7 +67,7 @@ namespace Legion.Model
                 scenery.AddObstacle(x, y, box);
             }
 
-            if (city is null)
+            if (!isInsideCity)
             {
                 // trees
                 for (int j = 0; j <= 3; j++)
@@ -58,15 +87,20 @@ namespace Legion.Model
                     scenery.AddObstacle(x2, y2, box2);
                 }
             }
-
-            return scenery;
         }
 
-        private static (int, int) GetDecorationPosition()
+        private static (int, int) GetDecorationPosition(IEnumerable<Obstacle> obstacles)
         {
             const int lx = 20, lszer = 600;
             const int ly = 20, lwys = 490;
-            return (GlobalUtils.Rand(lszer) + lx, GlobalUtils.Rand(lwys) + ly);
+            int x, y;
+            do
+            {
+                x = GlobalUtils.Rand(lszer) + lx;
+                y = GlobalUtils.Rand(lwys) + ly;
+            }
+            while (IsColliding(x, y, obstacles));
+            return (x, y);
         }
 
         public void PositionCharacters(Army army, int zoneX, int zoneY, PlacementZone type, IEnumerable<TerrainObject> otherObjects)
