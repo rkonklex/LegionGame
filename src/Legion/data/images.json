@@ -154,6 +154,46 @@
             "count": 12
         },
         {
+            "name": "scene.steppe",
+            "images": [ "scen-step.0" ],
+            "count": 12
+        },
+        {
+            "name": "scene.desert",
+            "images": [ "scen-pustynia.0" ],
+            "count": 12
+        },
+        {
+            "name": "scene.rocks",
+            "images": [ "scen-skaly.0" ],
+            "count": 12
+        },
+        {
+            "name": "scene.snow",
+            "images": [ "scen-lodowiec.0" ],
+            "count": 12
+        },
+        {
+            "name": "scene.swamp",
+            "images": [ "scen-bagno.0" ],
+            "count": 12
+        },
+        {
+            "name": "scene.cave",
+            "images": [ "scen-jaskinia.0" ],
+            "count": 12
+        },
+        {
+            "name": "scene.tomb",
+            "images": [ "scen-grobowiec.0" ],
+            "count": 12
+        },
+        {
+            "name": "scene.chaoslordhome",
+            "images": [ "scen-grota.0" ],
+            "count": 7
+        },
+        {
             "name": "city.users",
             "images": [ "mapa.7" ],
             "count": 10

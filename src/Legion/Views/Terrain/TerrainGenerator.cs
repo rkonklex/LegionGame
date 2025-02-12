@@ -21,7 +21,15 @@ namespace Legion.Views.Terrain
             var images = scenery.Type switch
             {
                 SceneryType.Forest => _imagesStore.GetImages("scene.forest"),
-                _ => throw new NotImplementedException()
+                SceneryType.Steppe => _imagesStore.GetImages("scene.steppe"),
+                SceneryType.Desert => _imagesStore.GetImages("scene.desert"),
+                SceneryType.Rocks => _imagesStore.GetImages("scene.rocks"),
+                SceneryType.Snow => _imagesStore.GetImages("scene.snow"),
+                SceneryType.Swamp => _imagesStore.GetImages("scene.swamp"),
+                SceneryType.Cave => _imagesStore.GetImages("scene.cave"),
+                SceneryType.Tomb => _imagesStore.GetImages("scene.tomb"),
+                SceneryType.ChaosLordHome => _imagesStore.GetImages("scene.chaoslordhome"),
+                _ => throw new ArgumentOutOfRangeException(nameof(scenery), scenery.Type, "Unknown scenery type"),
             };
 
             var parts = new List<TerrainPart>();
