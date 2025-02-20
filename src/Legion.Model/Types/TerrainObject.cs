@@ -1,4 +1,6 @@
-﻿using Legion.Utils;
+using Legion.Utils;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Legion.Model.Types
 {
@@ -16,5 +18,23 @@ namespace Legion.Model.Types
         /// Check if the object contains the given point.
         /// </summary>
         public bool BoxContains(int x, int y) => Box.Contains(x - X, y - Y);
+    }
+
+    public static class TerrainObjectExtensions
+    {
+        public static bool HitTest<TObject>(this IEnumerable<TObject> objects, int x, int y, out TObject hitObject)
+            where TObject : TerrainObject
+        {
+            foreach (var obj in objects.Reverse())
+            {
+                if (obj.BoxContains(x, y))
+                {
+                    hitObject = obj;
+                    return true;
+                }
+            }
+            hitObject = null;
+            return false;
+        }
     }
 }

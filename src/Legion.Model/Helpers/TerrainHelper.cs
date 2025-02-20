@@ -1,4 +1,4 @@
-﻿using Legion.Model.Helpers;
+using Legion.Model.Helpers;
 using Legion.Model.Types;
 using Legion.Utils;
 using System.Collections.Generic;
@@ -321,7 +321,7 @@ namespace Legion.Model
                 x = GlobalUtils.Rand(lszer) + lx;
                 y = GlobalUtils.Rand(lwys) + ly;
             }
-            while (IsColliding(x, y, obstacles));
+            while (obstacles.HitTest(x, y, out var _));
             return (x, y);
         }
 
@@ -338,25 +338,13 @@ namespace Legion.Model
                     x = GlobalUtils.Rand(200) + zoneXOffset + 16;
                     y = GlobalUtils.Rand(160) + zoneYOffset + 20;
                 }
-                while (IsColliding(x, y, placedObjects));
+                while (placedObjects.HitTest(x, y, out var _));
 
                 character.X = x;
                 character.Y = y;
                 character.Box = new(-16, -20, 32, 20);
                 placedObjects.Add(character);
             }
-        }
-
-        private static bool IsColliding(int x, int y, IEnumerable<TerrainObject> objects)
-        {
-            foreach (var obj in objects)
-            {
-                if (obj.BoxContains(x, y))
-                {
-                    return true;
-                }
-            }
-            return false;
         }
 
         private static (int, int) DetermineZonePosition(int zoneX, int zoneY, PlacementZone type)

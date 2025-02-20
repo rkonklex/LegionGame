@@ -121,9 +121,8 @@ namespace Legion.Model.Types
         //public int B1 { get; set; }
         //public int B2 { get; set; }
         //public int Intelligence { get; set; }
-        //public int Bob { get; set; }
+        public int Bob { get; set; }
         public int CurrentAnimFrame { get; set; }
-        public int PrevAnimFrameTime { get; set; }
     }
 
     // TODO:

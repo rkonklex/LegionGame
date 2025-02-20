@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Linq;
+using AwaitableCoroutine;
 using Gui.Elements;
 using Gui.Input;
 using Gui.Services;
@@ -14,112 +15,52 @@ namespace Legion.Views.Terrain.Layers
     public class CharactersLayer : Layer
     {
         private readonly ITerrainController _terrainController;
+        private readonly ICoroutineRunner _coroutineRunner;
         private readonly ILegionConfig _legionConfig;
-        private readonly CharactersActions _actions;
-        private bool _wasMouseDown;
 
         public CharactersLayer(IGuiServices guiServices,
             ITerrainController terrainController,
+            ICoroutineRunner coroutineRunner,
             ILegionConfig legionConfig) : base(guiServices)
         {
             _legionConfig = legionConfig;
             _terrainController = terrainController;
-            _actions = new CharactersActions();
+            _coroutineRunner = coroutineRunner;
         }
 
-        public Army EnemyArmy { get; set; }
+        public Army EnemyArmy => _terrainController.EnemyArmy;
 
-        public Army UserArmy { get; set; }
+        public Army UserArmy => _terrainController.UserArmy;
 
         public Character SelectedCharacter { get; set; }
 
-        public bool IsAlive => UserArmy.Characters.Count > 0;
-
-        public bool IsPaused { get; set; }// = true;
-
         public CharacterActionType? CurrentMode { get; set; }
+
+        private Coroutine _turnTask;
 
         public override void OnShow()
         {
-            UserArmy = _actions.UserArmy = _terrainController.UserArmy = ((TerrainActionContext) Parent.Context).UserArmy;
-            EnemyArmy = _actions.EnemyArmy = _terrainController.EnemyArmy = ((TerrainActionContext) Parent.Context).EnemyArmy;
-
-            foreach (var enemyChar in EnemyArmy.Characters)
-            {
-                enemyChar.TargetX = GlobalUtils.Rand(_legionConfig.WorldWidth);
-                enemyChar.TargetY = GlobalUtils.Rand(_legionConfig.WorldHeight);
-                enemyChar.CurrentAction = CharacterActionType.Move;
-            }
+            _terrainController.SetupTerrainAction((TerrainActionContext)Parent.Context);
+            _turnTask = _coroutineRunner.Create(_terrainController.StartTerrainAction);
         }
 
         public override void OnHide()
         {
-            foreach (var character in UserArmy.Characters)
-            {
-                character.CurrentAction = CharacterActionType.None;
-            }
-            foreach (var character in EnemyArmy.Characters)
-            {
-                character.CurrentAction = CharacterActionType.None;
-            }
-
             SelectedCharacter = null;
-            UserArmy = _actions.UserArmy = null;
-            EnemyArmy = _actions.EnemyArmy = null;
+
+            _terrainController.EndTerrainAction();
+            _turnTask = null;
         }
 
-        protected override void OnUpdate()//GameTime gameTime)
+        protected override void OnUpdate()
         {
             base.OnUpdate();
 
-            var gameTime = 20;
-
-            if (IsPaused)
+            if (_terrainController.IsPaused)
             {
                 if (SelectedCharacter == null)
                 {
                     SelectedCharacter = UserArmy.Characters.FirstOrDefault();
-                }
-            }
-            else
-            {
-                foreach (var userChar in UserArmy.Characters)
-                {
-                    switch (userChar.CurrentAction)
-                    {
-                        case CharacterActionType.Move:
-                            _actions.Move(userChar, gameTime);
-                            break;
-                        case CharacterActionType.Attack:
-                        case CharacterActionType.Speak:
-                            _actions.Attack(userChar, gameTime);
-                            break;
-                    }
-                }
-
-                foreach (var enemyChar in EnemyArmy.Characters)
-                {
-                    switch (enemyChar.CurrentAction)
-                    {
-                        case CharacterActionType.None:
-                            _actions.GiveTheOrder(enemyChar);
-                            break;
-                        case CharacterActionType.Move:
-                            _actions.Move(enemyChar, gameTime);
-                            if (GlobalUtils.Rand(21) == 1)
-                            {
-                                _actions.GiveTheOrder(enemyChar);
-                            }
-                            break;
-                        case CharacterActionType.Attack:
-                        case CharacterActionType.Speak:
-                            _actions.Attack(enemyChar, gameTime);
-                            if (GlobalUtils.Rand(11) == 1)
-                            {
-                                _actions.GiveTheOrder(enemyChar);
-                            }
-                            break;
-                    }
                 }
             }
         }
@@ -139,19 +80,18 @@ namespace Legion.Views.Terrain.Layers
             var handled = HandleTerrainClicked(mousePosition);
             if (handled) return true;
 
-            var enemyChar = CharactersUtils.FindCharacterAtPosition(EnemyArmy, mousePosition);
-            if (enemyChar != null)
+            if (EnemyArmy.HitTest(mousePosition.X, mousePosition.Y, out var enemyChar))
             {
                 HandleCharacterClicked(enemyChar);
                 return true;
             }
 
-            var userChar = CharactersUtils.FindCharacterAtPosition(UserArmy, mousePosition);
-            if (userChar != null)
+            if (UserArmy.HitTest(mousePosition.X, mousePosition.Y, out var userChar))
             {
-                HandleCharacterClicked(userChar);
+                HandleCharacterClicked(enemyChar);
                 return true;
             }
+
             return false;
         }
 
@@ -226,15 +166,12 @@ namespace Legion.Views.Terrain.Layers
 
         private void DrawCharacters()
         {
-            //TODO from where UserArmy/EnemyArmy should be readed? from controller or Parent.Context?
-            //terrainController.UserArmy.Characters)
-            var context = (TerrainActionContext) Parent.Context;
-            foreach (var userChar in context.UserArmy.Characters)
+            foreach (var userChar in _terrainController.UserArmy.Characters)
             {
                 DrawCharacter(userChar);
             }
 
-            foreach (var enemyChar in context.EnemyArmy.Characters)
+            foreach (var enemyChar in _terrainController.EnemyArmy.Characters)
             {
                 DrawCharacter(enemyChar);
             }
@@ -246,7 +183,7 @@ namespace Legion.Views.Terrain.Layers
                 n.EndsWith("." + character.Type.Name)
             );
             var images = GuiServices.ImagesStore.GetImages(imgName);
-            var frame = images[character.CurrentAnimFrame];
+            var frame = images[character.Bob];
             GuiServices.BasicDrawer.DrawImage(frame, character.X, character.Y);
         }
 

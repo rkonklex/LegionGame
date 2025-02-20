@@ -1,0 +1,134 @@
+using AwaitableCoroutine;
+using Legion.Model.Types;
+using Legion.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Legion.Model
+{
+    public class TerrainTurnProcessor : ITerrainTurnProcessor
+    {
+        private readonly TerrainActionContext _context;
+
+        public TerrainTurnProcessor(TerrainActionContext context)
+        {
+            _context = context;
+        }
+
+        public async Coroutine ProcessTurn()
+        {
+            var userCharacters = _context.UserArmy.Characters;
+            var enemyCharacters = _context.EnemyArmy.Characters;
+
+            var numCharacters = Math.Max(userCharacters.Count, enemyCharacters.Count);
+            for (int i = 0; i < numCharacters; i++)
+            {
+                if (i < userCharacters.Count)
+                {
+                    ProcessUserTurn(userCharacters[i]);
+                }
+                if (i < enemyCharacters.Count)
+                {
+                    ProcessEnemyTurn(enemyCharacters[i]);
+                }
+            }
+
+            await Coroutine.Yield();
+        }
+
+        private void ProcessUserTurn(Character character)
+        {
+            switch (character.CurrentAction)
+            {
+                case CharacterActionType.None:
+                    character.Bob = 0;
+                    break;
+                case CharacterActionType.Move:
+                    ProcessMove(character);
+                    break;
+                default:
+                    throw new NotImplementedException("Unsupported action type");
+            }
+        }
+
+        private void ProcessEnemyTurn(Character character)
+        {
+            switch (character.CurrentAction)
+            {
+                case CharacterActionType.None:
+                    GiveTheOrder(character);
+                    break;
+                case CharacterActionType.Move:
+                    ProcessMove(character);
+                    if (GlobalUtils.Rand(20) == 1)
+                    {
+                        GiveTheOrder(character);
+                    }
+                    break;
+                default:
+                    throw new NotImplementedException("Unsupported action type");
+            }
+        }
+
+        private static readonly int[] AnimFrameSequence = { 0, 1, 0, 2 };
+
+        private void ProcessMove(Character character)
+        {
+            var x1 = character.X;
+            var y1 = character.Y;
+            var dx = character.TargetX - x1;
+            var dy = character.TargetY - y1;
+            var speed = Math.Clamp(character.Speed / 10, 1, 7);
+
+            var animSpeed = Math.Clamp(3 - character.Speed / 10, 1, 3);
+            var nextAnimFrame = (character.CurrentAnimFrame + 1) % (4 * animSpeed);
+            var animFrame = AnimFrameSequence[nextAnimFrame / animSpeed];
+            var bob = 6;
+
+            if (Math.Abs(dx) > 4)
+            {
+                var tx = dx < 0 ? -17 : 17;
+                if (!_context.HitTest(x1 + tx, y1, out _))
+                {
+                    x1 += Math.Sign(dx) * speed;
+                    bob = (dx < 0 ? 3 : 9) + animFrame;
+                }
+            }
+
+            if (Math.Abs(dy) > 4)
+            {
+                var ty = dy < 0 ? -21 : 2;
+                if (!_context.HitTest(x1, y1 + ty, out _))
+                {
+                    y1 += Math.Sign(dy) * speed;
+                    bob = (dy < 0 ? 0 : 6) + animFrame;
+                }
+            }
+
+            if (Math.Abs(dx) <= 4 && Math.Abs(dy) <= 4)
+            {
+                character.CurrentAction = CharacterActionType.None;
+            }
+
+            character.X = x1;
+            character.Y = y1;
+            character.CurrentAnimFrame = nextAnimFrame;
+            character.Bob = bob;
+        }
+
+        private void GiveTheOrder(Character character)
+        {
+            var x2 = GlobalUtils.Rand(600) + 20;
+            var y2 = GlobalUtils.Rand(450) + 50;
+            if (!_context.HitTest(x2, y2, out _))
+            {
+                character.TargetX = x2;
+                character.TargetY = y2;
+                character.TargetType = CharacterTargetType.Position;
+                character.CurrentAction = CharacterActionType.Move;
+            }
+        }
+    }
+}

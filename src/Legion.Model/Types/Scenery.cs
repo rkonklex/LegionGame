@@ -1,4 +1,4 @@
-﻿using Legion.Utils;
+using Legion.Utils;
 using System.Collections.Generic;
 
 namespace Legion.Model.Types
@@ -56,6 +56,24 @@ namespace Legion.Model.Types
             }
             _buildings.Add(building);
             return building;
+        }
+
+        public bool HitTest(int x, int y, out TerrainObject hitObject)
+        {
+            if (Buildings.HitTest(x, y, out var building))
+            {
+                hitObject = building;
+                return true;
+            }
+
+            if (Obstacles.HitTest(x, y, out var obstacle))
+            {
+                hitObject = obstacle;
+                return true;
+            }
+
+            hitObject = null;
+            return false;
         }
     }
 }

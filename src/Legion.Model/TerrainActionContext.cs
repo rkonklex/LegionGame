@@ -15,5 +15,21 @@ namespace Legion.Model
         private readonly CoroutineCompletionSource _completionSource = new();
         public Coroutine ActionFinished => _completionSource.Coroutine;
         public void NotifyActionFinished() => _completionSource.SetCompleted();
+
+        public bool HitTest(int x, int y, out TerrainObject hitObject)
+        {
+            if (EnemyArmy.HitTest(x, y, out var enemyCharacter))
+            {
+                hitObject = enemyCharacter;
+                return true;
+            }
+            if (UserArmy.HitTest(x, y, out var userCharacter))
+            {
+                hitObject = userCharacter;
+                return true;
+            }
+
+            return Scenery.HitTest(x, y, out hitObject);
+        }
     }
 }

@@ -96,5 +96,9 @@ namespace Legion.Model.Types
         /// </summary>
         public List<Character> Characters { get; set; }
 
+        public bool HitTest(int x, int y, out Character hitCharacter)
+        {
+            return Characters.HitTest(x, y, out hitCharacter);
+        }
     }
 }
