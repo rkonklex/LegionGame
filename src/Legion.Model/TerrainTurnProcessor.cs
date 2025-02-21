@@ -61,7 +61,10 @@ namespace Legion.Model
                     GiveTheOrder(character);
                     break;
                 case CharacterActionType.Move:
-                    ProcessMove(character);
+                    if (!ProcessMove(character))
+                    {
+                        RedirectStuckCharacter(character);
+                    }
                     if (GlobalUtils.Rand(20) == 1)
                     {
                         GiveTheOrder(character);
@@ -74,13 +77,14 @@ namespace Legion.Model
 
         private static readonly int[] AnimFrameSequence = { 0, 1, 0, 2 };
 
-        private void ProcessMove(Character character)
+        private bool ProcessMove(Character character)
         {
             var x1 = character.X;
             var y1 = character.Y;
             var dx = character.TargetX - x1;
             var dy = character.TargetY - y1;
             var speed = Math.Clamp(character.Speed / 10, 1, 7);
+            var hasMoved = false;
 
             var animSpeed = Math.Clamp(3 - character.Speed / 10, 1, 3);
             var nextAnimFrame = (character.CurrentAnimFrame + 1) % (4 * animSpeed);
@@ -94,6 +98,7 @@ namespace Legion.Model
                 {
                     x1 += Math.Sign(dx) * speed;
                     bob = (dx < 0 ? 3 : 9) + animFrame;
+                    hasMoved = true;
                 }
             }
 
@@ -104,6 +109,7 @@ namespace Legion.Model
                 {
                     y1 += Math.Sign(dy) * speed;
                     bob = (dy < 0 ? 0 : 6) + animFrame;
+                    hasMoved = true;
                 }
             }
 
@@ -116,6 +122,16 @@ namespace Legion.Model
             character.Y = y1;
             character.CurrentAnimFrame = nextAnimFrame;
             character.Bob = bob;
+            return hasMoved;
+        }
+
+        private void RedirectStuckCharacter(Character character)
+        {
+            var x2 = character.TargetX + GlobalUtils.Rand(120) - 60;
+            var y2 = character.TargetY + GlobalUtils.Rand(100) - 50;
+            character.TargetX = Math.Clamp(x2, 20, 620);
+            character.TargetY = Math.Clamp(y2, 20, 510);
+            character.CurrentAction = CharacterActionType.Move;
         }
 
         private void GiveTheOrder(Character character)
