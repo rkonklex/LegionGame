@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Legion.Model.Types
@@ -99,6 +100,22 @@ namespace Legion.Model.Types
         public bool HitTest(int x, int y, out Character hitCharacter)
         {
             return Characters.HitTest(x, y, out hitCharacter);
+        }
+
+        public Character FindNearestCharacter(int x, int y, out int nearestDistance)
+        {
+            Character nearest = null;
+            nearestDistance = int.MaxValue;
+            foreach (var character in Characters)
+            {
+                var dist = character.DistanceTo(x, y);
+                if (dist < nearestDistance)
+                {
+                    nearest = character;
+                    nearestDistance = dist;
+                }
+            }
+            return nearest;
         }
     }
 }

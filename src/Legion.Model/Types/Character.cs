@@ -1,4 +1,5 @@
 using Legion.Model.Types.Definitions;
+using System;
 
 namespace Legion.Model.Types
 {
@@ -24,10 +25,7 @@ namespace Legion.Model.Types
         
         public string Name { get; set; }
 
-        public int TargetX { get; set; } //TCELX=5
-        public int TargetY { get; set; } //TCELY=6
-        public int TargetId { get; set; }
-        public CharacterTargetType TargetType { get; set; }
+        public TerrainObject Target { get; set; } //TCELX=5, TCELX=6
 
         /// <summary>
         /// TTRYB
@@ -123,6 +121,24 @@ namespace Legion.Model.Types
         //public int Intelligence { get; set; }
         public int Bob { get; set; }
         public int CurrentAnimFrame { get; set; }
+
+        public void OrderIdle()
+        {
+            Target = null;
+            CurrentAction = CharacterActionType.None;
+        }
+
+        public void OrderMoveTo(int x, int y)
+        {
+            Target = new TerrainPosition(x, y);
+            CurrentAction = CharacterActionType.Move;
+        }
+
+        public void OrderAttack(Character target)
+        {
+            Target = target;
+            CurrentAction = CharacterActionType.Attack;
+        }
     }
 
     // TODO:
@@ -147,12 +163,6 @@ namespace Legion.Model.Types
         ARMIA(ARM,I,TCELY)=WRG (army nr)
 
         */
-    }
-
-    public enum CharacterTargetType
-    {
-        Position,
-        Character
     }
 
     /*

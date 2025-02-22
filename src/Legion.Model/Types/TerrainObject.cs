@@ -1,4 +1,5 @@
 using Legion.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -35,6 +36,13 @@ namespace Legion.Model.Types
             }
             hitObject = null;
             return false;
+        }
+
+        public static int DistanceTo(this TerrainObject obj, int x, int y)
+        {
+            var dx = obj.X - x;
+            var dy = obj.Y - y;
+            return (int)Math.Sqrt(dx * dx + dy * dy);
         }
     }
 }

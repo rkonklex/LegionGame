@@ -45,9 +45,15 @@ namespace Legion.Model
                 case CharacterActionType.None:
                     character.Bob = 0;
                     break;
+
                 case CharacterActionType.Move:
                     ProcessMove(character);
                     break;
+
+                case CharacterActionType.Attack:
+                    ProcessAttack(character);
+                    break;
+
                 default:
                     throw new NotImplementedException("Unsupported action type");
             }
@@ -60,6 +66,7 @@ namespace Legion.Model
                 case CharacterActionType.None:
                     GiveTheOrder(character);
                     break;
+
                 case CharacterActionType.Move:
                     if (!ProcessMove(character))
                     {
@@ -70,6 +77,18 @@ namespace Legion.Model
                         GiveTheOrder(character);
                     }
                     break;
+
+                case CharacterActionType.Attack:
+                    if (!ProcessAttack(character))
+                    {
+                        RedirectStuckCharacter(character);
+                    }
+                    if (GlobalUtils.Rand(10) == 1)
+                    {
+                        GiveTheOrder(character);
+                    }
+                    break;
+
                 default:
                     throw new NotImplementedException("Unsupported action type");
             }
@@ -81,8 +100,8 @@ namespace Legion.Model
         {
             var x1 = character.X;
             var y1 = character.Y;
-            var dx = character.TargetX - x1;
-            var dy = character.TargetY - y1;
+            var dx = character.Target.X - x1;
+            var dy = character.Target.Y - y1;
             var speed = Math.Clamp(character.Speed / 10, 1, 7);
             var hasMoved = false;
 
@@ -115,7 +134,7 @@ namespace Legion.Model
 
             if (Math.Abs(dx) <= 4 && Math.Abs(dy) <= 4)
             {
-                character.CurrentAction = CharacterActionType.None;
+                character.OrderIdle();
             }
 
             character.X = x1;
@@ -125,25 +144,70 @@ namespace Legion.Model
             return hasMoved;
         }
 
+        private bool ProcessAttack(Character character)
+        {
+            throw new NotImplementedException();
+        }
+
         private void RedirectStuckCharacter(Character character)
         {
-            var x2 = character.TargetX + GlobalUtils.Rand(120) - 60;
-            var y2 = character.TargetY + GlobalUtils.Rand(100) - 50;
-            character.TargetX = Math.Clamp(x2, 20, 620);
-            character.TargetY = Math.Clamp(y2, 20, 510);
-            character.CurrentAction = CharacterActionType.Move;
+            var x2 = character.Target.X + GlobalUtils.Rand(120) - 60;
+            var y2 = character.Target.Y + GlobalUtils.Rand(100) - 50;
+            character.OrderMoveTo(Math.Clamp(x2, 20, 620), Math.Clamp(y2, 20, 510));
         }
 
         private void GiveTheOrder(Character character)
+        {
+            var nearestTarget = _context.UserArmy.FindNearestCharacter(character.X, character.Y, out var distanceToTarget);
+
+            switch (character.Aggression)
+            {
+                case < 50:
+                    GiveRandomMoveOrder(character);
+                    break;
+
+                case <= 100:
+                    if (distanceToTarget < 50)
+                    {
+                        character.OrderAttack(nearestTarget);
+                    }
+                    else
+                    {
+                        GiveRandomMoveOrder(character);
+                    }
+                    break;
+
+                case <= 150:
+                    if (distanceToTarget < 50)
+                    {
+                        character.OrderAttack(nearestTarget);
+                    }
+                    else
+                    {
+                        if (GlobalUtils.Rand(1) == 0)
+                        {
+                            character.Aggression = 90;
+                        }
+                        else
+                        {
+                            character.Aggression = 155;
+                        }
+                    }
+                    break;
+
+                default:
+                    character.OrderAttack(nearestTarget);
+                    break;
+            }
+        }
+
+        private void GiveRandomMoveOrder(Character character)
         {
             var x2 = GlobalUtils.Rand(600) + 20;
             var y2 = GlobalUtils.Rand(450) + 50;
             if (!_context.HitTest(x2, y2, out _))
             {
-                character.TargetX = x2;
-                character.TargetY = y2;
-                character.TargetType = CharacterTargetType.Position;
-                character.CurrentAction = CharacterActionType.Move;
+                character.OrderMoveTo(x2, y2);
             }
         }
     }
