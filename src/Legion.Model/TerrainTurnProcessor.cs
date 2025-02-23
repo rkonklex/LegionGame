@@ -1,5 +1,6 @@
 using AwaitableCoroutine;
 using Legion.Model.Types;
+using Legion.Model.Types.Definitions;
 using Legion.Utils;
 using System;
 using System.Collections.Generic;
@@ -147,7 +148,95 @@ namespace Legion.Model
 
         private bool ProcessAttack(Character character)
         {
-            throw new NotImplementedException();
+            var target = character.Target as Character;
+            if (target is null || target.IsKilled)
+            {
+                character.OrderIdle();
+                return true;
+            }
+
+            var x1 = character.X;
+            var y1 = character.Y;
+            var dx = target.X - x1;
+            var dy = target.Y - y1;
+            var moveSpeed = Math.Clamp(character.Speed / 10, 1, 7);
+            var hasMoved = false;
+
+            var animSpeed = Math.Clamp(3 - character.Speed / 10, 1, 3);
+            var nextAnimFrame = (character.CurrentAnimFrame + 1) % (4 * animSpeed);
+            var animFrame = AnimFrameSequence[nextAnimFrame / animSpeed];
+            var bob = 6;
+
+            if (Math.Abs(dx) > 33)
+            {
+                var tx = dx < 0 ? -17 : 17;
+                if (!_context.HitTest(x1 + tx, y1, out _))
+                {
+                    x1 += Math.Sign(dx) * moveSpeed;
+                    bob = (dx < 0 ? 3 : 9) + animFrame;
+                    hasMoved = true;
+                }
+            }
+
+            if (Math.Abs(dy) > 21)
+            {
+                var ty = dy < 0 ? -21 : 2;
+                if (!_context.HitTest(x1, y1 + ty, out _))
+                {
+                    y1 += Math.Sign(dy) * moveSpeed;
+                    bob = (dy < 0 ? 0 : 6) + animFrame;
+                    hasMoved = true;
+                }
+            }
+
+            if (Math.Abs(dx) <= 33 && Math.Abs(dy) <= 21)
+            {
+                hasMoved = true;
+                bob = (dx < 0 ? 4 : 10) + GlobalUtils.Rand(1);
+
+                if (target.CurrentAction == CharacterActionType.None || target.CurrentAction == CharacterActionType.Move)
+                {
+                    target.OrderAttack(character);
+                }
+
+                var attackRate = Math.Max(100 - character.Speed / 10, 1);
+                if (GlobalUtils.Rand(attackRate) == 0)
+                {
+                    bob = 12 + GlobalUtils.Rand(2);
+
+                    var attackPower = character.Strength * (100 - character.Experience) / 100;
+                    var attackRoll = character.Strength - GlobalUtils.Rand(attackPower);
+                    var defensePower = target.Resistance * (100 - target.Experience) / 100 + 1;
+                    var defenseRoll = target.Resistance - GlobalUtils.Rand(defensePower);
+                    var damage = Math.Max(1, (attackRoll - defenseRoll) / 2);
+                    target.Energy -= damage;
+
+                    if (target.IsKilled)
+                    {
+                        character.OrderIdle();
+                        if (character.Type is RaceDefinition intelligentRace)
+                        {
+                            var experienceGain = GlobalUtils.Rand(intelligentRace.Intelligence);
+                            character.Experience = Math.Clamp(character.Experience + experienceGain, 0, 95);
+                        }
+                        if (IsEnemy(character))
+                        {
+                            character.Aggression += GlobalUtils.Rand(20);
+                        }
+                    }
+                }
+            }
+
+            character.X = x1;
+            character.Y = y1;
+            character.CurrentAnimFrame = nextAnimFrame;
+            character.Bob = bob;
+            return hasMoved;
+        }
+
+        private bool IsEnemy(Character character)
+        {
+            return _context.EnemyArmy.Characters.Contains(character);
         }
 
         private void RedirectStuckCharacter(Character character)
