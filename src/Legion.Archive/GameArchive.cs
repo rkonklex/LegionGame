@@ -144,6 +144,7 @@ namespace Legion.Archive
                     Y = armyData[ArmyInfo.TCELY]
                 };
                 army.CurrentAction = (ArmyActions) armyData[ArmyInfo.TTRYB];
+                army.Aggression = armyData[ArmyInfo.TKORP];
 
                 for (var ch = 1; ch <= 10; ch++)
                 {

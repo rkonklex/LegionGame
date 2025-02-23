@@ -93,6 +93,11 @@ namespace Legion.Model.Types
         public ArmyActions CurrentAction { get; set; }
 
         /// <summary>
+        /// AGRESJA=ARMIA(WRG,0,TKORP)
+        /// </summary>
+        public int Aggression { get; set; }
+
+        /// <summary>
         /// WOJ=ARMIA(A,0,TE) -> Characters.Count
         /// </summary>
         public List<Character> Characters { get; set; }

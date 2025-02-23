@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using Legion.Model.Types;
@@ -46,6 +46,14 @@ namespace Legion.Model.Helpers
             var obstacles = Enumerable.Concat<TerrainObject>(_scenery.Obstacles, _userArmy.Characters);
             _terrainHelper.PositionCharacters(army, zoneX, zoneY, type, obstacles);
             _enemyArmy = army;
+        }
+
+        public void SetDefaultAggressionLevels()
+        {
+            foreach (var character in _enemyArmy.Characters)
+            {
+                character.Aggression = _enemyArmy.Aggression;
+            }
         }
 
         public TerrainActionContext GetResult()

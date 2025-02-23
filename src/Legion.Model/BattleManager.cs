@@ -83,6 +83,7 @@ namespace Legion.Model
                     builder.SetScenery(terrainType, targetCity);
                     builder.SetUserArmy(army, xw1, yw1, placementZone);
                     builder.SetEnemyArmy(targetArmy, xw2, yw2, placementZone);
+                    builder.SetDefaultAggressionLevels();
                     await _viewSwitcher.OpenTerrainAsync(builder.GetResult());
                 }
                 else
@@ -95,6 +96,7 @@ namespace Legion.Model
                     builder.SetScenery(terrainType, targetCity);
                     builder.SetUserArmy(army, xw1, yw1, placementZone);
                     builder.SetEnemyArmy(targetArmy, xw2, yw2, placementZone);
+                    builder.SetDefaultAggressionLevels();
                     await _viewSwitcher.OpenTerrainAsync(builder.GetResult());
                 }
 
@@ -157,6 +159,7 @@ namespace Legion.Model
                         builder.SetScenery(terrainType);
                         builder.SetUserArmy(cityArmy, 0, 0, PlacementZone.RandomX);
                         builder.SetEnemyArmy(army, 0, 2, PlacementZone.RandomX);
+                        builder.SetDefaultAggressionLevels();
                         await _viewSwitcher.OpenTerrainAsync(builder.GetResult());
                     }
                     else if (army.IsUserControlled)
@@ -172,6 +175,7 @@ namespace Legion.Model
                         builder.SetScenery(terrainType, city);
                         builder.SetUserArmy(army, 0, 2, PlacementZone.RandomX);
                         builder.SetEnemyArmy(cityArmy, 0, 0, PlacementZone.RandomX);
+                        builder.SetDefaultAggressionLevels();
                         await _viewSwitcher.OpenTerrainAsync(builder.GetResult());
                     }
 

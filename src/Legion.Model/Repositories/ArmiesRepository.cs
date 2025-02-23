@@ -47,6 +47,7 @@ namespace Legion.Model.Repositories
             var armyId = FindNewArmyId(army.Owner);
             army.Owner = owner;
             army.DaysToGetInfo = 30;
+            army.Aggression = 150 + GlobalUtils.Rand(50) + power;
 
             if (army.IsChaosControlled)
             {
@@ -56,7 +57,6 @@ namespace Legion.Model.Repositories
             {
                 var postfix = army.Owner.Name.EndsWith("I", StringComparison.OrdinalIgnoreCase) ? "ego" : "a";
                 army.Name = armyId + " Legion " + army.Owner.Name + postfix;
-                //army.Aggression = 150 + Rand.Next(50) + dataManager.Power;
             }
 
             for (var i = 0; i < charactersCount; i++)
@@ -77,6 +77,7 @@ namespace Legion.Model.Repositories
         public Army CreateTempArmy(int charactersCount, int power, CharacterDefinition charactersType = null)
         {
             var army = new Army();
+            army.Aggression = 150 + GlobalUtils.Rand(50) + power;
 
             for (var i = 0; i < charactersCount; i++)
             {
