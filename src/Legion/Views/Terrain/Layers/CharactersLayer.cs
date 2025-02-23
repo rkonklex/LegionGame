@@ -97,26 +97,25 @@ namespace Legion.Views.Terrain.Layers
 
         private void HandleCharacterClicked(Character character)
         {
-            if (CurrentMode.HasValue)
+            var isUserCharacter = UserArmy.Characters.Contains(character);
+            if (CurrentMode.HasValue && !isUserCharacter)
             {
                 switch (CurrentMode.Value)
                 {
                     case CharacterActionType.Attack:
+                        SelectedCharacter.OrderAttack(character);
+                        break;
+
                     case CharacterActionType.Speak:
-                        SelectedCharacter.CurrentAction = CurrentMode.Value;
-                        SelectedCharacter.TargetType = CharacterTargetType.Character;
-                        SelectedCharacter.TargetId = character.Id;
+                        // TODO
                         break;
                 }
 
                 CurrentMode = null;
             }
-            else
+            else if (!CurrentMode.HasValue && isUserCharacter)
             {
-                if (UserArmy.Characters.Contains(character))
-                {
-                    SelectedCharacter = character;
-                }
+                SelectedCharacter = character;
             }
         }
 
@@ -129,17 +128,12 @@ namespace Legion.Views.Terrain.Layers
                 switch (CurrentMode.Value)
                 {
                     case CharacterActionType.Move:
-                        SelectedCharacter.CurrentAction = CharacterActionType.Move;
-                        SelectedCharacter.TargetType = CharacterTargetType.Position;
-                        SelectedCharacter.TargetX = position.X;
-                        SelectedCharacter.TargetY = position.Y;
+                        SelectedCharacter.OrderMoveTo(position.X, position.Y);
                         handled = true;
                         break;
+
                     case CharacterActionType.Shoot:
-                        SelectedCharacter.CurrentAction = CharacterActionType.Shoot;
-                        SelectedCharacter.TargetType = CharacterTargetType.Position;
-                        SelectedCharacter.TargetX = position.X;
-                        SelectedCharacter.TargetY = position.Y;
+                        // TODO
                         handled = true;
                         break;
                 }
