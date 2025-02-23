@@ -135,6 +135,7 @@ namespace Legion.Model
             if (Math.Abs(dx) <= 4 && Math.Abs(dy) <= 4)
             {
                 character.OrderIdle();
+                hasMoved = true;
             }
 
             character.X = x1;
