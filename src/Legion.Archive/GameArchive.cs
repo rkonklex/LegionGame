@@ -157,14 +157,9 @@ namespace Legion.Archive
                     var character = new Character();
                     character.Id = ch;
                     character.EnergyMax = characterData[ArmyInfo.TEM];
-                    character.X = characterData[ArmyInfo.TX];
-                    character.Y = characterData[ArmyInfo.TY];
                     character.Strength = characterData[ArmyInfo.TSI];
                     character.Speed = characterData[ArmyInfo.TSZ];
                     character.SpeedMax = characterData[ArmyInfo.TAMO];
-                    character.TargetX = characterData[ArmyInfo.TCELX];
-                    character.TargetY = characterData[ArmyInfo.TCELY];
-                    character.CurrentAction = (CharacterActionType)characterData[ArmyInfo.TTRYB];
                     character.Energy = characterData[ArmyInfo.TE];
                     character.Resistance = characterData[ArmyInfo.TP];
                     character.Magic = characterData[ArmyInfo.TMAG];
