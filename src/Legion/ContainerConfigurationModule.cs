@@ -87,7 +87,7 @@ namespace Legion
             builder.RegisterType<CitiesTurnProcessor>().As<ICitiesTurnProcessor>().SingleInstance();
             builder.RegisterType<ArmiesTurnProcessor>().As<IArmiesTurnProcessor>().SingleInstance();
             builder.RegisterType<WorldTurnProcessor>().As<IWorldTurnProcessor>().SingleInstance();
-            builder.RegisterType<TerrainTurnProcessor>().As<ITerrainTurnProcessor>().SingleInstance();
+            builder.RegisterType<TerrainTurnProcessor>().As<ITerrainTurnProcessor>();
         }
     }
 }
