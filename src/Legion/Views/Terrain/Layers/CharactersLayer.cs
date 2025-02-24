@@ -173,10 +173,7 @@ namespace Legion.Views.Terrain.Layers
 
         private void DrawCharacter(Character character)
         {
-            var imgName = GuiServices.ImagesStore.GetNames().FirstOrDefault(n =>
-                n.EndsWith("." + character.Type.Name)
-            );
-            var images = GuiServices.ImagesStore.GetImages(imgName);
+            var images = GuiServices.ImagesStore.GetImages(character.Type.Img);
             var frame = images[character.Bob];
             GuiServices.BasicDrawer.DrawImage(frame, character.X, character.Y);
         }

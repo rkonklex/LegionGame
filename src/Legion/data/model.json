@@ -101,7 +101,7 @@
             "magic": 20,
             "b1": 2,
             "intelligence": 10,
-            "img": "glowny.79"
+            "img": "race.barbarian"
         },
         {
             "oid": 1,
@@ -112,7 +112,7 @@
             "magic": 10,
             "b1": 1,
             "intelligence": 5,
-            "img": "glowny.63"
+            "img": "race.orc"
         },
         {
             "oid": 2,
@@ -123,7 +123,7 @@
             "magic": 35,
             "b1": 4,
             "intelligence": 12,
-            "img": "glowny.159"
+            "img": "race.elf"
         },
         {
             "oid": 3,
@@ -134,7 +134,7 @@
             "magic": 15,
             "b1": 11,
             "intelligence": 8,
-            "img": "glowny.47"
+            "img": "race.dwarf"
         },
         {
             "oid": 4,
@@ -145,7 +145,7 @@
             "magic": 20,
             "b1": 9,
             "intelligence": 7,
-            "img": "glowny.127"
+            "img": "race.amazon"
         },
         {
             "oid": 5,
@@ -156,7 +156,7 @@
             "magic": 2,
             "b1": 15,
             "intelligence": 3,
-            "img": "glowny.95"
+            "img": "race.ogre"
         },
         {
             "oid": 6,
@@ -167,7 +167,7 @@
             "magic": 10,
             "b1": 10,
             "intelligence": 5,
-            "img": "glowny.31"
+            "img": "race.troll"
         },
         {
             "oid": 7,
@@ -178,7 +178,7 @@
             "magic": 40,
             "b1": 2,
             "intelligence": 13,
-            "img": "glowny.111"
+            "img": "race.knight"
         },
         {
             "oid": 8,
@@ -189,7 +189,7 @@
             "magic": 70,
             "b1": 0,
             "intelligence": 13,
-            "img": "glowny.175"
+            "img": "race.sorcerer"
         },
         {
             "oid": 9,
@@ -200,7 +200,7 @@
             "magic": 10,
             "b1": 0,
             "intelligence": 3,
-            "img": "glowny.143"
+            "img": "race.villager"
         }
     ],
     "creatures": [
@@ -214,7 +214,7 @@
             "p2": 85,
             "resistance": 50,
             "spell": 0,
-            "img": "gargoil.0"
+            "img": "creature.gargoyl"
         },
         {
             "oid": 11,
@@ -226,7 +226,7 @@
             "p2": 0,
             "resistance": 45,
             "spell": 44,
-            "img": "szkielet.0"
+            "img": "creature.skeletor"
         },
         {
             "oid": 12,
@@ -238,7 +238,7 @@
             "p2": 86,
             "resistance": 20,
             "spell": 0,
-            "img": "wilk.0"
+            "img": "creature.wolf"
         },
         {
             "oid": 13,
@@ -250,7 +250,7 @@
             "p2": 84,
             "resistance": 30,
             "spell": 0,
-            "img": "dzik.0"
+            "img": "creature.hog"
         },
         {
             "oid": 14,
@@ -262,7 +262,7 @@
             "p2": 0,
             "resistance": 80,
             "spell": 0,
-            "img": "gloom.0"
+            "img": "creature.gloom"
         },
         {
             "oid": 15,
@@ -274,7 +274,7 @@
             "p2": 106,
             "resistance": 30,
             "spell": 0,
-            "img": "warpun.0"
+            "img": "creature.varpoon"
         },
         {
             "oid": 16,
@@ -286,7 +286,7 @@
             "p2": 102,
             "resistance": 70,
             "spell": 43,
-            "img": "skirial.0"
+            "img": "creature.skeerial"
         },
         {
             "oid": 17,
@@ -298,7 +298,7 @@
             "p2": 0,
             "resistance": 35,
             "spell": 42,
-            "img": "humanoid.0"
+            "img": "creature.humanoid"
         },
         {
             "oid": 18,
@@ -310,7 +310,7 @@
             "p2": 0,
             "resistance": 2,
             "spell": 42,
-            "img": "pajak.0"
+            "img": "creature.spider"
         },
         {
             "oid": 19,
@@ -322,7 +322,7 @@
             "p2": 0,
             "resistance": 90,
             "spell": 46,
-            "img": "boss.0"
+            "img": "creature.boss"
         }
     ],
     "items": [
