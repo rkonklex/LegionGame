@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Gui.Elements;
 using Gui.Input;
 using Gui.Services;
+using Legion.Controllers.Terrain;
 using Legion.Model;
 using Legion.Views.Terrain.Layers;
 using Microsoft.Xna.Framework.Input;
@@ -10,14 +11,17 @@ namespace Legion.Views.Terrain
 {
     public class TerrainView : View
     {
+        private readonly ITerrainController _terrainController;
         private readonly IViewSwitcher _viewSwitcher;
 
         public TerrainView(IGuiServices guiServices,
             TerrainLayer terrainLayer,
             BuildingsLayer buildingsLayer, 
             CharactersLayer charactersLayer,
+            ITerrainController terrainController,
             IViewSwitcher viewSwitcher) : base(guiServices)
         {
+            _terrainController = terrainController;
             _viewSwitcher = viewSwitcher;
             AddLayer(terrainLayer);
             AddLayer(buildingsLayer);
@@ -26,10 +30,14 @@ namespace Legion.Views.Terrain
 
         public override void Update()
         {
-            if (InputManager.GetIsKeyDown(Keys.Escape))
+            if (InputManager.GetIsKeyJustPressed(Keys.Escape))
             {
                 _viewSwitcher.OpenMap();
                 (Context as TerrainActionContext)?.NotifyActionFinished();
+            }
+            else if (InputManager.GetIsKeyJustPressed(Keys.Space))
+            {
+                _terrainController.IsPaused = !_terrainController.IsPaused;
             }
         }
     }

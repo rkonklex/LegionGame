@@ -85,5 +85,10 @@ namespace Gui.Input
         {
             return _currentKeyboardState.IsKeyUp(key);
         }
+
+        public static bool GetIsKeyJustPressed(Keys key)
+        {
+            return _currentKeyboardState.IsKeyDown(key) && _previousKeyboardState.IsKeyUp(key);
+        }
     }
 }
