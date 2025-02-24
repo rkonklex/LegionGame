@@ -26,15 +26,18 @@ namespace Legion.Model
             var numCharacters = Math.Max(userCharacters.Count, enemyCharacters.Count);
             for (int i = 0; i < numCharacters; i++)
             {
-                if (i < userCharacters.Count)
+                if (i < userCharacters.Count && !userCharacters[i].IsKilled)
                 {
                     ProcessUserTurn(userCharacters[i]);
                 }
-                if (i < enemyCharacters.Count)
+                if (i < enemyCharacters.Count && !enemyCharacters[i].IsKilled)
                 {
                     ProcessEnemyTurn(enemyCharacters[i]);
                 }
             }
+
+            userCharacters.RemoveAll(character => character.IsKilled);
+            enemyCharacters.RemoveAll(character => character.IsKilled);
 
             await Coroutine.Yield();
         }
@@ -213,6 +216,7 @@ namespace Legion.Model
 
                     if (target.IsKilled)
                     {
+                        HandleCharacterDeath(target);
                         character.OrderIdle();
                         if (character.Type is RaceDefinition intelligentRace)
                         {
@@ -232,6 +236,21 @@ namespace Legion.Model
             character.CurrentAnimFrame = nextAnimFrame;
             character.Bob = bob;
             return hasMoved;
+        }
+
+        private void HandleCharacterDeath(Character character)
+        {
+            character.Energy = 0;
+            character.OrderIdle();
+
+            if (IsEnemy(character))
+            {
+                foreach (var c in _context.EnemyArmy.Characters)
+                {
+                    var aggressionDrop = GlobalUtils.Rand(20);
+                    c.Aggression = Math.Max(c.Aggression - aggressionDrop, 1);
+                }
+            }
         }
 
         private bool IsEnemy(Character character)
