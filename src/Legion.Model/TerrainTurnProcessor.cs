@@ -199,7 +199,7 @@ namespace Legion.Model
                     target.OrderAttack(character);
                 }
 
-                var attackRate = Math.Max(100 - character.Speed / 10, 1);
+                var attackRate = Math.Max((100 - character.Speed) / 10, 1);
                 if (GlobalUtils.Rand(attackRate) == 0)
                 {
                     bob = 12 + GlobalUtils.Rand(2);
