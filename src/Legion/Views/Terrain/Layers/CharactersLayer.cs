@@ -160,6 +160,11 @@ namespace Legion.Views.Terrain.Layers
 
         private void DrawCharacters()
         {
+            foreach (var body in _terrainController.Scenery.Bodies)
+            {
+                DrawCharacter(body);
+            }
+
             foreach (var userChar in _terrainController.UserArmy.Characters)
             {
                 DrawCharacter(userChar);

@@ -242,6 +242,7 @@ namespace Legion.Model
         {
             character.Energy = 0;
             character.OrderIdle();
+            character.Bob = 15;
 
             if (IsEnemy(character))
             {
@@ -250,6 +251,13 @@ namespace Legion.Model
                     var aggressionDrop = GlobalUtils.Rand(20);
                     c.Aggression = Math.Max(c.Aggression - aggressionDrop, 1);
                 }
+            }
+
+            if (_context.Scenery.Type != SceneryType.Swamp)
+            {
+                // If Rnd(1)=0 : KB=Hrev(BAZA+16) : End If
+                // Paste Bob X-24,Y-20,KB
+                _context.Scenery.AddBody(character);
             }
         }
 

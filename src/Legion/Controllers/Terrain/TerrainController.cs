@@ -18,6 +18,7 @@ namespace Legion.Controllers.Terrain
 
         public bool IsPaused { get; set; }
         public TerrainActionContext Context { get; set; }
+        public Scenery Scenery => Context?.Scenery;
         public Army UserArmy => Context?.UserArmy;
         public Army EnemyArmy => Context?.EnemyArmy;
 

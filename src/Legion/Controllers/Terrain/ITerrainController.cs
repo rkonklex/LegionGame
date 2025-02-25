@@ -8,6 +8,7 @@ namespace Legion.Controllers.Terrain
     {
         bool IsPaused { get; set; }
         TerrainActionContext Context { get; set; }
+        Scenery Scenery { get; }
         Army EnemyArmy { get; }
         Army UserArmy { get; }
 

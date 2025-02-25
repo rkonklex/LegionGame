@@ -16,6 +16,9 @@ namespace Legion.Model.Types
         private readonly List<Building> _buildings = new();
         public IReadOnlyList<Building> Buildings => _buildings;
 
+        private readonly List<Character> _bodies = new();
+        public IReadOnlyList<Character> Bodies => _bodies;
+
         public Scenery(SceneryType sceneryType)
         {
             Type = sceneryType;
@@ -56,6 +59,11 @@ namespace Legion.Model.Types
             }
             _buildings.Add(building);
             return building;
+        }
+
+        public void AddBody(Character character)
+        {
+            _bodies.Add(character);
         }
 
         public bool HitTest(int x, int y, out TerrainObject hitObject)
